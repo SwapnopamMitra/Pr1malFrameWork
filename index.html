@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Name | Portfolio</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Swapnopam Mitra | Portfolio</title>
 
+  <!-- Google Fonts + Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
     * {
       margin: 0;
       padding: 0;
@@ -55,24 +58,16 @@
     }
 
     section {
-      padding: 100px 15%;
+      padding: 120px 15%;
       min-height: 100vh;
       opacity: 0;
       transform: translateY(50px);
       animation: fadeUp 1s forwards;
     }
 
-    #about {
-      animation-delay: 0.2s;
-    }
-
-    #projects {
-      animation-delay: 0.4s;
-    }
-
-    #contact {
-      animation-delay: 0.6s;
-    }
+    #about { animation-delay: 0.2s; }
+    #projects { animation-delay: 0.4s; }
+    #contact { animation-delay: 0.6s; }
 
     h2 {
       color: #00bcd4;
@@ -80,6 +75,7 @@
       font-size: 2rem;
     }
 
+    /* Project cards */
     .project-card {
       background: rgba(255,255,255,0.05);
       border-radius: 15px;
@@ -95,7 +91,7 @@
 
     .project-card h3 {
       color: #fff;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .project-card a {
@@ -104,6 +100,13 @@
       font-weight: 500;
     }
 
+    .project-meta {
+      font-size: 0.85rem;
+      color: #ccc;
+      margin-top: 5px;
+    }
+
+    /* Footer & Socials */
     footer {
       background: rgba(0,0,0,0.4);
       text-align: center;
@@ -113,8 +116,8 @@
 
     .socials a {
       color: #00bcd4;
-      margin: 0 10px;
-      font-size: 1.3rem;
+      margin: 0 12px;
+      font-size: 1.5rem;
       text-decoration: none;
       transition: color 0.3s;
     }
@@ -123,38 +126,27 @@
       color: #fff;
     }
 
+    /* Animations */
     @keyframes fadeUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes fadeDown {
-      from {
-        opacity: 0;
-        transform: translateY(-30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        padding: 20px;
-      }
-      section {
-        padding: 80px 8%;
-      }
+      header { flex-direction: column; padding: 20px; }
+      section { padding: 80px 8%; }
     }
   </style>
 </head>
+
 <body>
+  <!-- Header -->
   <header>
-    <h1>Your Name</h1>
+    <h1>Swapnopam Mitra</h1>
     <nav>
       <a href="#about">About</a>
       <a href="#projects">Projects</a>
@@ -162,44 +154,70 @@
     </nav>
   </header>
 
+  <!-- About -->
   <section id="about">
     <h2>About Me</h2>
     <p>
-      Hi! I'm <strong>Swapnopam Mitra</strong>, a passionate developer interested in Cybersecurity, AI, Game Development and building efficient software tools.  
-      I love working on creative projects and sharing my work with others. I am interested in making coding tools which re-define what could and can be possible.
-      Developing tools which makes coding/ project management/creation easier is one of my hobbies.
+      Hi! I'm <strong>Swapnopam Mitra</strong> — a passionate developer interested in Cybersecurity, AI, Game Development, and building efficient software tools.  
+      I love working on creative projects and sharing my work with others. My focus is on creating tools that make coding, project management, and development more intuitive and powerful.
     </p>
   </section>
 
+  <!-- Projects (auto-updating from GitHub) -->
   <section id="projects">
     <h2>My Projects</h2>
-
-    <div class="project-card">
-      <h3>Matrix Chain Multiplication</h3>
-      <p>A C program that finds the optimal parenthesization of matrix chain multiplication using M-table & S-table.</p>
-      <a href="matrix_solver.exe" download>Download (.exe)</a>
-    </div>
-
-    <div class="project-card">
-      <h3>Another Project</h3>
-      <p>Brief description of another cool project here...</p>
-      <a href="#">View / Download</a>
-    </div>
+    <div id="project-list"><p>Loading projects...</p></div>
   </section>
 
+  <!-- Contact -->
   <section id="contact">
     <h2>Contact & Socials</h2>
-    <p>Feel free to reach out or connect with me through the following platforms:</p>
+    <p>Feel free to reach out or connect with me through these platforms:</p>
     <div class="socials">
-      <a href="https://github.com/SwapnopamMitra" target="_blank">GitHub</a>
-      <a href="www.linkedin.com/in/swapnopam-mitra-70880a307" target="_blank">LinkedIn</a>
-      <a href="swapnopammitra@gmail.com">Email</a>
+      <a href="https://github.com/SwapnopamMitra" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/swapnopam-mitra-70880a307" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      <a href="mailto:swapnopammitra@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
     </div>
   </section>
 
+  <!-- Footer -->
   <footer>
-    &copy; 2025 Your Name | All rights reserved.
+    &copy; 2025 Swapnopam Mitra | All rights reserved.
   </footer>
+
+  <!-- GitHub Fetch Script -->
+  <script>
+    const username = "SwapnopamMitra";
+
+    fetch(`https://api.github.com/users/${username}/repos?sort=updated`)
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById("project-list");
+        container.innerHTML = ""; // Clear "Loading..."
+        data.forEach(repo => {
+          if (repo.fork || repo.private) return;
+
+          const card = document.createElement("div");
+          card.className = "project-card";
+          card.innerHTML = `
+            <h3>${repo.name}</h3>
+            <p>${repo.description || "No description provided."}</p>
+            <div class="project-meta">
+              ⭐ ${repo.stargazers_count} | 🕓 Updated: ${new Date(repo.updated_at).toLocaleDateString()} | 🧠 ${repo.language || "N/A"}
+            </div>
+            <a href="${repo.html_url}" target="_blank">View on GitHub</a>
+          `;
+          container.appendChild(card);
+        });
+
+        if (!container.innerHTML.trim()) {
+          container.innerHTML = "<p>No public projects found yet.</p>";
+        }
+      })
+      .catch(() => {
+        document.getElementById("project-list").innerHTML =
+          "<p>Unable to load projects right now. Please try again later.</p>";
+      });
+  </script>
 </body>
 </html>
-
