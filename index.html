@@ -1,41 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Projects</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Name | Portfolio</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #f5f7fa;
-      margin: 40px;
-      color: #333;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #f4f4f4;
+      line-height: 1.6;
+      overflow-x: hidden;
     }
-    h1 {
-      color: #0066cc;
+
+    header {
+      background: rgba(0,0,0,0.3);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 60px;
+      backdrop-filter: blur(8px);
+      animation: fadeDown 1s ease-in-out;
     }
-    .project {
-      margin-bottom: 25px;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+    header h1 {
+      font-weight: 600;
+      font-size: 1.5rem;
+      color: #00bcd4;
     }
-    a {
-      color: #0066cc;
+
+    nav a {
+      color: #f4f4f4;
       text-decoration: none;
+      margin-left: 25px;
+      transition: color 0.3s;
     }
-    a:hover {
-      text-decoration: underline;
+
+    nav a:hover {
+      color: #00bcd4;
+    }
+
+    section {
+      padding: 100px 15%;
+      min-height: 100vh;
+      opacity: 0;
+      transform: translateY(50px);
+      animation: fadeUp 1s forwards;
+    }
+
+    #about {
+      animation-delay: 0.2s;
+    }
+
+    #projects {
+      animation-delay: 0.4s;
+    }
+
+    #contact {
+      animation-delay: 0.6s;
+    }
+
+    h2 {
+      color: #00bcd4;
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+
+    .project-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 25px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .project-card h3 {
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .project-card a {
+      color: #00bcd4;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    footer {
+      background: rgba(0,0,0,0.4);
+      text-align: center;
+      padding: 30px;
+      font-size: 0.9rem;
+    }
+
+    .socials a {
+      color: #00bcd4;
+      margin: 0 10px;
+      font-size: 1.3rem;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .socials a:hover {
+      color: #fff;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 20px;
+      }
+      section {
+        padding: 80px 8%;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>My Projects</h1>
-  <div class="project">
-    <h2>Matrix Chain Multiplication Program</h2>
-    <p>This program implements matrix chain multiplication using M-table and S-table.</p>
-    <a href="matrix_solver.exe" download>Download Executable (.exe)</a>
-  </div>
+  <header>
+    <h1>Your Name</h1>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>
+      Hi! I'm <strong>Your Name</strong>, a passionate developer interested in cybersecurity, AI, and building efficient software tools.  
+      I love working on creative projects and sharing my work with others.
+    </p>
+  </section>
+
+  <section id="projects">
+    <h2>My Projects</h2>
+
+    <div class="project-card">
+      <h3>Matrix Chain Multiplication</h3>
+      <p>A C program that finds the optimal parenthesization of matrix chain multiplication using M-table & S-table.</p>
+      <a href="matrix_solver.exe" download>Download (.exe)</a>
+    </div>
+
+    <div class="project-card">
+      <h3>Another Project</h3>
+      <p>Brief description of another cool project here...</p>
+      <a href="#">View / Download</a>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact & Socials</h2>
+    <p>Feel free to reach out or connect with me through the following platforms:</p>
+    <div class="socials">
+      <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+      <a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn</a>
+      <a href="mailto:youremail@example.com">Email</a>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Your Name | All rights reserved.
+  </footer>
 </body>
 </html>
+
