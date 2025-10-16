@@ -20,6 +20,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <link rel="stylesheet" href="style.css">
+
+  <!-- Google reCAPTCHA -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -65,7 +68,8 @@
     <h2>Request Access / Contact</h2>
     <p>Fill out this form if you want to request access to resources or share your info. Only verified entries are sent to my email.</p>
 
-    <form id="requestForm" class="request-form" novalidate>
+    <form id="requestForm" class="request-form" action="https://formspree.io/f/xanpvqga" method="POST" novalidate>
+      <!-- Honeypot field -->
       <div style="display:none">
         <label>Leave this empty: <input type="text" name="hp_field" id="hp_field" autocomplete="off"></label>
       </div>
@@ -95,8 +99,8 @@
         <textarea name="message" id="message" rows="4" placeholder="Describe your request..."></textarea>
       </label>
 
-      <!-- Optional: reCAPTCHA -->
-      <div id="recaptcha-container"></div>
+      <!-- reCAPTCHA -->
+      <div class="g-recaptcha" data-sitekey="6LfX4-wrAAAAALdMxCVO8D2R-dUZ3Ub1EVQam9Yk"></div>
 
       <div id="requestFormMessage" aria-live="polite" style="margin:12px 0;"></div>
 
