@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Swapnopam Mitra | Portfolio</title>
 
+  <!-- SEO & Open Graph -->
+  <meta name="description" content="Portfolio of Swapnopam Mitra — Developer specializing in Cybersecurity, AI, and Software Tools. Explore my open-source projects and professional work.">
+  <meta property="og:title" content="Swapnopam Mitra | Portfolio">
+  <meta property="og:description" content="Developer Portfolio — Cybersecurity, AI, Game Dev & Open Source">
+  <meta property="og:image" content="https://github.com/SwapnopamMitra.png">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://github.com/SwapnopamMitra.png" type="image/png">
+
   <!-- Google Fonts + Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -20,8 +30,8 @@
       <a href="#about">About</a>
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
-      <button class="theme-toggle" id="themeToggle" title="Toggle theme">
-        <i class="fas fa-moon"></i>
+      <button aria-label="Toggle Theme" class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon" aria-hidden="true"></i>
       </button>
     </nav>
   </header>
@@ -50,7 +60,54 @@
     <div id="project-list"><p>Loading projects...</p></div>
   </section>
 
-  <!-- Contact -->
+  <!-- Request Form -->
+  <section id="request-access">
+    <h2>Request Access / Contact</h2>
+    <p>Fill out this form if you want to request access to resources or share your info. Only verified entries are sent to my email.</p>
+
+    <form id="requestForm" class="request-form" novalidate>
+      <div style="display:none">
+        <label>Leave this empty: <input type="text" name="hp_field" id="hp_field" autocomplete="off"></label>
+      </div>
+
+      <label>
+        Full name
+        <input type="text" name="name" id="name" required placeholder="Jane Doe" />
+      </label>
+
+      <label>
+        Email
+        <input type="email" name="email" id="email" required placeholder="jane@example.com" />
+      </label>
+
+      <label>
+        Phone (optional)
+        <input type="tel" name="phone" id="phone" placeholder="+919876543210" />
+      </label>
+
+      <label>
+        LinkedIn (optional)
+        <input type="url" name="linkedin" id="linkedin" placeholder="https://www.linkedin.com/in/username" />
+      </label>
+
+      <label>
+        Short note
+        <textarea name="message" id="message" rows="4" placeholder="Describe your request..."></textarea>
+      </label>
+
+      <!-- Optional: reCAPTCHA -->
+      <div id="recaptcha-container"></div>
+
+      <div id="requestFormMessage" aria-live="polite" style="margin:12px 0;"></div>
+
+      <div style="display:flex; gap:.5rem; align-items:center;">
+        <button type="submit" id="requestSubmit">Request Access</button>
+        <span id="requestFormSpinner" style="display:none">⏳ Sending…</span>
+      </div>
+    </form>
+  </section>
+
+  <!-- Contact / Socials -->
   <section id="contact">
     <h2>Contact & Socials</h2>
     <p>Feel free to reach out or connect with me through these platforms:</p>
@@ -70,3 +127,4 @@
   <script src="logic.js"></script>
 </body>
 </html>
+
