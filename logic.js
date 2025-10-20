@@ -22,25 +22,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // === Theme toggle ===
-  const themeToggle = document.getElementById("themeToggle");
-  const icon = themeToggle?.querySelector("i");
-  const savedTheme = localStorage.getItem("theme");
+ const themeToggle = document.getElementById("themeToggle");
+const icon = themeToggle?.querySelector("i");
+const savedTheme = localStorage.getItem("theme");
 
-  if (savedTheme === "dark") {
-    document.body.classList.add("dark");
-    if (icon) icon.classList.replace("fa-moon", "fa-sun");
-  }
+if (savedTheme === "dark") document.body.classList.add("dark");
 
-  if (themeToggle) {
-    themeToggle.addEventListener("click", () => {
-      const isDark = document.body.classList.toggle("dark");
-      if (icon) {
-        icon.classList.toggle("fa-moon");
-        icon.classList.toggle("fa-sun");
-      }
-      localStorage.setItem("theme", isDark ? "dark" : "light");
-    });
-  }
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    const isDark = document.body.classList.contains("dark");
+    if (icon) icon.classList.toggle("fa-moon", !isDark);
+    if (icon) icon.classList.toggle("fa-sun", isDark);
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+  });
+}
+
 
   // === GitHub Profile Fetch ===
   fetch("https://api.github.com/users/SwapnopamMitra")
