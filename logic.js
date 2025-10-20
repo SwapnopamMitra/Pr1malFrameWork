@@ -6,6 +6,10 @@ document.addEventListener("DOMContentLoaded", () => {
     sections.forEach(s => {
       if (s.getBoundingClientRect().top < trigger) s.classList.add("visible");
     });
+    // Also reveal project cards dynamically
+    document.querySelectorAll(".project-card").forEach(card => {
+      if (card.getBoundingClientRect().top < trigger) card.classList.add("visible");
+    });
   };
   window.addEventListener("scroll", revealOnScroll);
   revealOnScroll();
@@ -50,20 +54,21 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("github-link").href = d.html_url;
     }).catch(() => {});
 
-  // === GitHub Projects + HF demo ===
+  // === Hugging Face demo + GitHub Projects ===
   const pl = document.getElementById("project-list");
   if (pl) {
-    // Only add HF demo if not already present
+    // Add HF demo first and visible immediately
     if (!pl.querySelector('a[href*="huggingface.co"]')) {
       const hfCard = document.createElement("div");
-      hfCard.className = "project-card";
+      hfCard.className = "project-card visible";
       hfCard.innerHTML = `
         <h3><a href="https://huggingface.co/spaces/Swapnopam/Predictive_Sorting_Release_Int_Version_1.1" target="_blank">Predictive Sort Demo</a></h3>
         <p class="project-meta">Hybrid Sorting Algorithm • 🧠 Live Demo</p>
       `;
-      pl.prepend(hfCard); // prepend to show first
+      pl.prepend(hfCard);
     }
 
+    // Fetch latest 5 GitHub repos
     fetch("https://api.github.com/users/SwapnopamMitra/repos?sort=updated&per_page=5")
       .then(res => res.json())
       .then(repos => {
@@ -76,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
           `;
           pl.appendChild(c);
         });
-        revealOnScroll(); // animate newly added cards
+        revealOnScroll(); // reveal newly added cards
       })
       .catch(() => pl.innerHTML += "<p>Failed to load projects.</p>");
   }
@@ -87,10 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const spinner = document.getElementById("requestFormSpinner");
   const msgEl = document.getElementById("requestFormMessage");
-  const disposableDomains = [
-    "mailinator.com","tempmail.com","10minutemail.com",
-    "guerrillamail.com","yopmail.com","dispostable.com"
-  ];
+  const disposableDomains = ["mailinator.com","tempmail.com","10minutemail.com","guerrillamail.com","yopmail.com","dispostable.com"];
 
   const isValidEmail = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) && !disposableDomains.includes(e.split("@")[1].toLowerCase());
   const isValidName = n => /^[a-zA-Z\s]{2,50}$/.test(n.trim());
