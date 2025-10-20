@@ -22,45 +22,33 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // === Theme toggle ===
- const themeToggle = document.getElementById("themeToggle");
-const icon = themeToggle?.querySelector("i");
-const savedTheme = localStorage.getItem("theme");
-
-if (savedTheme === "dark") document.body.classList.add("dark");
-
-if (themeToggle) {
-  themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-    const isDark = document.body.classList.contains("dark");
-    if (icon) icon.classList.toggle("fa-moon", !isDark);
-    if (icon) icon.classList.toggle("fa-sun", isDark);
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-  });
-}
-
-
-  // === GitHub Profile Fetch ===
-  fetch("https://api.github.com/users/SwapnopamMitra")
-    .then(res => res.json())
-    .then(d => {
-      const a = document.getElementById("avatar");
-      const n = document.getElementById("github-name");
-      const b = document.getElementById("github-bio");
-      const l = document.getElementById("github-link");
-
-      if (a) a.src = d.avatar_url;
-      if (n) n.textContent = d.name || d.login;
-      if (b) b.textContent = d.bio || "";
-      if (l) l.href = d.html_url;
+ // Theme toggle
+  const themeToggle = document.getElementById("themeToggle");
+  const icon = themeToggle?.querySelector("i");
+  const savedTheme = localStorage.getItem("theme");
+  
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark");
+    if (icon) icon.className = "fas fa-sun";
+  } else {
+    if (icon) icon.className = "fas fa-moon";
+  }
+  
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      const isDark = document.body.classList.toggle("dark");
+      if (icon) icon.className = isDark ? "fas fa-sun" : "fas fa-moon";
+      localStorage.setItem("theme", isDark ? "dark" : "light");
     });
-
-  // === GitHub Projects Fetch ===
+  }
+  
+  // Projects
   fetch("https://api.github.com/users/SwapnopamMitra/repos?sort=updated&per_page=5")
     .then(res => res.json())
     .then(repos => {
       const pl = document.getElementById("project-list");
       if (!pl) return;
-      
+  
       const hfCard = document.createElement("div");
       hfCard.className = "project-card";
       hfCard.innerHTML = `
@@ -68,7 +56,7 @@ if (themeToggle) {
         <p class="project-meta">Hybrid Sorting Algorithm • 🧠 Live Demo</p>
       `;
       pl.appendChild(hfCard);
-      
+  
       repos.forEach(r => {
         const c = document.createElement("div");
         c.className = "project-card";
@@ -78,12 +66,8 @@ if (themeToggle) {
         `;
         pl.appendChild(c);
       });
-
-    })
-    .catch(() => {
-      const pl = document.getElementById("project-list");
-      if (pl) pl.innerHTML = "<p>Failed to load projects.</p>";
     });
+
 
   // === Request Form Validation & Submit ===
   const form = document.getElementById("requestForm");
