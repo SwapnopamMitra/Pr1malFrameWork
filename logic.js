@@ -63,8 +63,15 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(repos => {
       const pl = document.getElementById("project-list");
       if (!pl) return;
-
-      pl.innerHTML = "";
+      
+      const hfCard = document.createElement("div");
+      hfCard.className = "project-card";
+      hfCard.innerHTML = `
+        <h3><a href="https://huggingface.co/spaces/Swapnopam/Predictive_Sorting_Release_Int_Version_1.1" target="_blank">Predictive Sort Demo</a></h3>
+        <p class="project-meta">Hybrid Sorting Algorithm • 🧠 Live Demo</p>
+      `;
+      pl.appendChild(hfCard);
+      
       repos.forEach(r => {
         const c = document.createElement("div");
         c.className = "project-card";
@@ -74,6 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
         pl.appendChild(c);
       });
+
     })
     .catch(() => {
       const pl = document.getElementById("project-list");
