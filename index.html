@@ -18,14 +18,13 @@
   <!-- Google Fonts + Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
   <link rel="stylesheet" href="style.css">
 
   <!-- Google reCAPTCHA -->
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
-<body>
+<body class="dark">
   <!-- Header -->
   <header>
     <h1>Swapnopam Mitra</h1>
@@ -34,7 +33,7 @@
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
       <button aria-label="Toggle Theme" class="theme-toggle" id="themeToggle">
-        <i class="fas fa-moon" aria-hidden="true"></i>
+        <i class="fas fa-sun" aria-hidden="true"></i>
       </button>
     </nav>
   </header>
@@ -61,12 +60,8 @@
   <section id="projects">
     <h2>My Projects</h2>
     <div id="project-list">
-      <div class="project-card">
-        <h3><a href="https://huggingface.co/spaces/Swapnopam/Predictive_Sorting_Release_Int_Version_1.1" target="_blank">Predictive Sort Demo</a></h3>
-        <p class="project-meta">Hybrid Sorting Algorithm • 🧠 Live Demo</p>
-      </div>
+      <!-- JS will dynamically inject Hugging Face demo + GitHub projects -->
     </div>
-
   </section>
 
   <!-- Request Form -->
@@ -80,28 +75,23 @@
         <label>Leave this empty: <input type="text" name="hp_field" id="hp_field" autocomplete="off"></label>
       </div>
 
-      <label>
-        Full name
+      <label>Full name
         <input type="text" name="name" id="name" required placeholder="Jane Doe" />
       </label>
 
-      <label>
-        Email
+      <label>Email
         <input type="email" name="email" id="email" required placeholder="jane@example.com" />
       </label>
 
-      <label>
-        Phone (optional)
+      <label>Phone (optional)
         <input type="tel" name="phone" id="phone" placeholder="+919876543210" />
       </label>
 
-      <label>
-        LinkedIn (optional)
+      <label>LinkedIn (optional)
         <input type="url" name="linkedin" id="linkedin" placeholder="https://www.linkedin.com/in/username" />
       </label>
 
-      <label>
-        Short note
+      <label>Short note
         <textarea name="message" id="message" rows="4" placeholder="Describe your request..."></textarea>
       </label>
 
@@ -137,4 +127,3 @@
   <script src="logic.js"></script>
 </body>
 </html>
-
