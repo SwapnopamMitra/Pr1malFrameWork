@@ -50,17 +50,19 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("github-link").href = d.html_url;
     }).catch(() => {});
 
-  // === GitHub Projects + Hugging Face demo ===
+  // === GitHub Projects + HF demo ===
   const pl = document.getElementById("project-list");
   if (pl) {
-    // Add HF demo first
-    const hfCard = document.createElement("div");
-    hfCard.className = "project-card";
-    hfCard.innerHTML = `
-      <h3><a href="https://huggingface.co/spaces/Swapnopam/Predictive_Sorting_Release_Int_Version_1.1" target="_blank">Predictive Sort Demo</a></h3>
-      <p class="project-meta">Hybrid Sorting Algorithm • 🧠 Live Demo</p>
-    `;
-    pl.appendChild(hfCard);
+    // Only add HF demo if not already present
+    if (!pl.querySelector('a[href*="huggingface.co"]')) {
+      const hfCard = document.createElement("div");
+      hfCard.className = "project-card";
+      hfCard.innerHTML = `
+        <h3><a href="https://huggingface.co/spaces/Swapnopam/Predictive_Sorting_Release_Int_Version_1.1" target="_blank">Predictive Sort Demo</a></h3>
+        <p class="project-meta">Hybrid Sorting Algorithm • 🧠 Live Demo</p>
+      `;
+      pl.prepend(hfCard); // prepend to show first
+    }
 
     fetch("https://api.github.com/users/SwapnopamMitra/repos?sort=updated&per_page=5")
       .then(res => res.json())
@@ -74,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
           `;
           pl.appendChild(c);
         });
-        revealOnScroll(); // ensure newly added cards animate
+        revealOnScroll(); // animate newly added cards
       })
       .catch(() => pl.innerHTML += "<p>Failed to load projects.</p>");
   }
