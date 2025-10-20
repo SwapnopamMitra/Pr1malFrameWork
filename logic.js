@@ -21,19 +21,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // === Theme toggle ===
- // Theme toggle
+  // === Theme toggle fixed ===
   const themeToggle = document.getElementById("themeToggle");
   const icon = themeToggle?.querySelector("i");
   const savedTheme = localStorage.getItem("theme");
-  
+
   if (savedTheme === "dark") {
     document.body.classList.add("dark");
     if (icon) icon.className = "fas fa-sun";
   } else {
     if (icon) icon.className = "fas fa-moon";
   }
-  
+
   if (themeToggle) {
     themeToggle.addEventListener("click", () => {
       const isDark = document.body.classList.toggle("dark");
@@ -41,33 +40,51 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("theme", isDark ? "dark" : "light");
     });
   }
-  
-  // Projects
-  fetch("https://api.github.com/users/SwapnopamMitra/repos?sort=updated&per_page=5")
+
+  // === GitHub Profile Fetch ===
+  fetch("https://api.github.com/users/SwapnopamMitra")
     .then(res => res.json())
-    .then(repos => {
-      const pl = document.getElementById("project-list");
-      if (!pl) return;
-  
-      const hfCard = document.createElement("div");
-      hfCard.className = "project-card";
-      hfCard.innerHTML = `
-        <h3><a href="https://huggingface.co/spaces/Swapnopam/Predictive_Sorting_Release_Int_Version_1.1" target="_blank">Predictive Sort Demo</a></h3>
-        <p class="project-meta">Hybrid Sorting Algorithm • 🧠 Live Demo</p>
-      `;
-      pl.appendChild(hfCard);
-  
-      repos.forEach(r => {
-        const c = document.createElement("div");
-        c.className = "project-card";
-        c.innerHTML = `
-          <h3><a href="${r.html_url}" target="_blank">${r.name}</a></h3>
-          <p class="project-meta">${r.description || "No description"} • ⭐ ${r.stargazers_count}</p>
-        `;
-        pl.appendChild(c);
-      });
+    .then(d => {
+      const a = document.getElementById("avatar");
+      const n = document.getElementById("github-name");
+      const b = document.getElementById("github-bio");
+      const l = document.getElementById("github-link");
+
+      if (a) a.src = d.avatar_url;
+      if (n) n.textContent = d.name || d.login;
+      if (b) b.textContent = d.bio || "";
+      if (l) l.href = d.html_url;
     });
 
+  // === GitHub Projects Fetch + HF demo ===
+  const pl = document.getElementById("project-list");
+  if (pl) {
+    // Add Hugging Face demo first
+    const hfCard = document.createElement("div");
+    hfCard.className = "project-card";
+    hfCard.innerHTML = `
+      <h3><a href="https://huggingface.co/spaces/Swapnopam/Predictive_Sorting_Release_Int_Version_1.1" target="_blank">Predictive Sort Demo</a></h3>
+      <p class="project-meta">Hybrid Sorting Algorithm • 🧠 Live Demo</p>
+    `;
+    pl.appendChild(hfCard);
+
+    fetch("https://api.github.com/users/SwapnopamMitra/repos?sort=updated&per_page=5")
+      .then(res => res.json())
+      .then(repos => {
+        repos.forEach(r => {
+          const c = document.createElement("div");
+          c.className = "project-card";
+          c.innerHTML = `
+            <h3><a href="${r.html_url}" target="_blank">${r.name}</a></h3>
+            <p class="project-meta">${r.description || "No description"} • ⭐ ${r.stargazers_count}</p>
+          `;
+          pl.appendChild(c);
+        });
+      })
+      .catch(() => {
+        pl.innerHTML += "<p>Failed to load projects.</p>";
+      });
+  }
 
   // === Request Form Validation & Submit ===
   const form = document.getElementById("requestForm");
@@ -80,10 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "guerrillamail.com", "yopmail.com", "dispostable.com"
   ];
 
-  const isValidEmail = e => {
-    const r = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return r.test(e) && !disposableDomains.includes(e.split("@")[1].toLowerCase());
-  };
+  const isValidEmail = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) && !disposableDomains.includes(e.split("@")[1].toLowerCase());
   const isValidName = n => /^[a-zA-Z\s]{2,50}$/.test(n.trim());
   const isValidPhone = p => p === "" || /^\+?\d{7,15}$/.test(p.trim());
   const isValidLinkedIn = l => l === "" || l.startsWith("https://www.linkedin.com/");
@@ -103,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const linkedin = form.querySelector("input[name='linkedin']")?.value.trim() || "";
     const message = form.querySelector("textarea[name='message']")?.value.trim() || "";
     const hp = form.querySelector("input[name='hp_field']")?.value.trim() || "";
-
     if (hp !== "") return;
 
     if (!isValidName(name)) return showMessage("Please enter a valid name (letters only).");
@@ -122,12 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const fd = new FormData(form);
       fd.append("g-recaptcha-response", recaptchaResponse);
 
-      const res = await fetch(form.action, {
-        method: form.method,
-        body: fd,
-        headers: { "Accept": "application/json" }
-      });
-
+      const res = await fetch(form.action, { method: form.method, body: fd, headers: { "Accept": "application/json" } });
       const data = await res.json();
       if (spinner) spinner.style.display = "none";
       grecaptcha.reset();
