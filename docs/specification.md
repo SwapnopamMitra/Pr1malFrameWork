@@ -271,6 +271,8 @@ The system defends against:
 - Non‑canonical encodings  
 - Silent corruption
 
+Section 13.1: 
+Deterministic Fixed Points "Deterministic, race-free producers may generate PCMP artifacts that are identical across runs. In cases where the producer generates high-frequency duplicate bit-patterns (low entropy), the canonical permutation map represents a fixed point. PCMP does not attempt to introduce synthetic entropy or disrupt hardware-level determinism; it exists solely to make the producer’s commitment irreversible and verifiable."
 ---
 
 # 14. Security Considerations **[Recommended]**
