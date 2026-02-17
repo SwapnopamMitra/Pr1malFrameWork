@@ -6,21 +6,6 @@ CHUNK_BYTES = 1 << 22
 SHA256_LEN = 32
 
 
-# ---------- ordered float helpers ----------
-
-def float_to_ordered_uint(f):
-    u = struct.unpack("<I", struct.pack("<f", f))[0]
-    if u & 0x80000000:
-        return (~u) & 0xffffffff
-    return u | 0x80000000
-
-
-def u32_to_float(u):
-    return struct.unpack("<f", struct.pack("<I", u))[0]
-
-
-# ---------- uleb128 ----------
-
 def uleb128_decode(buf, off):
     val = 0
     shift = 0
@@ -35,7 +20,9 @@ def uleb128_decode(buf, off):
     return val, i - off
 
 
-# ---------- predictive inverse ----------
+def zigzag_decode(v):
+    return (v >> 1) ^ -(v & 1)
+
 
 def inv_order1(res):
     out = res[:]
@@ -56,13 +43,10 @@ def inv_order2(res):
     return out
 
 
-# ---------- merkle ----------
-
 def merkle_root(data):
     leaves = []
     for i in range(0, len(data), CHUNK_BYTES):
         leaves.append(hashlib.sha256(data[i:i+CHUNK_BYTES]).digest())
-
     while len(leaves) > 1:
         nxt = []
         for i in range(0, len(leaves), 2):
@@ -71,15 +55,11 @@ def merkle_root(data):
             else:
                 nxt.append(leaves[i])
         leaves = nxt
+    return leaves[0] if leaves else b"\x00" * 32
 
-    return leaves[0]
-
-
-# ---------- verifier ----------
 
 def verify_pcmp(path: Path):
     info = {"file": str(path)}
-
     with path.open("rb") as f:
         hdr = f.read(16)
         info["magic"] = hdr[:4].decode("ascii", "replace")
@@ -101,33 +81,14 @@ def verify_pcmp(path: Path):
         else:
             raise ValueError("invalid order")
 
-        # ---------- CORRECT ORDER CHECK ----------
         violation = None
         for i in range(1, len(ordered)):
-            prev_f = u32_to_float(ordered[i - 1])
-            cur_f  = u32_to_float(ordered[i])
-
-            if float_to_ordered_uint(cur_f) < float_to_ordered_uint(prev_f):
+            if ordered[i] < ordered[i - 1]:
                 violation = i
                 break
 
         info["ordering_ok"] = violation is None
         info["ordering_violation_index"] = violation
-
-        if violation is not None:
-            u_prev = ordered[violation - 1]
-            u_cur  = ordered[violation]
-
-            info["ordering_violation_detail"] = {
-                "index_prev": violation - 1,
-                "index_curr": violation,
-                "ordered_prev": u_prev,
-                "ordered_curr": u_cur,
-                "float_prev": u32_to_float(u_prev),
-                "float_curr": u32_to_float(u_cur),
-                "hex_prev": hex(u_prev),
-                "hex_curr": hex(u_cur),
-            }
 
         PC = struct.unpack("<Q", f.read(8))[0]
         pcb = f.read(PC)
@@ -137,9 +98,10 @@ def verify_pcmp(path: Path):
         off = 0
         prev = 0
         for _ in range(info["n"]):
-            d, used = uleb128_decode(pd, off)
+            v, used = uleb128_decode(pd, off)
             off += used
-            prev += d
+            diff = zigzag_decode(v)
+            prev = (prev + diff) & 0xffffffffffffffff
             perm.append(prev)
 
         proof_type = struct.unpack("<Q", f.read(8))[0]
@@ -148,16 +110,21 @@ def verify_pcmp(path: Path):
         num_chunks = struct.unpack("<Q", f.read(8))[0]
         ordering_mode = struct.unpack("<I", f.read(4))[0]
         stored_root = f.read(SHA256_LEN)
-
         footer_magic, footer_version = struct.unpack("<II", f.read(8))
 
     computed_root = merkle_root(raw)
+
+    perm_ok = (
+        len(perm) == info["n"] and
+        all(0 <= p < info["n"] for p in perm) and
+        len(set(perm)) == info["n"]
+    )
 
     info.update({
         "compressed_data_bytes": C,
         "compressed_perm_bytes": PC,
         "raw_bytes": info["n"] * 4,
-        "compression_ratio": C / (info["n"] * 4),
+        "compression_ratio": C / (info["n"] * 4) if info["n"] else 0,
         "proof_type": proof_type,
         "total_n": total_n,
         "chunk_bytes": chunk_bytes,
@@ -168,19 +135,19 @@ def verify_pcmp(path: Path):
         "merkle_match": stored_root == computed_root,
         "footer_magic": hex(footer_magic),
         "footer_version": footer_version,
+        "permutation_ok": perm_ok,
     })
 
     info["valid"] = (
         info["magic"] == "PCMP" and
         info["version"] == 1 and
         info["ordering_ok"] and
-        info["merkle_match"]
+        info["merkle_match"] and
+        perm_ok
     )
 
     return info
 
-
-# ---------- CLI ----------
 
 def main():
     args = sys.argv[1:]
@@ -192,7 +159,7 @@ def main():
         mode = "json"
         args.remove("--json")
     if not args:
-        print("usage: verifier.py [--info|--json] file.pcmp ...")
+        print("usage: verify.py [--info|--json] file.pcmp ...")
         sys.exit(1)
 
     for p in map(Path, args):
@@ -205,7 +172,7 @@ def main():
                 print(f"{k:24}: {v}")
         else:
             status = "OK" if info["valid"] else "FAIL"
-            print(f"[{status}] {p}  n={info['n']}  order={info['order']}  ratio={info['compression_ratio']:.3f}")
+            print(f"[{status}] {p}  n={info['n']}  order={info['order']}  ratio={info['compression_ratio']:.6f}")
 
 
 if __name__ == "__main__":
