@@ -15,6 +15,10 @@ def float_to_ordered_uint(f):
     return u | 0x80000000
 
 
+def u32_to_float(u):
+    return struct.unpack("<f", struct.pack("<I", u))[0]
+
+
 # ---------- uleb128 ----------
 
 def uleb128_decode(buf, off):
@@ -97,20 +101,20 @@ def verify_pcmp(path: Path):
         else:
             raise ValueError("invalid order")
 
+        # ---------- CORRECT ORDER CHECK ----------
         violation = None
         for i in range(1, len(ordered)):
-            if ordered[i] < ordered[i - 1]:
+            prev_f = u32_to_float(ordered[i - 1])
+            cur_f  = u32_to_float(ordered[i])
+
+            if float_to_ordered_uint(cur_f) < float_to_ordered_uint(prev_f):
                 violation = i
                 break
 
         info["ordering_ok"] = violation is None
         info["ordering_violation_index"] = violation
 
-        # -------- detailed violation diagnostics --------
         if violation is not None:
-            def u32_to_float(u):
-                return struct.unpack("<f", struct.pack("<I", u))[0]
-
             u_prev = ordered[violation - 1]
             u_cur  = ordered[violation]
 
@@ -202,6 +206,7 @@ def main():
         else:
             status = "OK" if info["valid"] else "FAIL"
             print(f"[{status}] {p}  n={info['n']}  order={info['order']}  ratio={info['compression_ratio']:.3f}")
+
 
 if __name__ == "__main__":
     main()
