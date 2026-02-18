@@ -1,6 +1,9 @@
 const terminal = document.getElementById("terminal-output");
 const button = document.getElementById("simulate");
 
+const ledgerList = document.getElementById("ledger-list");
+const emptyState = document.querySelector(".ledger-empty");
+
 const lines = [
   "[INFO] Parsing GQA_Attention_Node_Output.bin...",
   "[WARN] Divergence Detected: M4_MAX_HASH != NVIDIA_H100_HASH",
@@ -16,3 +19,33 @@ button.onclick = async () => {
     await new Promise(r => setTimeout(r, 700));
   }
 };
+
+const LEDGER = [];
+
+function renderLedger() {
+  if (!ledgerList) return;
+
+  ledgerList.innerHTML = "";
+
+  if (LEDGER.length === 0) {
+    if (emptyState) emptyState.style.display = "block";
+    return;
+  }
+
+  if (emptyState) emptyState.style.display = "none";
+
+  LEDGER.forEach((entry, index) => {
+    const li = document.createElement("li");
+
+    li.innerHTML = `
+      <span class="rank">#${index + 1}</span>
+      <span class="id">${entry.id}</span>
+      <span class="name">${entry.name}</span>
+      <span class="meta">${entry.date} | ${entry.version}</span>
+    `;
+
+    ledgerList.appendChild(li);
+  });
+}
+
+renderLedger();
