@@ -12,33 +12,48 @@
 <body>
   <main class="container">
 
-    <section class="hero">
-      <pre class="ascii-logo">
+    <section class="hero layout-split">
+
+      <div class="hero-main">
+        <pre class="ascii-logo">
 ███████╗ █████╗ ███╗   ███╗ █████╗ ██╗   ██╗██╗   ██╗██╗  ██╗████████╗ █████╗ ███╗   ███╗
 ██╔════╝██╔══██╗████╗ ████║██╔══██╗╚██╗ ██╔╝██║   ██║██║ ██╔╝╚══██╔══╝██╔══██╗████╗ ████║
 ███████╗███████║██╔████╔██║███████║ ╚████╔╝ ██║   ██║█████╔╝    ██║   ███████║██╔████╔██║
 ╚════██║██╔══██║██║╚██╔╝██║██╔══██║  ╚██╔╝  ██║   ██║██╔═██╗    ██║   ██╔══██║██║╚██╔╝██║
 ███████║██║  ██║██║ ╚═╝ ██║██║  ██║   ██║   ╚██████╔╝██║  ██╗   ██║   ██║  ██║██║ ╚═╝ ██║
 ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝     ╚═╝
-      </pre>
+        </pre>
 
-      <h1>PCMP</h1>
-      <p class="subtitle">Bit-Exact Accountability for the Age of Entropy</p>
+        <h1>PCMP</h1>
+        <p class="subtitle">Bit-Exact Accountability for the Age of Entropy</p>
 
-      <div class="terminal">
-        <div id="terminal-output"></div>
-        <div class="cursor">█</div>
+        <div class="terminal">
+          <div id="terminal-output"></div>
+          <div class="cursor">█</div>
+        </div>
+
+        <button id="simulate">Simulate Audit</button>
+
+        <div class="hero-links">
+          <a class="hf-link" href="https://huggingface.co/spaces/Swapnopam/Samayuktam" target="_blank" rel="noopener">
+            <span class="tag">WORKING MODEL</span>
+            <span class="label">Hugging Face Space</span>
+            <span class="arrow">↗</span>
+          </a>
+        </div>
       </div>
 
-      <button id="simulate">Simulate Audit</button>
+      <aside class="scoreboard-side card ledger-mode">
+        <h2>Victors</h2>
+        <p class="ledger-subtext">
+          Immutable record. Entries committed by the Architect.
+        </p>
+        <ul id="ledger-list"></ul>
+        <div class="ledger-empty">
+          ∅ No successful breaches recorded.
+        </div>
+      </aside>
 
-      <div class="hero-links">
-        <a class="hf-link" href="https://huggingface.co/spaces/Swapnopam/Samayuktam" target="_blank" rel="noopener">
-          <span class="tag">WORKING MODEL</span>
-          <span class="label">Hugging Face Space</span>
-          <span class="arrow">↗</span>
-        </a>
-      </div>
     </section>
 
     <section class="grid three">
@@ -72,6 +87,7 @@
       <h2>Directives</h2>
       <ul>
         <li><a href="docs/specification.md">Specification</a></li>
+        <li><a href="docs/implementation.md">Implementation</a></li>
         <li><a href="docs/threat_model.md">Threat Model</a></li>
         <li><a href="docs/manifesto.md">Manifesto</a></li>
         <li><a href="docs/rationale.md">Rationale</a></li>
