@@ -25,7 +25,7 @@
         </pre>
 
         <h1>PCMP</h1>
-        <p class="subtitle">Bit-Exact Accountability for the Age of Entropy</p>
+        <p class="subtitle">Deterministic canonicalization for floating-point inference artifacts.</p>
 
         <div class="terminal">
           <div id="terminal-output"></div>
@@ -36,7 +36,7 @@
 
         <div class="hero-links">
           <a class="hf-link" href="https://huggingface.co/spaces/Swapnopam/Samayuktam" target="_blank" rel="noopener">
-            <span class="tag">WORKING MODEL</span>
+            <span class="tag">LIVE DEPLOYMENT</span>
             <span class="label">Hugging Face Space</span>
             <span class="arrow">↗</span>
           </a>
@@ -44,13 +44,13 @@
       </div>
 
       <aside class="scoreboard-side card ledger-mode">
-        <h2>Victors</h2>
+        <h2>Ledger</h2>
         <p class="ledger-subtext">
-          Immutable record. Entries committed by the Architect.
+          Immutable verification record.
         </p>
         <ul id="ledger-list"></ul>
         <div class="ledger-empty">
-          ∅ No successful breaches recorded.
+          ∅ No inconsistencies recorded.
         </div>
       </aside>
 
@@ -59,36 +59,76 @@
     <section class="grid three">
       <div class="card">
         <h3>Hardware Entropy</h3>
-        <p>IEEE-754 execution diverges across H100, M4, TPU, and CPU microcode.</p>
+        <p>IEEE-754 execution diverges across heterogeneous accelerators and CPU microcode.</p>
       </div>
       <div class="card">
-        <h3>Silent Failures</h3>
-        <p>GQA / Attention kernels drift silently, invalidating Merkle proofs.</p>
+        <h3>Silent Kernel Drift</h3>
+        <p>Attention and fused kernels introduce non-canonical float paths under parallel execution.</p>
       </div>
       <div class="card">
-        <h3>Adversarial Surface</h3>
-        <p>Non-canonical floats create unverifiable inference paths.</p>
+        <h3>Unverifiable Inference</h3>
+        <p>Non-deterministic logits invalidate artifact commitments and downstream proofs.</p>
       </div>
     </section>
 
     <section class="flow">
-      <p>Float Stream → <span>PCMP Sorter</span> → Canonical Artifact → Merkle Commitment</p>
+      <p>Float Stream → <span>PCMP Canonicalizer</span> → Canonical Artifact → Merkle Commitment</p>
     </section>
 
     <section class="card emphasis">
       <h2>Zero-Overhead Reversibility</h2>
       <p>
-        Verify the commitment, then restore your original hardware-specific
-        byte-stream instantly. No padding. No approximation. No loss.
+        Verify the commitment, then restore the original hardware-specific byte stream without padding,
+        approximation, or information loss.
       </p>
     </section>
 
+    <section class="card validation">
+      <h2>Production Validation</h2>
+
+      <div class="validation-grid">
+        <div class="validation-main">
+
+          <p class="validation-lead">
+            Evaluated on real transformer inference workloads across heterogeneous hardware execution environments.
+          </p>
+
+          <ul class="validation-details">
+            <li><strong>Model:</strong> BLIP (Bootstrapping Language-Image Pretraining, transformer-based)</li>
+            <li><strong>Scale:</strong> 10.7M float32 logits per inference</li>
+          </ul>
+
+          <div class="validation-config">
+            <p><strong>Execution Configurations:</strong></p>
+            <ul>
+              <li>✓ CPU deterministic execution</li>
+              <li>✓ CUDA GPU deterministic execution</li>
+              <li>✓ Batched inference (32 images)</li>
+              <li>✓ Byte-level reconstruction verified via cmp</li>
+            </ul>
+          </div>
+
+          <p class="validation-result">
+            Result: <span class="accent">Bit-identical canonical artifacts</span> across CPU, GPU, and batch configurations.
+          </p>
+
+          <a class="validation-link"
+             href="https://github.com/SwapnopamMitra/Pr1malFrameWork/tree/main/validation/transformer-tests"
+             target="_blank"
+             rel="noopener">
+            Inspect Validation Scripts →
+          </a>
+
+        </div>
+      </div>
+    </section>
+
     <section class="directives">
-      <h2>Directives</h2>
+      <h2>Protocol Directives</h2>
       <ul>
         <li><a href="docs/specification.md">Specification</a></li>
-        <li><a href="docs/spcmp_spec.md">SPCMP_Spec</a></li>
-        <li><a href="docs/implementation.md">Implementation</a></li>
+        <li><a href="docs/spcmp_spec.md">SPCMP Specification</a></li>
+        <li><a href="docs/implementation.md">Reference Implementation</a></li>
         <li><a href="docs/threat_model.md">Threat Model</a></li>
         <li><a href="docs/manifesto.md">Manifesto</a></li>
         <li><a href="docs/rationale.md">Rationale</a></li>
