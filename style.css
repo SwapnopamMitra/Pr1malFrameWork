@@ -385,3 +385,85 @@ button:active {
   color: rgba(229, 229, 229, 0.6);
   background: rgba(0, 0, 0, 0.35);
 }
+.validation {
+  margin-top: 3rem;
+  border-color: rgba(0, 112, 243, 0.45);
+  box-shadow: 0 0 18px rgba(0, 112, 243, 0.08);
+}
+
+.validation-grid {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.validation-main {
+  flex: 1;
+}
+
+.validation-lead {
+  color: rgba(229, 229, 229, 0.85);
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.validation-details {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.2rem 0;
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: rgba(229, 229, 229, 0.8);
+}
+
+.validation-config p {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.validation-config ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.2rem 0;
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: rgba(229, 229, 229, 0.8);
+}
+
+.validation-result {
+  font-size: 0.95rem;
+  margin-bottom: 1.2rem;
+}
+
+.validation-result .accent {
+  color: var(--green);
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(0, 255, 65, 0.25);
+}
+
+.validation-link {
+  display: inline-block;
+  padding: 0.65rem 0.9rem;
+  border-radius: 12px;
+  text-decoration: none;
+  color: rgba(0, 112, 243, 0.95);
+  border: 1px solid rgba(0, 112, 243, 0.35);
+  background: rgba(0, 0, 0, 0.35);
+  transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.validation-link:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 255, 65, 0.55);
+  box-shadow: 0 0 14px rgba(0, 255, 65, 0.12);
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .validation-grid {
+    flex-direction: column;
+  }
+}
