@@ -3,137 +3,464 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Samayuktam PCMP</title>
+  <title>Samayuktam · PCMP</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+
+  <!-- BACKGROUND CANVAS -->
+  <canvas id="bg-canvas"></canvas>
+  <div id="particles"></div>
+
+  <!-- CLASSIFICATION BAR -->
+  <div class="classification-bar">
+    <span class="cls-dot"></span>
+    <span>SAMAYUKTAM PROTOCOL SUITE</span>
+    <span class="cls-sep">·</span>
+    <span>PCMP v1.0</span>
+    <span class="cls-sep">·</span>
+    <span class="cls-live">● LIVE</span>
+    <span class="cls-sep">·</span>
+    <span>DETERMINISTIC INFERENCE LAYER</span>
+    <span class="cls-sep">·</span>
+    <span>MERKLE-ANCHORED · BIT-IDENTICAL · ZERO-OVERHEAD</span>
+  </div>
+
   <main class="container">
 
-    <section class="hero layout-split">
-
-      <div class="hero-main">
-        <pre class="ascii-logo">
+    <!-- ═══════════════════════════════════════════
+         SAMAYUKTAM MASTHEAD
+    ═══════════════════════════════════════════ -->
+    <section class="samayuktam-masthead">
+      <div class="smy-wordmark-wrap">
+        <pre class="smy-ascii" aria-label="SAMAYUKTAM">
 ███████╗ █████╗ ███╗   ███╗ █████╗ ██╗   ██╗██╗   ██╗██╗  ██╗████████╗ █████╗ ███╗   ███╗
 ██╔════╝██╔══██╗████╗ ████║██╔══██╗╚██╗ ██╔╝██║   ██║██║ ██╔╝╚══██╔══╝██╔══██╗████╗ ████║
 ███████╗███████║██╔████╔██║███████║ ╚████╔╝ ██║   ██║█████╔╝    ██║   ███████║██╔████╔██║
 ╚════██║██╔══██║██║╚██╔╝██║██╔══██║  ╚██╔╝  ██║   ██║██╔═██╗    ██║   ██╔══██║██║╚██╔╝██║
 ███████║██║  ██║██║ ╚═╝ ██║██║  ██║   ██║   ╚██████╔╝██║  ██╗   ██║   ██║  ██║██║ ╚═╝ ██║
-╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝     ╚═╝
-        </pre>
-
-        <h1>PCMP</h1>
-        <p class="subtitle">Deterministic canonicalization for floating-point inference artifacts.</p>
-
-        <div class="terminal">
-          <div id="terminal-output"></div>
-          <div class="cursor">█</div>
-        </div>
-
-        <button id="simulate">Simulate Audit</button>
-
-        <div class="hero-links">
-          <a class="hf-link" href="https://huggingface.co/spaces/Swapnopam/Samayuktam" target="_blank" rel="noopener">
-            <span class="tag">LIVE DEPLOYMENT</span>
-            <span class="label">Hugging Face Space</span>
-            <span class="arrow">↗</span>
+╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝     ╚═╝</pre>
+        <div class="smy-tagline-row">
+          <span class="smy-tagline">Protocol Suite for Verifiable Inference</span>
+          <span class="smy-sep">|</span>
+          <span class="smy-version-badge">v1.0</span>
+          <span class="smy-sep">|</span>
+          <a class="smy-hf-chip" href="https://huggingface.co/spaces/Swapnopam/Samayuktam" target="_blank" rel="noopener">
+            <span class="hf-dot"></span>HF SPACE ↗
           </a>
         </div>
       </div>
+    </section>
 
-      <aside class="scoreboard-side card ledger-mode">
-        <h2>Ledger</h2>
-        <p class="ledger-subtext">
-          Immutable verification record.
-        </p>
-        <ul id="ledger-list"></ul>
-        <div class="ledger-empty">
-          ∅ No inconsistencies recorded.
+    <!-- PCMP SUB-PROTOCOL EYEBROW -->
+    <div class="pcmp-eyebrow">
+      <span class="eyebrow-tag">SUB-PROTOCOL</span>
+      <span class="eyebrow-divider">/</span>
+      <span class="eyebrow-desc">PCMP — Platform-Canonical Merkle Protocol · Deterministic canonicalization for floating-point inference artifacts.</span>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         HERO — SPLIT LAYOUT
+    ═══════════════════════════════════════════ -->
+    <section class="hero">
+
+      <div class="hero-title-block">
+        <div class="glitch-wrapper">
+          <h1 class="main-title" data-text="PCMP">PCMP</h1>
         </div>
-      </aside>
-
-    </section>
-
-    <section class="grid three">
-      <div class="card">
-        <h3>Hardware Entropy</h3>
-        <p>IEEE-754 execution diverges across heterogeneous accelerators and CPU microcode.</p>
+        <div class="title-sub-block">
+          <span class="title-expand">Platform-Canonical<br>Merkle Protocol</span>
+          <span class="version-badge">Samayuktam v1.0</span>
+        </div>
       </div>
-      <div class="card">
-        <h3>Silent Kernel Drift</h3>
-        <p>Attention and fused kernels introduce non-canonical float paths under parallel execution.</p>
-      </div>
-      <div class="card">
-        <h3>Unverifiable Inference</h3>
-        <p>Non-deterministic logits invalidate artifact commitments and downstream proofs.</p>
-      </div>
-    </section>
 
-    <section class="flow">
-      <p>Float Stream → <span>PCMP Canonicalizer</span> → Canonical Artifact → Merkle Commitment</p>
-    </section>
-
-    <section class="card emphasis">
-      <h2>Zero-Overhead Reversibility</h2>
-      <p>
-        Verify the commitment, then restore the original hardware-specific byte stream without padding,
-        approximation, or information loss.
+      <p class="hero-thesis">
+        Floating-point inference is non-deterministic across hardware. PCMP eliminates that. Every logit stream canonicalized, committed, and reconstructible — byte-identical across CPU, GPU, and batch.
       </p>
-    </section>
 
-    <section class="card validation">
-      <h2>Production Validation</h2>
+      <!-- SPLIT BODY -->
+      <div class="hero-body layout-split">
 
-      <div class="validation-grid">
-        <div class="validation-main">
+        <!-- LEFT: TERMINAL + PIPELINE + CTA -->
+        <div class="hero-main">
 
-          <p class="validation-lead">
-            Evaluated on real transformer inference workloads across heterogeneous hardware execution environments.
-          </p>
-
-          <ul class="validation-details">
-            <li><strong>Model:</strong> BLIP (Bootstrapping Language-Image Pretraining, transformer-based)</li>
-            <li><strong>Scale:</strong> 10.7M float32 logits per inference</li>
-          </ul>
-
-          <div class="validation-config">
-            <p><strong>Execution Configurations:</strong></p>
-            <ul>
-              <li>✓ CPU deterministic execution</li>
-              <li>✓ CUDA GPU deterministic execution</li>
-              <li>✓ Batched inference (32 images)</li>
-              <li>✓ Byte-level reconstruction verified via cmp</li>
-            </ul>
+          <!-- TERMINAL -->
+          <div class="terminal">
+            <div class="terminal-titlebar">
+              <div class="tb-dots">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
+              <span class="tb-title">pcmp-audit — samayuktam@verifier</span>
+              <span class="tb-status" id="tb-status">IDLE</span>
+            </div>
+            <div class="terminal-body">
+              <div id="terminal-output"></div>
+              <div class="terminal-cursor-line">
+                <span class="prompt">$</span>
+                <span class="cursor-blink">█</span>
+              </div>
+            </div>
           </div>
 
-          <p class="validation-result">
-            Result: <span class="accent">Bit-identical canonical artifacts</span> across CPU, GPU, and batch configurations.
-          </p>
+          <!-- CTA ROW -->
+          <div class="cta-row">
+            <button id="simulate" class="btn-primary">
+              <span class="btn-icon">▶</span> Simulate Audit
+            </button>
+            <a class="btn-secondary" href="https://github.com/SwapnopamMitra/Pr1malFrameWork" target="_blank" rel="noopener">
+              ⎇ GitHub
+            </a>
+            <a class="btn-secondary" href="https://huggingface.co/spaces/Swapnopam/Samayuktam" target="_blank" rel="noopener">
+              ↗ Live Deployment
+            </a>
+          </div>
 
-          <a class="validation-link"
-             href="https://github.com/SwapnopamMitra/Pr1malFrameWork/tree/main/validation/transformer-tests"
-             target="_blank"
-             rel="noopener">
-            Inspect Validation Scripts →
-          </a>
+          <!-- PIPELINE -->
+          <div class="pipeline">
+            <div class="pipeline-step">
+              <span class="ps-label">Float Stream</span>
+              <span class="ps-sub">Hardware-specific</span>
+            </div>
+            <span class="pipeline-arrow">→</span>
+            <div class="pipeline-step accent">
+              <span class="ps-label">PCMP Canonicalizer</span>
+              <span class="ps-sub">IEEE-754 normalization</span>
+            </div>
+            <span class="pipeline-arrow">→</span>
+            <div class="pipeline-step">
+              <span class="ps-label">Canonical Artifact</span>
+              <span class="ps-sub">Platform-invariant</span>
+            </div>
+            <span class="pipeline-arrow">→</span>
+            <div class="pipeline-step accent-green">
+              <span class="ps-label">Merkle Commitment</span>
+              <span class="ps-sub">0x8dc860c7…</span>
+            </div>
+          </div>
 
+        </div>
+
+        <!-- RIGHT: LEDGER -->
+        <aside class="ledger-panel" aria-label="Verification Ledger">
+          <div class="ledger-header">
+            <h2>VERIFICATION LEDGER</h2>
+            <span class="ledger-sub">Immutable inconsistency record</span>
+          </div>
+          <ul id="ledger-list"></ul>
+          <div class="ledger-empty">
+            <span class="empty-glyph">∅</span>
+            No inconsistencies recorded.
+          </div>
+          <div class="ledger-footer">
+            <span class="lf-label">CHAIN</span>
+            <span class="lf-val">SAMAYUKTAM/PCMP</span>
+          </div>
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- STAT STRIP -->
+    <div class="stat-strip">
+      <div class="stat">
+        <span class="stat-num">10.7M</span>
+        <span class="stat-label">float32 logits<br>per inference</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">3</span>
+        <span class="stat-label">hardware configs<br>CPU · GPU · Batch</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">100%</span>
+        <span class="stat-label">bit-identical<br>reconstruction</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">0</span>
+        <span class="stat-label">information loss<br>zero-overhead</span>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         PROBLEM SPACE
+    ═══════════════════════════════════════════ -->
+    <section class="section-block">
+      <div class="section-header">
+        <span class="section-tag">PROBLEM SPACE</span>
+        <h2>Why Inference Is Unverifiable</h2>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="pc-num">01</div>
+          <h3>Hardware Entropy</h3>
+          <p>IEEE-754 execution diverges across heterogeneous accelerators and CPU microcode. The same model, different silicon — different floats.</p>
+        </div>
+        <div class="problem-card">
+          <div class="pc-num">02</div>
+          <h3>Silent Kernel Drift</h3>
+          <p>Attention and fused kernels introduce non-canonical float paths under parallel execution. Drift is silent, cumulative, and undetectable without a commitment scheme.</p>
+        </div>
+        <div class="problem-card">
+          <div class="pc-num">03</div>
+          <h3>Unverifiable Inference</h3>
+          <p>Non-deterministic logits invalidate artifact commitments and downstream proofs. You cannot audit what you cannot reproduce.</p>
         </div>
       </div>
     </section>
 
-    <section class="directives">
-      <h2>Protocol Directives</h2>
-      <ul>
-        <li><a href="docs/specification.md">Specification</a></li>
-        <li><a href="docs/spcmp_spec.md">SPCMP Specification</a></li>
-        <li><a href="docs/implementation.md">Reference Implementation</a></li>
-        <li><a href="docs/threat_model.md">Threat Model</a></li>
-        <li><a href="docs/manifesto.md">Manifesto</a></li>
-        <li><a href="docs/rationale.md">Rationale</a></li>
-      </ul>
+    <!-- ═══════════════════════════════════════════
+         SOLUTION
+    ═══════════════════════════════════════════ -->
+    <section class="section-block">
+      <div class="section-header">
+        <span class="section-tag">SOLUTION</span>
+        <h2>What PCMP Does</h2>
+      </div>
+      <div class="solution-grid">
+        <div class="sol-card">
+          <span class="sol-icon">⊕</span>
+          <h3>Canonicalize</h3>
+          <span class="sol-expand">Platform-Canonical Merkle Protocol</span>
+          <p>Maps every hardware-specific float byte-stream to a single canonical representation. <code>M4_MAX_HASH == NVIDIA_H100_HASH</code> after canonicalization.</p>
+          <span class="sol-tag">CORE PRIMITIVE</span>
+        </div>
+        <div class="sol-card">
+          <span class="sol-icon">⬡</span>
+          <h3>Commit</h3>
+          <span class="sol-expand">Merkle Anchoring</span>
+          <p>Produce a deterministic Merkle root over the canonical artifact. Immutable. Auditable. Committable to any ledger or verification system.</p>
+          <span class="sol-tag">MERKLE ROOT</span>
+        </div>
+        <div class="sol-card">
+          <span class="sol-icon">↩</span>
+          <h3>Reconstruct</h3>
+          <span class="sol-expand">Zero-Overhead Reversibility</span>
+          <p>Verify the commitment, then restore the original hardware-specific byte stream without padding, approximation, or information loss.</p>
+          <span class="sol-tag">LOSSLESS</span>
+        </div>
+      </div>
     </section>
+
+    <!-- CALLOUT: ZERO-OVERHEAD -->
+    <div class="callout-block">
+      <div class="callout-inner">
+        <div class="callout-left">
+          <span class="callout-tag">ZERO-OVERHEAD REVERSIBILITY</span>
+          <h2>Commit Without Losing Fidelity</h2>
+          <p>Canonical form is an intermediate, not a replacement. The original byte-stream survives intact. Proof and precision coexist.</p>
+          <div class="callout-proof">
+            <code>canonical_root := merkle(pcmp(logits)) → verify → restore(original_stream)</code>
+          </div>
+        </div>
+        <div class="callout-right">
+          <div class="hash-display">
+            <div class="hd-row">
+              <span class="hd-label">M4_MAX</span>
+              <span class="hd-hash hd-bad">0xf3a1b2c4…</span>
+            </div>
+            <div class="hd-row">
+              <span class="hd-label">H100_SXM</span>
+              <span class="hd-hash hd-bad">0x9e7d0f81…</span>
+            </div>
+            <div class="hd-arrow">↓ PCMP CANONICALIZATION ↓</div>
+            <div class="hd-row canonical">
+              <span class="hd-label">CANONICAL</span>
+              <span class="hd-hash hd-good">0x8dc860c7… ✓</span>
+            </div>
+            <div class="hd-row canonical">
+              <span class="hd-label">MERKLE ROOT</span>
+              <span class="hd-hash hd-good">0x8dc860c7… ✓</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         VALIDATION
+    ═══════════════════════════════════════════ -->
+    <section class="section-block validation-block">
+      <div class="section-header">
+        <span class="section-tag">PRODUCTION VALIDATION</span>
+        <h2>Evaluated on Real Transformer Workloads</h2>
+      </div>
+      <div class="validation-grid">
+        <div class="val-main">
+          <p class="val-lead">
+            Tested on real transformer inference across heterogeneous hardware execution environments.
+          </p>
+          <div class="val-specs">
+            <div class="val-spec">
+              <span class="vs-key">MODEL</span>
+              <span class="vs-val">BLIP (Bootstrapping Language-Image Pretraining)</span>
+            </div>
+            <div class="val-spec">
+              <span class="vs-key">SCALE</span>
+              <span class="vs-val">10.7M float32 logits per inference</span>
+            </div>
+          </div>
+          <div class="val-configs">
+            <div class="val-cfg pass">✓ CPU deterministic execution</div>
+            <div class="val-cfg pass">✓ CUDA GPU deterministic execution</div>
+            <div class="val-cfg pass">✓ Batched inference (32 images)</div>
+            <div class="val-cfg pass">✓ Byte-level reconstruction via <code>cmp</code></div>
+          </div>
+          <div class="val-result">
+            <span class="vr-label">RESULT</span>
+            <span class="vr-value">Bit-identical canonical artifacts across CPU, GPU, and batch configurations.</span>
+          </div>
+          <a class="val-link"
+             href="https://github.com/SwapnopamMitra/Pr1malFrameWork/tree/main/validation/transformer-tests"
+             target="_blank" rel="noopener">
+            ↗ Inspect Validation Scripts
+          </a>
+        </div>
+        <div class="val-visual">
+          <div class="matrix-grid" id="matrix-grid"></div>
+          <div class="matrix-caption">32-image batch · all cells verified</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THREAT STRIP -->
+    <div class="threat-strip">
+      <div class="ts-header">
+        <span class="section-tag">THREAT MODEL</span>
+        <h3>What PCMP Eliminates</h3>
+      </div>
+      <div class="threat-grid">
+        <div class="threat-item"><span class="ti-x">✗</span> Cross-platform float divergence</div>
+        <div class="threat-item"><span class="ti-x">✗</span> Non-reproducible inference outputs</div>
+        <div class="threat-item"><span class="ti-x">✗</span> Unverifiable model commitments</div>
+        <div class="threat-item"><span class="ti-x">✗</span> Silent kernel drift accumulation</div>
+        <div class="threat-item"><span class="ti-x">✗</span> Hardware-locked artifact proofs</div>
+        <div class="threat-item"><span class="ti-x">✗</span> Information loss on reconstruction</div>
+      </div>
+    </div>
+
+    <!-- VERIFICATION STEPS -->
+    <section class="section-block">
+      <div class="section-header">
+        <span class="section-tag">PROTOCOL</span>
+        <h2>Verification Steps</h2>
+      </div>
+      <div class="steps-list">
+        <div class="step-item">
+          <span class="step-n">01</span>
+          <div class="step-body">
+            <span class="step-title">Ingest raw logit stream from hardware</span>
+            <span class="step-note">Native IEEE-754 bytes, no preprocessing.</span>
+          </div>
+        </div>
+        <div class="step-item">
+          <span class="step-n">02</span>
+          <div class="step-body">
+            <span class="step-title">Apply PCMP Canonicalization</span>
+            <span class="step-note">Normalize float representation to canonical form. <code>pcmp.canonicalize(stream)</code></span>
+          </div>
+        </div>
+        <div class="step-item">
+          <span class="step-n">03</span>
+          <div class="step-body">
+            <span class="step-title">Compute Merkle Root</span>
+            <span class="step-note">Deterministic tree over canonical chunks. Root is portable across all hardware.</span>
+          </div>
+        </div>
+        <div class="step-item">
+          <span class="step-n">04</span>
+          <div class="step-body">
+            <span class="step-title">Anchor commitment</span>
+            <span class="step-note">Publish root to ledger, chain, or verification record.</span>
+          </div>
+        </div>
+        <div class="step-item">
+          <span class="step-n">05</span>
+          <div class="step-body">
+            <span class="step-title">Reconstruct original stream</span>
+            <span class="step-note">Reverse canonicalization losslessly. <code>pcmp.restore(canonical)</code> → original bytes.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIRECTIVES -->
+    <section class="directives-block">
+      <div class="section-header">
+        <span class="section-tag">DOCUMENTATION</span>
+        <h2>Protocol Directives</h2>
+      </div>
+      <div class="directives-grid">
+        <a class="dir-card" href="docs/specification.md">
+          <span class="dir-icon">📋</span>
+          <div class="dir-text">
+            <span class="dir-title">Specification</span>
+            <span class="dir-sub">Core protocol definition</span>
+          </div>
+          <span class="dir-arrow">↗</span>
+        </a>
+        <a class="dir-card" href="docs/spcmp_spec.md">
+          <span class="dir-icon">⚙️</span>
+          <div class="dir-text">
+            <span class="dir-title">SPCMP Specification</span>
+            <span class="dir-sub">Streaming variant spec</span>
+          </div>
+          <span class="dir-arrow">↗</span>
+        </a>
+        <a class="dir-card" href="docs/implementation.md">
+          <span class="dir-icon">🔧</span>
+          <div class="dir-text">
+            <span class="dir-title">Reference Implementation</span>
+            <span class="dir-sub">Canonical code walkthrough</span>
+          </div>
+          <span class="dir-arrow">↗</span>
+        </a>
+        <a class="dir-card" href="docs/threat_model.md">
+          <span class="dir-icon">🛡</span>
+          <div class="dir-text">
+            <span class="dir-title">Threat Model</span>
+            <span class="dir-sub">Attack surface & mitigations</span>
+          </div>
+          <span class="dir-arrow">↗</span>
+        </a>
+        <a class="dir-card" href="docs/manifesto.md">
+          <span class="dir-icon">📜</span>
+          <div class="dir-text">
+            <span class="dir-title">Manifesto</span>
+            <span class="dir-sub">Design philosophy</span>
+          </div>
+          <span class="dir-arrow">↗</span>
+        </a>
+        <a class="dir-card" href="docs/rationale.md">
+          <span class="dir-icon">🧠</span>
+          <div class="dir-text">
+            <span class="dir-title">Rationale</span>
+            <span class="dir-sub">Why this approach</span>
+          </div>
+          <span class="dir-arrow">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-left">
+        <span class="footer-brand">SAMAYUKTAM · PCMP</span>
+        <span class="footer-copy">© Swapnopam Mitra · All rights reserved</span>
+        <span class="footer-patent">Protocol IP pending · Samayuktam v1.0</span>
+      </div>
+      <div class="footer-right">
+        <a class="footer-link" href="https://huggingface.co/spaces/Swapnopam/Samayuktam" target="_blank" rel="noopener">Hugging Face</a>
+        <a class="footer-link" href="https://github.com/SwapnopamMitra/Pr1malFrameWork" target="_blank" rel="noopener">GitHub</a>
+        <a class="footer-link" href="docs/specification.md">Docs</a>
+      </div>
+    </footer>
 
   </main>
 
