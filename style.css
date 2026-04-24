@@ -2299,87 +2299,167 @@ body {
 .three-phase-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.2rem;
+  gap: 1.4rem;
   margin-top: 2rem;
+  counter-reset: phase-counter;
 }
 
 @media (max-width: 900px) {
   .three-phase-grid { grid-template-columns: 1fr; }
 }
 
+/* ── Cards ── */
 .phase-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: rgba(12,18,30,0.85);
+  border: 1px solid rgba(0,153,255,0.18);
   border-radius: var(--radius);
-  padding: 1.5rem;
+  padding: 1.6rem 1.5rem 1.4rem;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  transition: border-color 0.2s, background 0.2s;
+  gap: 0.65rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.28s, box-shadow 0.28s, transform 0.22s;
+}
+
+/* Subtle animated top-edge glow line */
+.phase-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(0,153,255,0.6) 40%,
+    rgba(0,153,255,0.8) 50%,
+    rgba(0,153,255,0.6) 60%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+
+/* Corner accent */
+.phase-card::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 48px; height: 48px;
+  background: radial-gradient(circle at top right, rgba(0,153,255,0.12), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.35s;
 }
 
 .phase-card:hover {
-  border-color: rgba(0,153,255,0.3);
-  background: rgba(0,153,255,0.02);
+  border-color: rgba(0,153,255,0.5);
+  box-shadow: 0 0 28px rgba(0,153,255,0.08), inset 0 0 40px rgba(0,153,255,0.03);
+  transform: translateY(-2px);
 }
 
+.phase-card:hover::before,
+.phase-card:hover::after { opacity: 1; }
+
+/* Middle card — always-on subtle highlight */
 .phase-card.phase-accent {
-  border-color: rgba(0,153,255,0.25);
-  background: rgba(0,153,255,0.03);
+  border-color: rgba(0,153,255,0.32);
+  background: rgba(0,20,45,0.9);
+  box-shadow: 0 0 24px rgba(0,153,255,0.07);
 }
+
+.phase-card.phase-accent::before { opacity: 0.5; }
+.phase-card.phase-accent::after  { opacity: 1; }
 
 .phase-card.phase-accent:hover {
-  border-color: var(--blue);
-  background: rgba(0,153,255,0.06);
+  border-color: rgba(0,153,255,0.7);
+  box-shadow: 0 0 40px rgba(0,153,255,0.13), inset 0 0 50px rgba(0,153,255,0.05);
 }
 
+/* ── Phase number ── */
 .phase-num {
   font-family: var(--font-display);
-  font-size: 2rem;
+  font-size: 2.4rem;
   font-weight: 900;
-  color: rgba(0,153,255,0.2);
   line-height: 1;
   letter-spacing: 0.05em;
+  /* bright, not ghosted */
+  color: rgba(0,153,255,0.55);
+  text-shadow: 0 0 20px rgba(0,153,255,0.3);
+  transition: color 0.25s, text-shadow 0.25s;
 }
 
+.phase-card:hover .phase-num,
+.phase-card.phase-accent .phase-num {
+  color: rgba(0,153,255,0.85);
+  text-shadow: 0 0 30px rgba(0,153,255,0.5);
+}
+
+/* ── Title ── */
 .phase-title {
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--fg);
+  letter-spacing: 0.14em;
+  color: #e8f0ff;
+  text-shadow: 0 0 12px rgba(0,153,255,0.2);
 }
 
+/* ── Sub ── */
 .phase-sub {
-  font-size: 0.64rem;
-  color: var(--blue-dim);
-  letter-spacing: 0.04em;
+  font-size: 0.63rem;
+  color: rgba(100,180,255,0.75);
+  letter-spacing: 0.05em;
   font-family: var(--font-mono);
 }
 
+/* ── Divider ── */
+.phase-card .phase-divider {
+  width: 28px;
+  height: 1px;
+  background: rgba(0,153,255,0.3);
+  margin: 0.1rem 0;
+}
+
+/* ── Desc ── */
 .phase-desc {
-  font-size: 0.73rem;
-  color: var(--muted);
-  line-height: 1.7;
+  font-size: 0.74rem;
+  color: rgba(200,215,240,0.82);
+  line-height: 1.75;
   flex: 1;
 }
 
+/* ── Tag pills ── */
 .phase-props {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin-top: 0.4rem;
+  margin-top: 0.5rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(0,153,255,0.1);
 }
 
 .pp {
-  font-size: 0.58rem;
+  font-size: 0.57rem;
   font-family: var(--font-display);
-  letter-spacing: 0.08em;
-  color: var(--blue-bright);
-  border: 1px solid rgba(0,153,255,0.25);
-  padding: 0.18rem 0.5rem;
+  letter-spacing: 0.09em;
+  color: rgba(100,200,255,0.9);
+  border: 1px solid rgba(0,153,255,0.3);
+  padding: 0.2rem 0.55rem;
   border-radius: 3px;
-  background: rgba(0,153,255,0.05);
+  background: rgba(0,153,255,0.08);
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.phase-card:hover .pp {
+  background: rgba(0,153,255,0.14);
+  border-color: rgba(0,153,255,0.5);
+  color: #a8d8ff;
+}
+
+/* ── Connector arrows between cards (desktop) ── */
+@media (min-width: 901px) {
+  .three-phase-grid {
+    position: relative;
+  }
 }
 
 /* ─── TECH PROPERTIES ROW ───────────────────────────────── */
@@ -2387,9 +2467,9 @@ body {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border);
+  margin-top: 1.8rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid rgba(0,153,255,0.12);
 }
 
 @media (max-width: 1100px) {
@@ -2403,18 +2483,28 @@ body {
 .tpr-item {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.4rem;
+  padding: 0.9rem 1rem;
+  background: rgba(0,153,255,0.03);
+  border: 1px solid rgba(0,153,255,0.1);
+  border-radius: var(--radius-sm);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.tpr-item:hover {
+  background: rgba(0,153,255,0.07);
+  border-color: rgba(0,153,255,0.25);
 }
 
 .tpr-key {
   font-family: var(--font-display);
-  font-size: 0.55rem;
-  letter-spacing: 0.14em;
-  color: var(--blue-dim);
+  font-size: 0.54rem;
+  letter-spacing: 0.16em;
+  color: rgba(100,180,255,0.8);
 }
 
 .tpr-val {
-  font-size: 0.7rem;
-  color: var(--muted);
-  line-height: 1.55;
+  font-size: 0.71rem;
+  color: rgba(200,215,240,0.8);
+  line-height: 1.6;
 }

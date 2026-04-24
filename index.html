@@ -408,6 +408,7 @@
           <div class="phase-num">01</div>
           <div class="phase-title">CANONICALIZE</div>
           <div class="phase-sub">SPCMP Preprocessing + PCMP Mapping</div>
+          <div class="phase-divider"></div>
           <div class="phase-desc">
             Raw IEEE-754 float32 streams are transformed into a hardware-agnostic
             Canonical Value Domain. Non-deterministic bit patterns — NaN payloads,
@@ -426,6 +427,7 @@
           <div class="phase-num">02</div>
           <div class="phase-title">COMMIT</div>
           <div class="phase-sub">Predictive Encoding + Merkle Anchoring</div>
+          <div class="phase-divider"></div>
           <div class="phase-desc">
             The canonical sequence is compressed via predictive delta encoding
             and anchored to a Merkle tree over fixed-size chunks of the compressed
@@ -443,6 +445,7 @@
           <div class="phase-num">03</div>
           <div class="phase-title">RECONSTRUCT</div>
           <div class="phase-sub">10-Step Verified Decode</div>
+          <div class="phase-divider"></div>
           <div class="phase-desc">
             Any verifier — on any hardware — can independently reconstruct and
             validate the canonical artifact against the committed root. The 10-step
