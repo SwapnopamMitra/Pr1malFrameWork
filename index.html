@@ -399,70 +399,82 @@
     <!-- TECHNICAL DEEP DIVE -->
     <section class="section-block" id="technical">
       <div class="section-header">
-        <span class="section-tag">TECHNICAL DEPTH</span>
-        <h2>Inside the Canonical Pipeline</h2>
+        <span class="section-tag">HOW IT WORKS</span>
+        <h2>Three-Phase Canonical Pipeline</h2>
       </div>
-      <div class="tech-split">
-        <div class="tech-code-panel">
-          <div class="tcp-header">
-            <span class="tcp-title">SPCMP · Preprocessing Canonicalization</span>
-            <span class="tcp-lang">pseudocode</span>
+      <div class="three-phase-grid">
+
+        <div class="phase-card">
+          <div class="phase-num">01</div>
+          <div class="phase-title">CANONICALIZE</div>
+          <div class="phase-sub">SPCMP Preprocessing + PCMP Mapping</div>
+          <div class="phase-desc">
+            Raw IEEE-754 float32 streams are transformed into a hardware-agnostic
+            Canonical Value Domain. Non-deterministic bit patterns — NaN payloads,
+            signed zeros, FMA artifacts — are resolved to a single deterministic
+            representation. The output is identical regardless of CPU, GPU, driver,
+            or batch configuration.
           </div>
-          <pre class="code-block"><span class="c-comment">// Step 1: SPCMP Preprocessing — CVD enforcement</span>
-<span class="c-keyword">function</span> <span class="c-fn">spcmp_preprocess</span>(u: uint32) → uint32 {
-  <span class="c-comment">// NaN canonicalization (any payload → canonical qNaN)</span>
-  <span class="c-keyword">if</span> is_nan(u):
-    <span class="c-keyword">return</span> <span class="c-val">0x7FC00000</span>
-  <span class="c-comment">// Signed zero elimination</span>
-  <span class="c-keyword">if</span> u == <span class="c-val">0x80000000</span>:
-    <span class="c-keyword">return</span> <span class="c-val">0x00000000</span>
-  <span class="c-comment">// All other values preserved exactly</span>
-  <span class="c-keyword">return</span> u
-}
-
-<span class="c-comment">// Step 2: PCMP canonical ordering mapping</span>
-<span class="c-keyword">function</span> <span class="c-fn">pcmp_map</span>(u: uint32) → uint32 {
-  <span class="c-keyword">if</span> (u & <span class="c-val">0x80000000</span>):
-    <span class="c-keyword">return</span> ~u          <span class="c-comment">// negative: flip all bits</span>
-  <span class="c-keyword">else</span>:
-    <span class="c-keyword">return</span> u | <span class="c-val">0x80000000</span>  <span class="c-comment">// positive: set sign bit</span>
-}
-
-<span class="c-comment">// Step 3: Sort → predict → compress → Merkle</span>
-<span class="c-keyword">function</span> <span class="c-fn">pcmp_canonicalize</span>(stream: float32[]) → MerkleRoot {
-  canonical = stream.map(spcmp_preprocess)
-  mapped    = canonical.map(pcmp_map)
-  sorted    = mapped.sort()               <span class="c-comment">// unsigned compare</span>
-  predicted = delta_encode(sorted)
-  compressed = lz_compress(predicted)
-  <span class="c-keyword">return</span> merkle_tree(compressed, chunk=<span class="c-val">4096</span>).root
-}</pre>
+          <div class="phase-props">
+            <span class="pp">Deterministic</span>
+            <span class="pp">Idempotent</span>
+            <span class="pp">CVD-Enforced</span>
+          </div>
         </div>
-        <div class="tech-props-panel">
-          <div class="tpp-item">
-            <span class="tpp-key">ORDERING GUARANTEE</span>
-            <span class="tpp-val">Unsigned integer comparison of mapped values. Total order. No stability dependency.</span>
+
+        <div class="phase-card phase-accent">
+          <div class="phase-num">02</div>
+          <div class="phase-title">COMMIT</div>
+          <div class="phase-sub">Predictive Encoding + Merkle Anchoring</div>
+          <div class="phase-desc">
+            The canonical sequence is compressed via predictive delta encoding
+            and anchored to a Merkle tree over fixed-size chunks of the compressed
+            byte stream. The resulting root hash is the artifact identity —
+            a compact, portable, tamper-evident commitment to the full inference output.
           </div>
-          <div class="tpp-item">
-            <span class="tpp-key">CVD PROPERTY</span>
-            <span class="tpp-val">Many-to-one. Intentionally non-invertible outside domain. Loss is normative, not a bug.</span>
+          <div class="phase-props">
+            <span class="pp">Merkle-Anchored</span>
+            <span class="pp">Compact</span>
+            <span class="pp">Tamper-Evident</span>
           </div>
-          <div class="tpp-item">
-            <span class="tpp-key">HASH DOMAIN</span>
-            <span class="tpp-val">Computed over compressed predictive data. Not raw floats. Not canonical floats. Exact byte stream only.</span>
+        </div>
+
+        <div class="phase-card">
+          <div class="phase-num">03</div>
+          <div class="phase-title">RECONSTRUCT</div>
+          <div class="phase-sub">10-Step Verified Decode</div>
+          <div class="phase-desc">
+            Any verifier — on any hardware — can independently reconstruct and
+            validate the canonical artifact against the committed root. The 10-step
+            SPCMP verification protocol is fail-closed: any deviation from the
+            canonical specification causes immediate hard failure. No partial
+            verification. No silent passes.
           </div>
-          <div class="tpp-item">
-            <span class="tpp-key">FAIL SEMANTICS</span>
-            <span class="tpp-val">Fail-closed. Any step violation causes immediate hard failure. No partial verification.</span>
+          <div class="phase-props">
+            <span class="pp">Fail-Closed</span>
+            <span class="pp">Cross-Hardware</span>
+            <span class="pp">Portable</span>
           </div>
-          <div class="tpp-item">
-            <span class="tpp-key">VERSION POLICY</span>
-            <span class="tpp-val">Version 1 frozen forever. Canonicalization rules immutable. Modifications require new profile identifier.</span>
-          </div>
-          <div class="tpp-item">
-            <span class="tpp-key">ADVERSARIAL BOUND</span>
-            <span class="tpp-val">No adversary on SPCMP artifacts can recover NaN payloads, distinguish ±0, or create equivalent artifacts with different hashes.</span>
-          </div>
+        </div>
+
+      </div>
+
+      <div class="tech-properties-row">
+        <div class="tpr-item">
+          <span class="tpr-key">FAIL SEMANTICS</span>
+          <span class="tpr-val">Any step violation causes immediate hard failure. No partial verification passes.</span>
+        </div>
+        <div class="tpr-item">
+          <span class="tpr-key">VERSION POLICY</span>
+          <span class="tpr-val">Version 1 frozen forever. Modifications require a new profile identifier.</span>
+        </div>
+        <div class="tpr-item">
+          <span class="tpr-key">ADVERSARIAL BOUND</span>
+          <span class="tpr-val">No adversary operating on SPCMP artifacts can create equivalent artifacts with different hashes.</span>
+        </div>
+        <div class="tpr-item">
+          <span class="tpr-key">TECHNICAL REVIEW</span>
+          <span class="tpr-val">Full specification and implementation details available under NDA. Contact for partnership inquiry.</span>
         </div>
       </div>
     </section>
