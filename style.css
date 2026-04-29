@@ -2508,3 +2508,397 @@ body {
   color: rgba(200,215,240,0.8);
   line-height: 1.6;
 }
+/* ═══════════════════════════════════════════════════════════
+   SAMAYUKTAM INFERENCE — New Section Styles
+═══════════════════════════════════════════════════════════ */
+
+/* Protocol eyebrow — final layer highlight */
+.pe-item-final .pe-name {
+  color: var(--green);
+}
+.pe-tag-final {
+  background: rgba(0,255,110,0.12);
+  color: var(--green);
+  border: 1px solid rgba(0,255,110,0.35);
+}
+
+/* ── INFERENCE OVERVIEW ─────────────────────────────────── */
+.inference-overview-block {
+  border-top: 1px solid rgba(0,255,110,0.15);
+}
+
+.inference-overview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .inference-overview-grid { grid-template-columns: 1fr; }
+}
+
+.inf-lead {
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  line-height: 1.7;
+  margin-bottom: 1.1rem;
+  font-family: var(--font-mono);
+}
+
+.inf-body {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+  margin-bottom: 1.8rem;
+}
+
+.inf-props-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.inf-prop {
+  background: rgba(0,153,255,0.06);
+  border: 1px solid rgba(0,153,255,0.18);
+  border-radius: 4px;
+  padding: 0.65rem 0.9rem;
+  flex: 1;
+  min-width: 130px;
+}
+
+.inf-prop-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--blue);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.25rem;
+}
+
+.inf-prop-desc {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.inf-hf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  padding: 0.65rem 1.4rem;
+}
+
+/* Inference layer diagram */
+.inf-diagram-col {
+  display: flex;
+  justify-content: center;
+}
+
+.inf-layer-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+  max-width: 340px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(0,153,255,0.15);
+  border-radius: 8px;
+  padding: 1.8rem 1.5rem 1.5rem;
+}
+
+.ild-label-top, .ild-label-mid {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-align: center;
+  padding: 0.2rem 0;
+}
+
+.ild-label-mid {
+  color: rgba(0,153,255,0.5);
+  border: 1px dashed rgba(0,153,255,0.18);
+  border-radius: 3px;
+  padding: 0.2rem 0.8rem;
+  margin: 0.2rem 0;
+}
+
+.ild-arrow {
+  color: rgba(0,153,255,0.35);
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.ild-step {
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.6rem 1rem 0.45rem;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.ild-spec {
+  font-weight: 300;
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  opacity: 0.65;
+}
+
+.ild-canon {
+  background: rgba(0,153,255,0.1);
+  border: 1px solid rgba(0,153,255,0.3);
+  color: var(--blue);
+}
+
+.ild-layer {
+  background: rgba(160,170,187,0.06);
+  border: 1px solid rgba(160,170,187,0.18);
+  color: var(--text-secondary);
+}
+
+.ild-correct {
+  background: rgba(0,153,255,0.07);
+  border: 1px solid rgba(0,153,255,0.2);
+  color: rgba(0,153,255,0.8);
+}
+
+.ild-logits {
+  background: rgba(0,255,110,0.1);
+  border: 1px solid rgba(0,255,110,0.3);
+  color: var(--green);
+  margin-top: 0.2rem;
+}
+
+.ild-badge {
+  margin-top: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  color: var(--green);
+  border: 1px solid rgba(0,255,110,0.25);
+  border-radius: 3px;
+  padding: 0.2rem 0.7rem;
+}
+
+/* ── INFERENCE SIMULATOR ────────────────────────────────── */
+.inference-sim-block {
+  border-top: 1px solid rgba(0,255,110,0.1);
+}
+
+.sim-controls-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+@media (max-width: 900px) {
+  .sim-controls-row { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 540px) {
+  .sim-controls-row { grid-template-columns: 1fr; }
+}
+
+.sim-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.sim-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.sim-select {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(0,153,255,0.25);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 0.5rem 0.7rem;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.sim-select:focus { border-color: var(--blue); }
+
+.sim-presets-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.4rem;
+}
+
+.sim-presets-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+
+.sim-preset-btn {
+  background: rgba(0,153,255,0.07);
+  border: 1px solid rgba(0,153,255,0.22);
+  border-radius: 3px;
+  color: rgba(0,153,255,0.85);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.sim-preset-btn:hover {
+  background: rgba(0,153,255,0.14);
+  border-color: rgba(0,153,255,0.5);
+}
+
+.sim-preset-fail {
+  background: rgba(255,50,70,0.07);
+  border-color: rgba(255,50,70,0.25);
+  color: rgba(255,50,70,0.85);
+}
+
+.sim-preset-fail:hover {
+  background: rgba(255,50,70,0.14);
+  border-color: rgba(255,50,70,0.5);
+}
+
+.sim-run-btn {
+  margin-bottom: 2rem;
+}
+
+/* Results */
+.sim-results { margin-top: 0.5rem; }
+.sim-results.hidden { display: none; }
+
+.sim-result-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.85rem 1.2rem;
+  border-radius: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-bottom: 1.5rem;
+}
+
+.verdict-pass {
+  background: rgba(0,255,110,0.08);
+  border: 1px solid rgba(0,255,110,0.35);
+  color: var(--green);
+}
+
+.verdict-fail {
+  background: rgba(255,50,70,0.08);
+  border: 1px solid rgba(255,50,70,0.35);
+  color: var(--red);
+}
+
+#sim-verdict-icon {
+  font-size: 1.1rem;
+}
+
+.sim-result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 700px) {
+  .sim-result-grid { grid-template-columns: 1fr; }
+}
+
+.sim-result-col {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 5px;
+  padding: 1.1rem;
+}
+
+.src-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: var(--blue);
+  border-bottom: 1px solid rgba(0,153,255,0.15);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.src-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  font-size: 0.78rem;
+}
+
+.src-k { color: var(--text-muted); }
+.src-v { color: var(--text-primary); font-weight: 500; }
+.src-v.mono { font-family: var(--font-mono); font-size: 0.72rem; }
+
+.sim-sample-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 0.7rem;
+}
+
+.sim-sample-table-wrap {
+  overflow-x: auto;
+}
+
+.sim-sample-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.sim-sample-table th {
+  background: rgba(0,153,255,0.07);
+  color: var(--blue);
+  font-weight: 500;
+  padding: 0.45rem 0.6rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(0,153,255,0.2);
+  white-space: nowrap;
+}
+
+.sim-sample-table td {
+  padding: 0.35rem 0.6rem;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.sim-sample-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+.cell-ok   { color: var(--green) !important; font-weight: 600; }
+.cell-fail { color: var(--red)   !important; font-weight: 600; }
+.cell-warn { color: var(--yellow)!important; }

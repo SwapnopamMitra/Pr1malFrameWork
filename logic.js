@@ -636,3 +636,329 @@ async function runVerifyDemo() {
     pre.style.color = 'rgba(160,170,187,0.6)';
   }
 })();
+
+/* ═══════════════════════════════════════════════════════════
+   SAMAYUKTAM INFERENCE — Client-side Simulator
+   Mirrors app.py logic exactly (no server required)
+═══════════════════════════════════════════════════════════ */
+
+const SPCMP_CANONICAL_NAN   = 0x7FC00000;
+const SPCMP_CANONICAL_NZERO = 0x00000000;
+const STEP                  = 1 << 14;
+const FNV_OFFSET            = 0x811C9DC5;
+const FNV_PRIME             = 0x01000193;
+const UINT32_MASK           = 0xFFFFFFFF;
+
+function spcmpPreprocess(u) {
+  u = u >>> 0;
+  const exp = u & 0x7F800000;
+  const man = u & 0x007FFFFF;
+  if (exp === 0x7F800000 && man !== 0) return SPCMP_CANONICAL_NAN;
+  if (u === 0x80000000) return SPCMP_CANONICAL_NZERO;
+  return u;
+}
+
+function pcmpMap(u) {
+  u = u >>> 0;
+  if (u & 0x80000000) return (~u) >>> 0;
+  return (u | 0x80000000) >>> 0;
+}
+
+function pcmpInverse(m) {
+  m = m >>> 0;
+  if (m & 0x80000000) return (m & 0x7FFFFFFF) >>> 0;
+  return (~m) >>> 0;
+}
+
+const _buf32 = new ArrayBuffer(4);
+const _f32   = new Float32Array(_buf32);
+const _u32   = new Uint32Array(_buf32);
+
+function floatToBits(f) {
+  _f32[0] = f;
+  return _u32[0] >>> 0;
+}
+
+function bitsToFloat(u) {
+  _u32[0] = u >>> 0;
+  return _f32[0];
+}
+
+function canonicalizeValue(u) {
+  u = u >>> 0;
+  const pre    = spcmpPreprocess(u);
+  const mapped = pcmpMap(pre);
+  const snapped = (Math.floor(mapped / STEP) * STEP) >>> 0;
+  return spcmpPreprocess(pcmpInverse(snapped));
+}
+
+function fnv32Hash(bitsList) {
+  let h = FNV_OFFSET;
+  for (let i = 0; i < bitsList.length; i++) {
+    const u      = bitsList[i] >>> 0;
+    const mapped = pcmpMap(spcmpPreprocess(u));
+    const snapped = (Math.floor(mapped / STEP) * STEP) >>> 0;
+    h = (h ^ (snapped & 0xFF))         >>> 0; h = Math.imul(h, FNV_PRIME) >>> 0;
+    h = (h ^ ((snapped >>> 8) & 0xFF)) >>> 0; h = Math.imul(h, FNV_PRIME) >>> 0;
+    h = (h ^ ((snapped >>> 16) & 0xFF))>>> 0; h = Math.imul(h, FNV_PRIME) >>> 0;
+    h = (h ^ ((snapped >>> 24) & 0xFF))>>> 0; h = Math.imul(h, FNV_PRIME) >>> 0;
+  }
+  return h >>> 0;
+}
+
+function bucketOf(u) {
+  return Math.floor(pcmpMap(spcmpPreprocess(u >>> 0)) / STEP);
+}
+
+// Simple seeded RNG (mulberry32)
+function makeRng(seed) {
+  let s = seed >>> 0;
+  return {
+    next() { s += 0x6D2B79F5; let t = Math.imul(s^(s>>>15),1|s); t ^= t+Math.imul(t^(t>>>7),61|t); return ((t^(t>>>14))>>>0)/4294967296; },
+    gauss(mu=0, sigma=1) {
+      const u = Math.max(1e-10, this.next()), v = this.next();
+      return mu + sigma * Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v);
+    },
+    randint(lo, hi) { return lo + Math.floor(this.next() * (hi - lo + 1)); },
+    sample(n, k) {
+      const arr = Array.from({length:n},(_,i)=>i);
+      for (let i=0;i<k;i++){const j=i+Math.floor(this.next()*(n-i));[arr[i],arr[j]]=[arr[j],arr[i]];}
+      return arr.slice(0,k);
+    }
+  };
+}
+
+function generateLogits(profile, n, seed=1337) {
+  const rng = makeRng(seed);
+  const floats = [];
+
+  if (profile === 'gpt2') {
+    for (let i=0;i<n;i++) floats.push(rng.gauss(0,2.5));
+    const k = rng.randint(5,30);
+    for (let i=0;i<k;i++) floats[rng.randint(0,n-1)] += rng.gauss(6,1.5);
+  } else if (profile === 'bert') {
+    for (let i=0;i<n;i++) floats.push(rng.gauss(0,1.2));
+    const k = rng.randint(1,5);
+    for (let i=0;i<k;i++) floats[rng.randint(0,n-1)] += rng.gauss(10,0.8);
+  } else if (profile === 'llama') {
+    for (let i=0;i<n;i++) { const sign = rng.next()<0.5?-1:1; floats.push(sign*Math.exp(rng.gauss(0.5,2))); }
+  } else if (profile === 't5') {
+    for (let i=0;i<n;i++) floats.push(rng.gauss(0,0.8));
+    for (let i=0;i<n;i+=20) floats[i]=0;
+  } else if (profile === 'uniform') {
+    for (let i=0;i<n;i++) floats.push(rng.next()*10-5);
+  } else if (profile === 'sparse') {
+    for (let i=0;i<n;i++) floats.push(0);
+    const k = Math.max(10,Math.floor(n/20));
+    for (let i=0;i<k;i++) floats[rng.randint(0,n-1)] = rng.gauss(0,4);
+  } else if (profile === 'mixtral') {
+    for (let i=0;i<n;i++) floats.push(rng.next()<0.3 ? rng.gauss(8,2) : rng.gauss(-1,1.5));
+  } else {
+    for (let i=0;i<n;i++) floats.push(rng.gauss(0,1));
+  }
+
+  return floats.map(f => floatToBits(Math.max(-3.4e38, Math.min(3.4e38, f))));
+}
+
+function injectIntraBucket(bitsA, fraction=0.15) {
+  const bitsB = [...bitsA];
+  const rng = makeRng(42);
+  const n = bitsA.length;
+  const targets = rng.sample(n, Math.max(1, Math.floor(n * fraction)));
+  let count = 0;
+  for (const i of targets) {
+    const u       = bitsA[i] >>> 0;
+    const pre     = spcmpPreprocess(u);
+    const mappedA = pcmpMap(pre);
+    const offset  = mappedA % STEP;
+    const room    = STEP - 1 - offset;
+    if (room > 2) {
+      const shift   = rng.randint(1, Math.min(room, STEP >> 2));
+      const mappedB = (mappedA + shift) >>> 0;
+      bitsB[i] = pcmpInverse(mappedB & UINT32_MASK);
+      count++;
+    }
+  }
+  return [bitsB, count];
+}
+
+function injectSignedZeros(bitsA) {
+  const bitsB = [...bitsA]; let count = 0;
+  for (let i=0;i<bitsA.length;i++) { if ((bitsA[i]>>>0)===0x00000000){bitsB[i]=0x80000000;count++;} }
+  return [bitsB, count];
+}
+
+function injectNanPayloads(bitsA) {
+  const variants = [0x7F800001,0x7FC00001,0xFF800001,0xFFC00001,0x7FFFFFFF,0xFF800002,0x7FC01234,0xFFC0BEEF];
+  const bitsB = [...bitsA]; let count=0;
+  for (let i=0;i<bitsA.length;i++) {
+    const u = bitsA[i]>>>0;
+    if ((u&0x7F800000)===0x7F800000&&(u&0x007FFFFF)!==0){bitsB[i]=variants[i%variants.length];count++;}
+  }
+  return [bitsB, count];
+}
+
+function injectInterBucket(bitsA, fraction=0.10) {
+  const bitsB = [...bitsA];
+  const rng = makeRng(99);
+  const n = bitsA.length;
+  const targets = rng.sample(n, Math.max(1, Math.floor(n*fraction)));
+  let count=0;
+  for (const i of targets) {
+    const u      = bitsA[i]>>>0;
+    const pre    = spcmpPreprocess(u);
+    const mapped = pcmpMap(pre);
+    const bkt    = Math.floor(mapped/STEP);
+    const newBkt = bkt < 0xFFFFF ? bkt+1 : bkt-1;
+    bitsB[i] = pcmpInverse((newBkt*STEP) & UINT32_MASK);
+    count++;
+  }
+  return [bitsB, count];
+}
+
+function simulateInference(bitsList, numLayers) {
+  let t = bitsList.map(b => canonicalizeValue(b));
+  for (let l=0;l<numLayers;l++) {
+    t = t.map(b => canonicalizeValue(b));
+    t = t.map(b => floatToBits(bitsToFloat(b) + 0.0001));
+    t = t.map(b => canonicalizeValue(b));
+  }
+  t = t.map(b => canonicalizeValue(b));
+  t = t.map(b => canonicalizeValue(b));
+  return t;
+}
+
+const PRESETS = {
+  distributed_llm: { profile:'gpt2', divergence:'intra_bucket', num_layers:12, vocab_size:512 },
+  nan_resilience:  { profile:'bert', divergence:'nan_payload',   num_layers:12, vocab_size:256 },
+  padding_tokens:  { profile:'t5',   divergence:'signed_zero',   num_layers:12, vocab_size:256 },
+  inter_bucket_fail: { profile:'gpt2', divergence:'inter_bucket', num_layers:8, vocab_size:256 },
+  sparse_moe:      { profile:'mixtral', divergence:'intra_bucket', num_layers:12, vocab_size:512 },
+};
+
+function loadPreset(id) {
+  const p = PRESETS[id]; if (!p) return;
+  document.getElementById('sim-profile').value    = p.profile;
+  document.getElementById('sim-divergence').value = p.divergence;
+  document.getElementById('sim-layers').value     = String(p.num_layers);
+  const vocabSel = document.getElementById('sim-vocab');
+  const vocabStr = String(p.vocab_size);
+  [...vocabSel.options].forEach(o => { if(o.value===vocabStr) o.selected=true; });
+}
+
+function toHex8(u) { return '0x' + (u>>>0).toString(16).toUpperCase().padStart(8,'0'); }
+
+async function runInferenceSim() {
+  const btn = document.getElementById('btn-run-sim');
+  btn.disabled = true; btn.textContent = '⏳ Running…';
+
+  const profile    = document.getElementById('sim-profile').value;
+  const divergence = document.getElementById('sim-divergence').value;
+  const numLayers  = parseInt(document.getElementById('sim-layers').value);
+  const vocabSize  = parseInt(document.getElementById('sim-vocab').value);
+
+  // Yield to browser
+  await new Promise(r => setTimeout(r, 10));
+
+  const t0 = performance.now();
+  const bitsA = generateLogits(profile, vocabSize, 1337);
+  let bitsB, intraCount=0, interCount=0;
+
+  if (divergence === 'intra_bucket') { [bitsB, intraCount] = injectIntraBucket(bitsA, 0.15); }
+  else if (divergence === 'signed_zero') { [bitsB, intraCount] = injectSignedZeros(bitsA); }
+  else if (divergence === 'nan_payload') {
+    bitsB = [...bitsA];
+    const nanPos = [...Array(Math.min(20, vocabSize)).keys()];
+    for (const i of nanPos) { bitsA[i]=SPCMP_CANONICAL_NAN; bitsB[i]=0x7F800001; intraCount++; }
+  } else if (divergence === 'inter_bucket') { [bitsB, interCount] = injectInterBucket(bitsA, 0.10); }
+  else if (divergence === 'mixed') {
+    let ic,sc; [bitsB, ic] = injectIntraBucket(bitsA, 0.08); [bitsB, sc] = injectSignedZeros(bitsB); intraCount=ic+sc;
+  } else { bitsB = [...bitsA]; }
+
+  const hashAPreNum = fnv32Hash(bitsA);
+  const hashBPreNum = fnv32Hash(bitsB);
+  const preDiffs = bitsA.filter((b,i)=>b!==bitsB[i]).length;
+  const actualIntra = bitsA.filter((b,i)=>b!==bitsB[i]&&bucketOf(b)===bucketOf(bitsB[i])).length;
+  const actualInter = bitsA.filter((b,i)=>b!==bitsB[i]&&bucketOf(b)!==bucketOf(bitsB[i])).length;
+
+  const outA = simulateInference(bitsA, numLayers);
+  const outB = simulateInference(bitsB, numLayers);
+
+  const hashAPost = fnv32Hash(outA);
+  const hashBPost = fnv32Hash(outB);
+  const postDiffs = outA.filter((b,i)=>b!==outB[i]).length;
+  const converged = hashAPost===hashBPost && postDiffs===0;
+
+  const bktsA = bitsA.map(b=>bucketOf(b));
+  const uniqueBuckets = new Set(bktsA).size;
+  const elapsed = (performance.now()-t0).toFixed(1);
+
+  // Render
+  const results = document.getElementById('sim-results');
+  results.classList.remove('hidden');
+
+  const verdictBar  = document.getElementById('sim-verdict-bar');
+  const verdictIcon = document.getElementById('sim-verdict-icon');
+  const verdictText = document.getElementById('sim-verdict-text');
+
+  if (converged) {
+    verdictBar.className = 'sim-result-header verdict-pass';
+    verdictIcon.textContent = '✓';
+    verdictText.textContent = 'CONVERGED — Hashes identical after canonicalization';
+  } else {
+    verdictBar.className = 'sim-result-header verdict-fail';
+    verdictIcon.textContent = '✗';
+    verdictText.textContent = 'DIVERGED — Real inter-bucket difference detected';
+  }
+
+  document.getElementById('sim-pre-hash-a').textContent   = toHex8(hashAPreNum);
+  document.getElementById('sim-pre-hash-b').textContent   = toHex8(hashBPreNum);
+  document.getElementById('sim-pre-diffs').textContent    = preDiffs;
+  document.getElementById('sim-intra').textContent        = actualIntra;
+  document.getElementById('sim-inter').textContent        = actualInter;
+  document.getElementById('sim-post-hash-a').textContent  = toHex8(hashAPost);
+  document.getElementById('sim-post-hash-b').textContent  = toHex8(hashBPost);
+  document.getElementById('sim-post-diffs').textContent   = postDiffs;
+  document.getElementById('sim-buckets').textContent      = uniqueBuckets;
+  document.getElementById('sim-elapsed').textContent      = elapsed + ' ms';
+
+  // Color hashes
+  const postHashA = document.getElementById('sim-post-hash-a');
+  const postHashB = document.getElementById('sim-post-hash-b');
+  postHashA.style.color = converged ? 'var(--green)' : 'var(--red)';
+  postHashB.style.color = converged ? 'var(--green)' : 'var(--red)';
+
+  // Sample table
+  const tbody = document.getElementById('sim-sample-tbody');
+  tbody.innerHTML = '';
+  const sample = Math.min(16, vocabSize);
+  for (let i=0;i<sample;i++) {
+    const fa   = bitsToFloat(bitsA[i]).toFixed(5);
+    const fb   = bitsToFloat(bitsB[i]).toFixed(5);
+    const foA  = bitsToFloat(outA[i]).toFixed(5);
+    const foB  = bitsToFloat(outB[i]).toFixed(5);
+    const sameBkt = bucketOf(bitsA[i])===bucketOf(bitsB[i]);
+    const conv = outA[i]===outB[i];
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${i}</td>
+      <td class="mono">${fa}</td>
+      <td class="mono ${bitsA[i]!==bitsB[i]?'cell-warn':''}">${fb}</td>
+      <td class="${sameBkt?'cell-ok':'cell-fail'}">${sameBkt?'✓':'✗'}</td>
+      <td class="mono">${foA}</td>
+      <td class="mono ${conv?'cell-ok':'cell-fail'}">${foB}</td>
+      <td class="${conv?'cell-ok':'cell-fail'}">${conv?'✓':'✗'}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  btn.disabled = false; btn.innerHTML = '<span class="btn-icon">▶</span> Run Simulation';
+}
+
+// Animate the live hash in the inference diagram
+(function() {
+  const el = document.getElementById('inf-live-hash');
+  if (!el) return;
+  const hashes = ['0x8dc860c7…','0x3a91f4e2…','0xbf20ac71…','0xd9e130c4…'];
+  let i=0; setInterval(()=>{el.textContent=hashes[i++%hashes.length];},5500);
+})();

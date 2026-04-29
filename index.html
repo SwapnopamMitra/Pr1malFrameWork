@@ -23,7 +23,7 @@
       <span class="cls-pulse-dot"></span>
       <span class="cls-text">SAMAYUKTAM PROTOCOL SUITE</span>
       <span class="cls-sep">◆</span>
-      <span class="cls-text">PCMP v1.0 · SPCMP v1.0 · CAGM · FADS · CLOUD</span>
+      <span class="cls-text">PCMP v1.0 · SPCMP v1.0 · CAGM · FADS · CLOUD · INFERENCE</span>
       <span class="cls-sep">◆</span>
       <span class="cls-live">⬤ SYSTEM LIVE</span>
       <span class="cls-sep">◆</span>
@@ -92,6 +92,12 @@
         <span class="pe-tag">CLOUD</span>
         <span class="pe-name">S-CLOUD</span>
         <span class="pe-desc">Deterministic Inference Infrastructure</span>
+      </div>
+      <div class="pe-divider">→</div>
+      <div class="pe-item pe-item-final">
+        <span class="pe-tag pe-tag-final">FINAL LAYER</span>
+        <span class="pe-name">INFERENCE</span>
+        <span class="pe-desc">Samayuktam Inference — Runtime Canonicalization</span>
       </div>
     </div>
 
@@ -241,8 +247,8 @@
       </div>
       <div class="stat-divider"></div>
       <div class="stat">
-        <span class="stat-num">4</span>
-        <span class="stat-label">protocol layers<br>PCMP · SPCMP · CAGM · FADS</span>
+        <span class="stat-num">5</span>
+        <span class="stat-label">protocol layers<br>PCMP · SPCMP · CAGM · FADS · INFERENCE</span>
       </div>
       <div class="stat-divider"></div>
       <div class="stat">
@@ -913,6 +919,204 @@
       </div>
     </section>
 
+    <!-- ══════════════════════════════════════════
+         SAMAYUKTAM INFERENCE — FINAL LAYER
+    ══════════════════════════════════════════ -->
+    <section class="section-block inference-overview-block" id="inference">
+      <div class="section-header">
+        <span class="section-tag">FINAL LAYER</span>
+        <h2>Samayuktam Inference</h2>
+      </div>
+      <div class="inference-overview-grid">
+        <div class="inf-text-col">
+          <p class="inf-lead">
+            The inference runtime is the terminal enforcement boundary of the Samayuktam protocol stack.
+            It applies SPCMP canonicalization directly inside the forward pass — between every layer, at every activation boundary.
+          </p>
+          <p class="inf-body">
+            Every activation tensor is canonicalized before it enters a layer and corrected after it exits.
+            The logit stream produced at the final layer is guaranteed to hash identically across any compliant hardware,
+            regardless of FMA fusion, NaN payload, signed-zero behavior, or driver-level float rounding.
+          </p>
+          <div class="inf-props-row">
+            <div class="inf-prop">
+              <span class="inf-prop-label">CANONICALIZE</span>
+              <span class="inf-prop-desc">Pre-layer SPCMP pass on every activation</span>
+            </div>
+            <div class="inf-prop">
+              <span class="inf-prop-label">CORRECT</span>
+              <span class="inf-prop-desc">Post-layer correction pass enforces CVD</span>
+            </div>
+            <div class="inf-prop">
+              <span class="inf-prop-label">HASH</span>
+              <span class="inf-prop-desc">FNV-1a logit hash — bit-identical cross-hardware</span>
+            </div>
+          </div>
+          <a class="btn-primary inf-hf-btn" href="https://huggingface.co/spaces/Swapnopam/Samayuktam_Inference" target="_blank" rel="noopener">
+            <span class="btn-icon">↗</span> Samayuktam Inference Space
+          </a>
+        </div>
+        <div class="inf-diagram-col">
+          <div class="inf-layer-diagram">
+            <div class="ild-label-top">ACTIVATION TENSOR</div>
+            <div class="ild-arrow">↓</div>
+            <div class="ild-step ild-canon">CANONICALIZE<span class="ild-spec">SPCMP · CVD enforcement</span></div>
+            <div class="ild-arrow">↓</div>
+            <div class="ild-step ild-layer">LAYER N<span class="ild-spec">Model forward pass</span></div>
+            <div class="ild-arrow">↓</div>
+            <div class="ild-step ild-correct">CORRECTION PASS<span class="ild-spec">Bucket-snap · idempotent</span></div>
+            <div class="ild-arrow">↓</div>
+            <div class="ild-label-mid">REPEAT × NUM_LAYERS</div>
+            <div class="ild-arrow">↓</div>
+            <div class="ild-step ild-logits">LOGIT HASH<span class="ild-spec" id="inf-live-hash">0x8dc860c7…</span></div>
+            <div class="ild-badge">BIT-IDENTICAL · CROSS-HARDWARE</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         INFERENCE SIMULATOR
+    ══════════════════════════════════════════ -->
+    <section class="section-block inference-sim-block" id="inference-sim">
+      <div class="section-header">
+        <span class="section-tag">LIVE SIMULATION</span>
+        <h2>Inference Canonicalization Simulator</h2>
+      </div>
+
+      <div class="sim-controls-row">
+        <div class="sim-control-group">
+          <label class="sim-label">Model Profile</label>
+          <select id="sim-profile" class="sim-select">
+            <option value="gpt2">GPT-2 / GPT-style</option>
+            <option value="llama" selected>LLaMA-style</option>
+            <option value="bert">BERT / Encoder</option>
+            <option value="t5">T5 / Seq2Seq</option>
+            <option value="mixtral">Mixtral / Sparse MoE</option>
+            <option value="uniform">Uniform</option>
+            <option value="sparse">Sparse</option>
+          </select>
+        </div>
+        <div class="sim-control-group">
+          <label class="sim-label">Divergence Type</label>
+          <select id="sim-divergence" class="sim-select">
+            <option value="intra_bucket">Intra-bucket (FMA jitter)</option>
+            <option value="signed_zero">Signed-zero (−0 padding)</option>
+            <option value="nan_payload">NaN payload variants</option>
+            <option value="inter_bucket">Inter-bucket (real divergence)</option>
+            <option value="mixed">Mixed</option>
+            <option value="none">None (identical inputs)</option>
+          </select>
+        </div>
+        <div class="sim-control-group">
+          <label class="sim-label">Vocab Size</label>
+          <select id="sim-vocab" class="sim-select">
+            <option value="256">256</option>
+            <option value="512" selected>512</option>
+            <option value="1000">1000</option>
+            <option value="2000">2000</option>
+          </select>
+        </div>
+        <div class="sim-control-group">
+          <label class="sim-label">Layers</label>
+          <select id="sim-layers" class="sim-select">
+            <option value="4">4</option>
+            <option value="12" selected>12</option>
+            <option value="32">32</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="sim-presets-row">
+        <span class="sim-presets-label">PRESETS:</span>
+        <button class="sim-preset-btn" onclick="loadPreset('distributed_llm')">Distributed LLM</button>
+        <button class="sim-preset-btn" onclick="loadPreset('nan_resilience')">NaN Resilience</button>
+        <button class="sim-preset-btn" onclick="loadPreset('padding_tokens')">Padding Tokens</button>
+        <button class="sim-preset-btn sim-preset-fail" onclick="loadPreset('inter_bucket_fail')">Should FAIL ⚠</button>
+        <button class="sim-preset-btn" onclick="loadPreset('sparse_moe')">Sparse MoE</button>
+      </div>
+
+      <button id="btn-run-sim" class="btn-primary sim-run-btn" onclick="runInferenceSim()">
+        <span class="btn-icon">▶</span> Run Simulation
+      </button>
+
+      <div id="sim-results" class="sim-results hidden">
+
+        <div class="sim-result-header" id="sim-verdict-bar">
+          <span id="sim-verdict-icon">✓</span>
+          <span id="sim-verdict-text">CONVERGED — Hashes identical after canonicalization</span>
+        </div>
+
+        <div class="sim-result-grid">
+          <div class="sim-result-col">
+            <div class="src-label">PRE-INFERENCE</div>
+            <div class="src-row">
+              <span class="src-k">Machine A hash</span>
+              <span class="src-v mono" id="sim-pre-hash-a">—</span>
+            </div>
+            <div class="src-row">
+              <span class="src-k">Machine B hash</span>
+              <span class="src-v mono" id="sim-pre-hash-b">—</span>
+            </div>
+            <div class="src-row">
+              <span class="src-k">Diverged floats</span>
+              <span class="src-v" id="sim-pre-diffs">—</span>
+            </div>
+            <div class="src-row">
+              <span class="src-k">Intra-bucket</span>
+              <span class="src-v" id="sim-intra">—</span>
+            </div>
+            <div class="src-row">
+              <span class="src-k">Inter-bucket</span>
+              <span class="src-v" id="sim-inter">—</span>
+            </div>
+          </div>
+          <div class="sim-result-col">
+            <div class="src-label">POST-INFERENCE</div>
+            <div class="src-row">
+              <span class="src-k">Machine A hash</span>
+              <span class="src-v mono" id="sim-post-hash-a">—</span>
+            </div>
+            <div class="src-row">
+              <span class="src-k">Machine B hash</span>
+              <span class="src-v mono" id="sim-post-hash-b">—</span>
+            </div>
+            <div class="src-row">
+              <span class="src-k">Differing floats</span>
+              <span class="src-v" id="sim-post-diffs">—</span>
+            </div>
+            <div class="src-row">
+              <span class="src-k">Unique buckets</span>
+              <span class="src-v" id="sim-buckets">—</span>
+            </div>
+            <div class="src-row">
+              <span class="src-k">Elapsed</span>
+              <span class="src-v" id="sim-elapsed">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sim-sample-label">SAMPLE — first 16 tokens</div>
+        <div class="sim-sample-table-wrap">
+          <table class="sim-sample-table" id="sim-sample-table">
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>A input</th>
+                <th>B input</th>
+                <th>Same bucket?</th>
+                <th>A out</th>
+                <th>B out</th>
+                <th>Converged?</th>
+              </tr>
+            </thead>
+            <tbody id="sim-sample-tbody"></tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+
     <!-- DOCS DIRECTIVES -->
     <section class="directives-block" id="docs">
       <div class="section-header">
@@ -1000,6 +1204,14 @@
           </div>
           <span class="dir-arrow">↗</span>
         </a>
+        <a class="dir-card dir-card-hf" href="https://huggingface.co/spaces/Swapnopam/Samayuktam_Inference" target="_blank" rel="noopener">
+          <span class="dir-icon hf">⬡</span>
+          <div class="dir-text">
+            <span class="dir-title">Samayuktam Inference</span>
+            <span class="dir-sub">Runtime canonicalization · Final layer</span>
+          </div>
+          <span class="dir-arrow">↗</span>
+        </a>
         <a class="dir-card dir-card-download" href="#verifier" onclick="downloadVerifyPy()">
           <span class="dir-icon dl">⬇</span>
           <div class="dir-text">
@@ -1015,7 +1227,7 @@
     <footer class="site-footer">
       <div class="footer-left">
         <span class="footer-brand">SAMAYUKTAM</span>
-        <span class="footer-proto">PCMP · SPCMP · CAGM · FADS · Samayuktam Cloud</span>
+        <span class="footer-proto">PCMP · SPCMP · CAGM · FADS · Samayuktam Cloud · Inference</span>
         <span class="footer-copy">© Swapnopam Mitra · All rights reserved</span>
         <span class="footer-patent">Protocol IP pending · Samayuktam v1.0 · Frozen Semantics</span>
       </div>
@@ -1034,6 +1246,8 @@
             <a href="https://huggingface.co/spaces/Swapnopam/Samayuktam__Cloud" target="_blank" rel="noopener" class="fsp-link">CLOUD</a>
             <span class="fsp-sep">·</span>
             <a href="https://huggingface.co/spaces/Swapnopam/CAGM" target="_blank" rel="noopener" class="fsp-link">CAGM</a>
+            <span class="fsp-sep">·</span>
+            <a href="https://huggingface.co/spaces/Swapnopam/Samayuktam_Inference" target="_blank" rel="noopener" class="fsp-link">INFERENCE</a>
           </div>
         </div>
       </div>
