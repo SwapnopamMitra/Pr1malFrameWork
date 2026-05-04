@@ -268,6 +268,182 @@
     </div>
 
     <!-- ══════════════════════════════════════════
+         ETYMOLOGY BANNER
+    ══════════════════════════════════════════ -->
+    <div class="etymology-banner">
+      <div class="etym-glyph">ॐ</div>
+      <div class="etym-body">
+        <span class="etym-source">जटाजूटसमायुक्तां — Devi Durga Stotra</span>
+        <span class="etym-meaning"><em>Samayuktam</em> — joined, united, brought into one.</span>
+        <span class="etym-context">One canonical representation. One truth. Across every chip that runs inference.</span>
+      </div>
+      <div class="etym-glyph etym-glyph-right">⟁</div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         ABOUT — DUAL DESCRIPTION + AUDIT
+    ══════════════════════════════════════════ -->
+    <section class="section-block audit-about-section" id="about">
+
+      <!-- TOP ROW: two descriptions side by side -->
+      <div class="about-dual-grid">
+
+        <div class="about-panel about-panel-left">
+          <div class="about-panel-eyebrow">
+            <span class="section-tag">THE MISSION</span>
+          </div>
+          <h2 class="about-panel-title">What Samayuktam Is</h2>
+          <div class="about-panel-body">
+            <p>
+              Samayuktam solves a problem that has quietly undermined every verifiable AI system built to date:
+              the same neural network, run on different hardware, produces different outputs at the bit level.
+              This makes cryptographic verification of AI inference and training mathematically impossible —
+              <strong>until now.</strong>
+            </p>
+            <p>
+              Samayuktam is a deterministic verification protocol that canonicalizes floating-point representations
+              across CPUs, GPUs, and TPUs, producing a hardware-agnostic cryptographic fingerprint for any neural
+              network's inference or training run. The same model, the same input, the same hash — regardless of
+              which chip ran it.
+            </p>
+            <div class="about-result-strip">
+              <span class="ars-item"><span class="ars-num">81</span><span class="ars-label">assertions</span></span>
+              <span class="ars-sep">·</span>
+              <span class="ars-item"><span class="ars-num">0</span><span class="ars-label">failures</span></span>
+              <span class="ars-sep">·</span>
+              <span class="ars-item"><span class="ars-chip">x86</span><span class="ars-chip">NVIDIA GPU</span><span class="ars-chip">TPU v5e</span></span>
+            </div>
+            <p class="about-models-note">
+              Verified across GPT-2, BERT-base, and LLaMA-style architectures.
+            </p>
+          </div>
+        </div>
+
+        <div class="about-panel about-panel-right">
+          <div class="about-panel-eyebrow">
+            <span class="section-tag section-tag-amber">FOR THE ENGINEER</span>
+          </div>
+          <h2 class="about-panel-title">Technical Specification</h2>
+          <div class="about-panel-body about-tech-body">
+            <p>
+              Samayuktam is a deterministic inference verification protocol for neural networks running on
+              heterogeneous hardware. At its core, <strong>PCMP</strong> (Predictive Canonical Monotonic Permutation)
+              defines a bijective, order-preserving mapping of IEEE-754 float32 values into a uint32 space,
+              enabling a canonical total ordering that is bit-identical across any CPU, GPU, or TPU.
+            </p>
+            <p>
+              <strong>SPCMP</strong>, its strict profile, adds a mandatory preprocessing pass that collapses all NaN
+              payload variants to a single canonical quiet NaN and all negative zeros to positive zero, eliminating
+              the four primary sources of cross-hardware floating-point divergence: FMA sub-LSB jitter, signed-zero
+              contamination, NaN payload variants, and near-bucket-edge exponent shifts.
+            </p>
+            <p>
+              The Samayuktam Inference Engine wraps this canonicalization around every layer boundary of a running
+              neural network, producing a 32-bit FNV-1a logit fingerprint provably bit-identical regardless of
+              whether the model ran on an NVIDIA H100, a Google TPU v5e, or an x86 CPU.
+            </p>
+            <div class="tech-limits-box">
+              <div class="tlb-header">What Samayuktam does not do</div>
+              <div class="tlb-items">
+                <span>Does not preserve NaN payloads</span>
+                <span>Does not guarantee bit-identity with raw producer float output</span>
+                <span>Does not define or control the arithmetic of layer functions</span>
+                <span>Does not operate on float64 or mixed-precision tensors</span>
+                <span>Not a compression or storage format for production weights</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- AUDIT PDF + SUBSTACK ROW -->
+      <div class="audit-substack-row">
+
+        <!-- AUDIT PDF CARD -->
+        <div class="audit-pdf-card">
+          <div class="apc-header">
+            <div class="apc-icon-wrap">
+              <span class="apc-icon">⎙</span>
+            </div>
+            <div class="apc-title-block">
+              <span class="apc-eyebrow">DETERMINISM AUDIT REPORT</span>
+              <span class="apc-title">Inference Layer v1</span>
+              <span class="apc-date">Generated 2026-05-01 · TPU v5e · Python 3.12.13 · JAX 0.7.2</span>
+            </div>
+            <div class="apc-score">
+              <span class="apc-score-num">100%</span>
+              <span class="apc-score-label">SCORE</span>
+            </div>
+          </div>
+          <div class="apc-suites">
+            <div class="apc-suite"><span class="as-tag">S1</span><span class="as-name">SPCMP/PCMP Core Correctness</span><span class="as-count">16P / 0F</span><span class="as-badge pass">PASS</span></div>
+            <div class="apc-suite"><span class="as-tag">S2</span><span class="as-name">Bucket Boundary Isolation</span><span class="as-count">10P / 0F</span><span class="as-badge pass">PASS</span></div>
+            <div class="apc-suite"><span class="as-tag">S3</span><span class="as-name">GPT-2 Small — GPU vs GPU Simulation</span><span class="as-count">5P / 0F</span><span class="as-badge pass">PASS</span></div>
+            <div class="apc-suite"><span class="as-tag">S4</span><span class="as-name">BERT-base Bimodal Distribution</span><span class="as-count">3P / 0F</span><span class="as-badge pass">PASS</span></div>
+            <div class="apc-suite"><span class="as-tag">S5</span><span class="as-name">LLaMA-style Log-Normal Wide Range</span><span class="as-count">7P / 0F</span><span class="as-badge pass">PASS</span></div>
+            <div class="apc-suite"><span class="as-tag">S6</span><span class="as-name">Multi-Layer Depth Stability (12/24/48L)</span><span class="as-count">6P / 0F</span><span class="as-badge pass">PASS</span></div>
+            <div class="apc-suite"><span class="as-tag">S7</span><span class="as-name">Hash Collision Resistance</span><span class="as-count">3P / 0F</span><span class="as-badge pass">PASS</span></div>
+            <div class="apc-suite"><span class="as-tag">S8</span><span class="as-name">IEEE-754 Special Value Completeness</span><span class="as-count">25P / 0F</span><span class="as-badge pass">PASS</span></div>
+            <div class="apc-suite"><span class="as-tag">S9</span><span class="as-name">Cross-Machine Reference Artefact</span><span class="as-count">4P / 0F</span><span class="as-badge pass">PASS</span></div>
+            <div class="apc-suite"><span class="as-tag">S10</span><span class="as-name">Throughput &amp; Production Viability</span><span class="as-count">2P / 0F</span><span class="as-badge pass">PASS</span></div>
+          </div>
+          <div class="apc-footer">
+            <div class="apc-total">
+              <span class="atl-n">81</span><span class="atl-l">total</span>
+              <span class="atl-div">·</span>
+              <span class="atl-n green-txt">81</span><span class="atl-l">passed</span>
+              <span class="atl-div">·</span>
+              <span class="atl-n red-txt">0</span><span class="atl-l">failed</span>
+              <span class="atl-div">·</span>
+              <span class="atl-n">20.64s</span><span class="atl-l">runtime</span>
+            </div>
+            <a class="apc-download-btn"
+               href="https://github.com/SwapnopamMitra/Pr1malFrameWork/blob/main/samayuktam_audit_report_20260501_114147_2f24624240e7.pdf"
+               target="_blank" rel="noopener">
+              <span class="adb-icon">⬇</span>
+              <span class="adb-text">Download Full Audit PDF</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- SUBSTACK CARDS -->
+        <div class="substack-column">
+          <div class="substack-eyebrow">
+            <span class="section-tag">WRITTEN RECORD</span>
+            <span class="substack-label">From the Substack</span>
+          </div>
+          <a class="substack-card" href="https://swapnopammitra.substack.com/p/why-zkml-and-cryptographic-proof" target="_blank" rel="noopener">
+            <div class="ss-num">01</div>
+            <div class="ss-body">
+              <span class="ss-title">Why zkML and Cryptographic Proof Systems Cannot Work Without This</span>
+              <span class="ss-desc">The fundamental impossibility of verifiable AI without canonical floating-point representation — and why no zkML system has solved it.</span>
+            </div>
+            <span class="ss-arrow">↗</span>
+          </a>
+          <a class="substack-card" href="https://swapnopammitra.substack.com/p/samayuktam_inference-canonicalizing" target="_blank" rel="noopener">
+            <div class="ss-num">02</div>
+            <div class="ss-body">
+              <span class="ss-title">Samayuktam Inference: Canonicalizing the Inference Layer</span>
+              <span class="ss-desc">How the Samayuktam Inference Engine wraps every layer boundary and produces a bit-identical fingerprint regardless of hardware.</span>
+            </div>
+            <span class="ss-arrow">↗</span>
+          </a>
+          <a class="substack-card" href="https://swapnopammitra.substack.com/p/spcmp-on-google-tpu-three-hardware" target="_blank" rel="noopener">
+            <div class="ss-num">03</div>
+            <div class="ss-body">
+              <span class="ss-title">SPCMP on Google TPU: Three Hardware Proofs</span>
+              <span class="ss-desc">Running the SPCMP determinism audit across Intel x86, NVIDIA GPU, and Google TPU v5e — 81 assertions, zero failures.</span>
+            </div>
+            <span class="ss-arrow">↗</span>
+          </a>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ══════════════════════════════════════════
          PROBLEM SPACE
     ══════════════════════════════════════════ -->
     <section class="section-block" id="problem">
@@ -1257,6 +1433,12 @@
         <a class="footer-link" href="docs/pcmp_spec.md">Specs</a>
         <a class="footer-link" href="docs/threat_model.md">Security</a>
         <a class="footer-link" href="#verifier" onclick="downloadVerifyPy()">verify.py ⬇</a>
+        <div class="footer-substack-links">
+          <span class="fsl-label">SUBSTACK</span>
+          <a class="footer-link fsl-link" href="https://swapnopammitra.substack.com/p/why-zkml-and-cryptographic-proof" target="_blank" rel="noopener">zkML &amp; Proof ↗</a>
+          <a class="footer-link fsl-link" href="https://swapnopammitra.substack.com/p/samayuktam_inference-canonicalizing" target="_blank" rel="noopener">Inference Layer ↗</a>
+          <a class="footer-link fsl-link" href="https://swapnopammitra.substack.com/p/spcmp-on-google-tpu-three-hardware" target="_blank" rel="noopener">TPU Proof ↗</a>
+        </div>
       </div>
     </footer>
 
