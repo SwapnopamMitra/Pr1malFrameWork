@@ -1,0 +1,15 @@
+name: Nuke Deployment History
+on:
+  workflow_dispatch:
+
+jobs:
+  clear-history:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clear GitHub Pages History
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for id in $(gh api /repos/${{ github.repository }}/deployments --jq '.[] | .id'); do
+            gh api --method DELETE /repos/${{ github.repository }}/deployments/$id
+          done
