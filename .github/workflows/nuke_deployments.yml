@@ -2,6 +2,10 @@ name: Nuke Deployment History
 on:
   workflow_dispatch:
 
+permissions:
+  deployments: write
+  actions: write
+
 jobs:
   clear-history:
     runs-on: ubuntu-latest
