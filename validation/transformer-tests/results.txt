@@ -1,0 +1,141 @@
+PS C:\Users\Swapnopam\Desktop\Prog\Samayuktam\Samayuktam_test_with_AI_Model> python blip_nondeterminism_test.py
+Running on: cpu
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+
+=== RUN 1 ===
+SHA256: b4b6c0bdd666aafcc3420f613a0084c6e493ca0b884763c4dbc69134a11376c4
+
+=== RUN 2 ===
+SHA256: b4b6c0bdd666aafcc3420f613a0084c6e493ca0b884763c4dbc69134a11376c4
+
+=== RUN 3 ===
+SHA256: b4b6c0bdd666aafcc3420f613a0084c6e493ca0b884763c4dbc69134a11376c4
+
+=== HASH COMPARISON ===
+Run 1: b4b6c0bdd666aafcc3420f613a0084c6e493ca0b884763c4dbc69134a11376c4
+Run 2: b4b6c0bdd666aafcc3420f613a0084c6e493ca0b884763c4dbc69134a11376c4
+Run 3: b4b6c0bdd666aafcc3420f613a0084c6e493ca0b884763c4dbc69134a11376c4
+
+RESULT: Bitwise deterministic under current conditions.
+PS C:\Users\Swapnopam\Desktop\Prog\Samayuktam\Samayuktam_test_with_AI_Model> python blip_nondeterminism_test.py
+Running on: cpu
+
+=== RUN 1 ===
+SHA256: c561d3393f70e8cb633cd2dc29f3025013774f1140acc9ba0cf5a3cc6020a93a
+
+=== RUN 2 ===
+SHA256: c561d3393f70e8cb633cd2dc29f3025013774f1140acc9ba0cf5a3cc6020a93a
+
+=== RUN 3 ===
+SHA256: c561d3393f70e8cb633cd2dc29f3025013774f1140acc9ba0cf5a3cc6020a93a
+
+=== HASH COMPARISON ===
+Run 1: c561d3393f70e8cb633cd2dc29f3025013774f1140acc9ba0cf5a3cc6020a93a
+Run 2: c561d3393f70e8cb633cd2dc29f3025013774f1140acc9ba0cf5a3cc6020a93a
+Run 3: c561d3393f70e8cb633cd2dc29f3025013774f1140acc9ba0cf5a3cc6020a93a
+
+RESULT: Bitwise deterministic under current conditions.
+
+
+root@9a030ceae90a:/workspace# python blip_nondeterminism_test1.py
+Running on: cuda
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights: 100%|███████████████████████████████| 472/472 [00:00<00:00, 927.73it/s, Materializing param=vision_model.post_layernorm.weight]
+The tied weights mapping and config for this model specifies to tie text_decoder.bert.embeddings.word_embeddings.weight to text_decoder.cls.predictions.decoder.weight, but both are present in the checkpoints, so we will NOT tie them. You should update the config with `tie_word_embeddings=False` to silence this warning
+BlipForConditionalGeneration LOAD REPORT from: Salesforce/blip-image-captioning-base
+Key                                       | Status     |  |
+------------------------------------------+------------+--+-
+text_decoder.bert.embeddings.position_ids | UNEXPECTED |  |
+
+Notes:
+- UNEXPECTED    :can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+
+=== RUN 1 ===
+SHA256: a439007952a1f880e01f180072072d18fa27ad2048dfb1fe3f8c6edaa1676fc7
+
+=== RUN 2 ===
+SHA256: a439007952a1f880e01f180072072d18fa27ad2048dfb1fe3f8c6edaa1676fc7
+
+=== RUN 3 ===
+SHA256: a439007952a1f880e01f180072072d18fa27ad2048dfb1fe3f8c6edaa1676fc7
+
+=== HASH COMPARISON ===
+Run 1: a439007952a1f880e01f180072072d18fa27ad2048dfb1fe3f8c6edaa1676fc7
+Run 2: a439007952a1f880e01f180072072d18fa27ad2048dfb1fe3f8c6edaa1676fc7
+Run 3: a439007952a1f880e01f180072072d18fa27ad2048dfb1fe3f8c6edaa1676fc7
+
+RESULT: Bitwise deterministic under current conditions.
+root@9a030ceae90a:/workspace#
+
+
+root@9a030ceae90a:/workspace# python blip_nondeterminism_test2.py
+Running on: cuda
+Deterministic mode: True
+Batch size: 32
+FP16 enabled: False
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights: 100%|███████████████████████████| 472/472 [-1:59:57<00:00, -120.89it/s, Materializing param=vision_model.post_layernorm.weight]
+The tied weights mapping and config for this model specifies to tie text_decoder.bert.embeddings.word_embeddings.weight to text_decoder.cls.predictions.decoder.weight, but both are present in the checkpoints, so we will NOT tie them. You should update the config with `tie_word_embeddings=False` to silence this warning
+BlipForConditionalGeneration LOAD REPORT from: Salesforce/blip-image-captioning-base
+Key                                       | Status     |  |
+------------------------------------------+------------+--+-
+text_decoder.bert.embeddings.position_ids | UNEXPECTED |  |
+
+Notes:
+- UNEXPECTED    :can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+
+=== RUN 1 ===
+SHA256: b2306e1fa5193e74be4070fe1ede04310eafd1a7a54302521b8b157fa96529c1
+
+=== RUN 2 ===
+SHA256: b2306e1fa5193e74be4070fe1ede04310eafd1a7a54302521b8b157fa96529c1
+
+=== RUN 3 ===
+SHA256: b2306e1fa5193e74be4070fe1ede04310eafd1a7a54302521b8b157fa96529c1
+
+=== RUN 4 ===
+SHA256: b2306e1fa5193e74be4070fe1ede04310eafd1a7a54302521b8b157fa96529c1
+
+=== RUN 5 ===
+SHA256: b2306e1fa5193e74be4070fe1ede04310eafd1a7a54302521b8b157fa96529c1
+
+=== HASH COMPARISON ===
+Run 1: b2306e1fa5193e74be4070fe1ede04310eafd1a7a54302521b8b157fa96529c1
+Run 2: b2306e1fa5193e74be4070fe1ede04310eafd1a7a54302521b8b157fa96529c1
+Run 3: b2306e1fa5193e74be4070fe1ede04310eafd1a7a54302521b8b157fa96529c1
+Run 4: b2306e1fa5193e74be4070fe1ede04310eafd1a7a54302521b8b157fa96529c1
+Run 5: b2306e1fa5193e74be4070fe1ede04310eafd1a7a54302521b8b157fa96529c1
+
+RESULT: Bitwise deterministic under current conditions.
+root@9a030ceae90a:/workspace#
+
+
+
+PS C:\Users\Swapnopam\Desktop\Prog\Samayuktam\Samayuktam_test_with_AI_Model> Get-FileHash output_run_0.sorted.pcmp -Algorithm SHA256
+
+Algorithm       Hash                                                                   Path
+---------       ----                                                                   ----
+SHA256          80992D628A750766EBBB3BD20CB3B55437154597DD53132C687D7DE8A515FF6E       C:\Users\Swapnopam\Desktop\Pr...
+
+
+PS C:\Users\Swapnopam\Desktop\Prog\Samayuktam\Samayuktam_test_with_AI_Model> Get-FileHash output_run_2.sorted.pcmp -Algorithm SHA256
+
+Algorithm       Hash                                                                   Path
+---------       ----                                                                   ----
+SHA256          80992D628A750766EBBB3BD20CB3B55437154597DD53132C687D7DE8A515FF6E       C:\Users\Swapnopam\Desktop\Pr...
+
+PS C:\Users\Swapnopam\Desktop\Prog\Samayuktam\Samayuktam_test_with_AI_Model> Get-FileHash gpu_output_run_1.sorted.pcmp -Algorithm SHA256
+
+Algorithm       Hash                                                                   Path
+---------       ----                                                                   ----
+SHA256          091E49EBFF6D23915AC300F1607ED57C7C3E9289DA977F21B57DABC8A73D714F       C:\Users\Swapnopam\Desktop\Pr...
+
+
+PS C:\Users\Swapnopam\Desktop\Prog\Samayuktam\Samayuktam_test_with_AI_Model> Get-FileHash output_run_0.sorted.pcmp -Algorithm SHA256
+
+Algorithm       Hash                                                                   Path
+---------       ----                                                                   ----
+SHA256          80992D628A750766EBBB3BD20CB3B55437154597DD53132C687D7DE8A515FF6E       C:\Users\Swapnopam\Desktop\Pr...
+
+
+PS C:\Users\Swapnopam\Desktop\Prog\Samayuktam\Samayuktam_test_with_AI_Model>

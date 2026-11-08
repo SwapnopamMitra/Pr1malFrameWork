@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SAMAYUKTAM · PCMP v1 · Deterministic Inference Protocol</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,200;0,300;0,400;0,500;0,700;0,800;1,300&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- SCAN LINE OVERLAY -->
+  <div class="scanlines"></div>
+  <!-- BACKGROUND CANVAS -->
+  <canvas id="bg-canvas"></canvas>
+  <!-- NOISE TEXTURE -->
+  <div class="noise-overlay"></div>
+
+  <!-- TOP CLASSIFICATION BAR -->
+  <div class="classification-bar">
+    <div class="cls-inner">
+      <span class="cls-pulse-dot"></span>
+      <span class="cls-text">SAMAYUKTAM PROTOCOL SUITE</span>
+      <span class="cls-sep">◆</span>
+      <span class="cls-text">PCMP v1.0 · SPCMP v1.0 · CAGM · FADS · CLOUD · INFERENCE</span>
+      <span class="cls-sep">◆</span>
+      <span class="cls-live">⬤ SYSTEM LIVE</span>
+      <span class="cls-sep">◆</span>
+      <span class="cls-text">DETERMINISTIC INFERENCE LAYER</span>
+      <span class="cls-sep">◆</span>
+      <span class="cls-text">MERKLE-ANCHORED · BIT-IDENTICAL · ZERO-OVERHEAD · CROSS-HARDWARE</span>
+      <span class="cls-sep">◆</span>
+      <span class="cls-ticker" id="live-ticker">ROOT: 0x8dc860c7…</span>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════════════════════╗
+       ║           PATENT / IP NOTICE BANNER                     ║
+       ╚══════════════════════════════════════════════════════════╝ -->
+  <div class="ip-alert-banner" id="ip-alert-banner">
+    <div class="ip-alert-inner">
+      <div class="ip-alert-left">
+        <span class="ip-alert-icon">⚖</span>
+        <div class="ip-alert-text-block">
+          <span class="ip-alert-headline">PATENT PENDING — PROVISIONAL FILED · PCT WINDOW: DECEMBER 2026</span>
+          <span class="ip-alert-sub">Samayuktam / SPCMP · All protocols, methods &amp; implementations are protected intellectual property of Swapnopam Mitra. Unauthorized commercial use is prohibited.</span>
+        </div>
+      </div>
+      <div class="ip-alert-right">
+        <a class="ip-alert-cta" href="mailto:swapnopammitra1308@gmail.com">
+          <span class="ip-cta-label">LICENSING &amp; PARTNERSHIPS</span>
+          <span class="ip-cta-email">swapnopammitra1308@gmail.com</span>
+          <span class="ip-cta-arrow">→</span>
+        </a>
+      </div>
+    </div>
+    <div class="ip-alert-ticker-strip">
+      <div class="ip-ticker-track">
+        <span class="ip-ticker-item">⚖ PATENT PENDING</span>
+        <span class="ip-ticker-sep">◆</span>
+        <span class="ip-ticker-item">PROVISIONAL FILED 2026</span>
+        <span class="ip-ticker-sep">◆</span>
+        <span class="ip-ticker-item">PCT WINDOW: DEC 2026</span>
+        <span class="ip-ticker-sep">◆</span>
+        <span class="ip-ticker-item">SOLE INVENTOR: SWAPNOPAM MITRA</span>
+        <span class="ip-ticker-sep">◆</span>
+        <span class="ip-ticker-item">LICENSING INQUIRIES ONLY — NO UNSOLICITED ACCESS</span>
+        <span class="ip-ticker-sep">◆</span>
+        <span class="ip-ticker-item">swapnopammitra1308@gmail.com</span>
+        <span class="ip-ticker-sep">◆</span>
+        <span class="ip-ticker-item">⚖ PATENT PENDING</span>
+        <span class="ip-ticker-sep">◆</span>
+        <span class="ip-ticker-item">PROVISIONAL FILED 2026</span>
+        <span class="ip-ticker-sep">◆</span>
+        <span class="ip-ticker-item">PCT WINDOW: DEC 2026</span>
+        <span class="ip-ticker-sep">◆</span>
+        <span class="ip-ticker-item">SOLE INVENTOR: SWAPNOPAM MITRA</span>
+        <span class="ip-ticker-sep">◆</span>
+        <span class="ip-ticker-item">LICENSING INQUIRIES ONLY — NO UNSOLICITED ACCESS</span>
+        <span class="ip-ticker-sep">◆</span>
+        <span class="ip-ticker-item">swapnopammitra1308@gmail.com</span>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+
+    <!-- ══════════════════════════════════════════
+         SAMAYUKTAM MASTHEAD
+    ══════════════════════════════════════════ -->
+    <section class="samayuktam-masthead">
+      <div class="masthead-scan-line"></div>
+      <pre class="smy-ascii" aria-label="SAMAYUKTAM">
+███████╗ █████╗ ███╗   ███╗ █████╗ ██╗   ██╗██╗   ██╗██╗  ██╗████████╗ █████╗ ███╗   ███╗
+██╔════╝██╔══██╗████╗ ████║██╔══██╗╚██╗ ██╔╝██║   ██║██║ ██╔╝╚══██╔══╝██╔══██╗████╗ ████║
+███████╗███████║██╔████╔██║███████║ ╚████╔╝ ██║   ██║█████╔╝    ██║   ███████║██╔████╔██║
+╚════██║██╔══██║██║╚██╔╝██║██╔══██║  ╚██╔╝  ██║   ██║██╔═██╗    ██║   ██╔══██║██║╚██╔╝██║
+███████║██║  ██║██║ ╚═╝ ██║██║  ██║   ██║   ╚██████╔╝██║  ██╗   ██║   ██║  ██║██║ ╚═╝ ██║
+╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝     ╚═╝</pre>
+      <div class="smy-meta-row">
+        <span class="smy-tagline">Protocol Suite for Verifiable Inference</span>
+        <span class="smy-pipe">|</span>
+        <span class="smy-badge-green">v1.0 FROZEN</span>
+        <span class="smy-pipe">|</span>
+        <a class="smy-hf-chip" href="https://huggingface.co/spaces/Swapnopam/Samayuktam" target="_blank" rel="noopener">
+          <span class="chip-dot"></span>4 LIVE SPACES ↗
+        </a>
+        <span class="smy-pipe">|</span>
+        <span class="smy-badge-red">UNSOLVED GLOBALLY</span>
+      </div>
+    </section>
+
+    <!-- PROTOCOL FAMILY EYEBROW -->
+    <div class="protocol-eyebrow">
+      <div class="pe-item active">
+        <span class="pe-tag">CORE</span>
+        <span class="pe-name">PCMP</span>
+        <span class="pe-desc">Predictive Canonical Monotonic Permutation</span>
+      </div>
+      <div class="pe-divider">→</div>
+      <div class="pe-item">
+        <span class="pe-tag">PROFILE</span>
+        <span class="pe-name">SPCMP</span>
+        <span class="pe-desc">Samayuktam Profile — IEEE-754 CVD</span>
+      </div>
+      <div class="pe-divider">→</div>
+      <div class="pe-item">
+        <span class="pe-tag">LAYER</span>
+        <span class="pe-name">CAGM</span>
+        <span class="pe-desc">Cross-Architecture Graph Map</span>
+      </div>
+      <div class="pe-divider">→</div>
+      <div class="pe-item">
+        <span class="pe-tag">SEARCH</span>
+        <span class="pe-name">FADS</span>
+        <span class="pe-desc">Formal AI Deterministic Search</span>
+      </div>
+      <div class="pe-divider">→</div>
+      <div class="pe-item">
+        <span class="pe-tag">CLOUD</span>
+        <span class="pe-name">S-CLOUD</span>
+        <span class="pe-desc">Deterministic Inference Infrastructure</span>
+      </div>
+      <div class="pe-divider">→</div>
+      <div class="pe-item pe-item-final">
+        <span class="pe-tag pe-tag-final">FINAL LAYER</span>
+        <span class="pe-name">INFERENCE</span>
+        <span class="pe-desc">Samayuktam Inference — Runtime Canonicalization</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         HERO — COMMAND SPLIT
+    ══════════════════════════════════════════ -->
+    <section class="hero">
+
+      <div class="hero-left">
+        <div class="hero-title-block">
+          <div class="glitch-wrapper">
+            <h1 class="main-title" data-text="PCMP">PCMP</h1>
+          </div>
+          <div class="title-meta">
+            <span class="title-expand">Predictive Canonical<br>Monotonic Permutation</span>
+            <span class="version-badge">Samayuktam v1.0</span>
+          </div>
+        </div>
+
+        <p class="hero-thesis">
+          Floating-point inference is non-deterministic across hardware. <strong>PCMP terminates that.</strong>
+          Every logit stream canonicalized, committed, and reconstructible —
+          byte-identical across CPU, GPU, and batch. No approximations. No overrides. No excuses.
+        </p>
+
+        <!-- COMMAND TERMINAL -->
+        <div class="terminal" id="main-terminal">
+          <div class="terminal-titlebar">
+            <div class="tb-dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <span class="tb-title">samayuktam@verifier:~$ pcmp-audit</span>
+            <span class="tb-status" id="tb-status">STANDBY</span>
+          </div>
+          <div class="terminal-body">
+            <div id="terminal-output"></div>
+            <div class="terminal-cursor-line">
+              <span class="prompt">$</span>
+              <span class="cursor-blink">█</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTION ROW -->
+        <div class="cta-row">
+          <button id="simulate" class="btn-primary">
+            <span class="btn-icon">▶</span> Run Audit Simulation
+          </button>
+          <button id="btn-spcmp" class="btn-secondary-action">
+            ⚡ SPCMP Verify
+          </button>
+          <a class="btn-outline" href="https://github.com/SwapnopamMitra/Pr1malFrameWork" target="_blank" rel="noopener">
+            ⎇ GitHub
+          </a>
+          <a class="btn-outline" href="https://huggingface.co/spaces/Swapnopam/Samayuktam" target="_blank" rel="noopener">
+            ↗ Live Demo
+          </a>
+        </div>
+
+        <!-- PIPELINE -->
+        <div class="pipeline">
+          <div class="pipeline-step">
+            <span class="ps-num">01</span>
+            <span class="ps-label">Float Stream</span>
+            <span class="ps-sub">Raw IEEE-754</span>
+          </div>
+          <span class="pipeline-arrow">⟶</span>
+          <div class="pipeline-step accent-blue">
+            <span class="ps-num">02</span>
+            <span class="ps-label">SPCMP Preprocess</span>
+            <span class="ps-sub">CVD canonicalize</span>
+          </div>
+          <span class="pipeline-arrow">⟶</span>
+          <div class="pipeline-step accent-blue">
+            <span class="ps-num">03</span>
+            <span class="ps-label">PCMP Canonical</span>
+            <span class="ps-sub">Sort · predict · compress</span>
+          </div>
+          <span class="pipeline-arrow">⟶</span>
+          <div class="pipeline-step accent-green">
+            <span class="ps-num">04</span>
+            <span class="ps-label">Merkle Root</span>
+            <span class="ps-sub">0x8dc860c7…</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT PANEL: STATUS + LEDGER -->
+      <div class="hero-right">
+
+        <!-- LIVE STATUS PANEL -->
+        <div class="status-panel">
+          <div class="sp-header">
+            <span class="sp-title">NETWORK STATUS</span>
+            <span class="sp-live">⬤ ONLINE</span>
+          </div>
+          <div class="sp-metrics">
+            <div class="sp-metric">
+              <span class="spm-val" id="counter-logits">0</span>
+              <span class="spm-label">logits/sec</span>
+            </div>
+            <div class="sp-metric">
+              <span class="spm-val" id="counter-hashes">0</span>
+              <span class="spm-label">hashes committed</span>
+            </div>
+            <div class="sp-metric">
+              <span class="spm-val">100%</span>
+              <span class="spm-label">match rate</span>
+            </div>
+          </div>
+          <div class="sp-root">
+            <span class="sp-root-label">CANONICAL MERKLE ROOT</span>
+            <span class="sp-root-hash" id="live-hash">0x8dc860c7a3f21e90</span>
+          </div>
+        </div>
+
+        <!-- VERIFICATION LEDGER -->
+        <aside class="ledger-panel">
+          <div class="ledger-header">
+            <h2>VERIFICATION LEDGER</h2>
+            <span class="ledger-sub">Immutable canonical record</span>
+          </div>
+          <ul id="ledger-list"></ul>
+          <div class="ledger-empty">
+            <span class="empty-glyph">∅</span>
+            <span>No inconsistencies recorded.</span>
+            <span class="ledger-ok">ALL SYSTEMS NOMINAL</span>
+          </div>
+          <div class="ledger-footer">
+            <span class="lf-chain">SAMAYUKTAM/PCMP/MAIN</span>
+            <span class="lf-block" id="block-counter">BLOCK #00001</span>
+          </div>
+        </aside>
+
+      </div>
+
+    </section>
+
+    <!-- STAT STRIP -->
+    <div class="stat-strip">
+      <div class="stat">
+        <span class="stat-num">10.7M</span>
+        <span class="stat-label">float32 logits<br>per inference</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">5</span>
+        <span class="stat-label">protocol layers<br>PCMP · SPCMP · CAGM · FADS · INFERENCE</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">100%</span>
+        <span class="stat-label">bit-identical<br>reconstruction</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">0</span>
+        <span class="stat-label">hardware-locked<br>artifacts</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">∞</span>
+        <span class="stat-label">verifier<br>portability</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         ETYMOLOGY BANNER
+    ══════════════════════════════════════════ -->
+    <div class="etymology-banner">
+      <div class="etym-glyph">ॐ</div>
+      <div class="etym-body">
+        <span class="etym-source">जटाजूटसमायुक्तां — Devi Durga Stotra</span>
+        <span class="etym-meaning"><em>Samayuktam</em> — joined, united, brought into one.</span>
+        <span class="etym-context">One canonical representation. One truth. Across every chip that runs inference.</span>
+      </div>
+      <div class="etym-glyph etym-glyph-right">⟁</div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         ABOUT — DUAL DESCRIPTION + AUDIT
+    ══════════════════════════════════════════ -->
+    <section class="section-block audit-about-section" id="about">
+
+      <!-- TOP ROW: two descriptions side by side -->
+      <div class="about-dual-grid">
+
+        <div class="about-panel about-panel-left">
+          <div class="about-panel-eyebrow">
+            <span class="section-tag">THE MISSION</span>
+          </div>
+          <h2 class="about-panel-title">What Samayuktam Is</h2>
+          <div class="about-panel-body">
+            <p>
+              Samayuktam solves a problem that has quietly undermined every verifiable AI system built to date:
+              the same neural network, run on different hardware, produces different outputs at the bit level.
+              This makes cryptographic verification of AI inference and training mathematically impossible —
+              <strong>until now.</strong>
+            </p>
+            <p>
+              Samayuktam is a deterministic verification protocol that canonicalizes floating-point representations
+              across CPUs, GPUs, and TPUs, producing a hardware-agnostic cryptographic fingerprint for any neural
+              network's inference or training run. The same model, the same input, the same hash — regardless of
+              which chip ran it.
+            </p>
+            <div class="about-result-strip">
+              <span class="ars-item"><span class="ars-num">81</span><span class="ars-label">assertions</span></span>
+              <span class="ars-sep">·</span>
+              <span class="ars-item"><span class="ars-num">0</span><span class="ars-label">failures</span></span>
+              <span class="ars-sep">·</span>
+              <span class="ars-item"><span class="ars-chip">x86</span><span class="ars-chip">NVIDIA GPU</span><span class="ars-chip">TPU v5e</span></span>
+            </div>
+            <p class="about-models-note">
+              Verified across GPT-2, BERT-base, and LLaMA-style architectures.
+            </p>
+          </div>
+        </div>
+
+        <div class="about-panel about-panel-right">
+          <div class="about-panel-eyebrow">
+            <span class="section-tag section-tag-amber">FOR THE ENGINEER</span>
+          </div>
+          <h2 class="about-panel-title">Technical Specification</h2>
+          <div class="about-panel-body about-tech-body">
+            <p>
+              Samayuktam is a deterministic inference verification protocol for neural networks running on
+              heterogeneous hardware. At its core, <strong>PCMP</strong> (Predictive Canonical Monotonic Permutation)
+              defines a bijective, order-preserving mapping of IEEE-754 float32 values into a uint32 space,
+              enabling a canonical total ordering that is bit-identical across any CPU, GPU, or TPU.
+            </p>
+            <p>
+              <strong>SPCMP</strong>, its strict profile, adds a mandatory preprocessing pass that collapses all NaN
+              payload variants to a single canonical quiet NaN and all negative zeros to positive zero, eliminating
+              the four primary sources of cross-hardware floating-point divergence: FMA sub-LSB jitter, signed-zero
+              contamination, NaN payload variants, and near-bucket-edge exponent shifts.
+            </p>
+            <p>
+              The Samayuktam Inference Engine wraps this canonicalization around every layer boundary of a running
+              neural network, producing a 32-bit FNV-1a logit fingerprint provably bit-identical regardless of
+              whether the model ran on an NVIDIA H100, a Google TPU v5e, or an x86 CPU.
+            </p>
+            <div class="tech-limits-box">
+              <div class="tlb-header">What Samayuktam does not do</div>
+              <div class="tlb-items">
+                <span>Does not preserve NaN payloads</span>
+                <span>Does not guarantee bit-identity with raw producer float output</span>
+                <span>Does not define or control the arithmetic of layer functions</span>
+                <span>Does not operate on float64 or mixed-precision tensors</span>
+                <span>Not a compression or storage format for production weights</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- AUDIT PDF + SUBSTACK ROW -->
+      <div class="audit-substack-row">
+
+        <!-- AUDIT PDF CARD -->
+        <div class="audit-pdf-card">
+          <div class="apc-header">
+            <div class="apc-icon-wrap">
+              <span class="apc-icon">⎙</span>
+            </div>
+            <div class="apc-title-block">
+              <span class="apc-eyebrow">DETERMINISM AUDIT REPORT</span>
+              <span class="apc-title">Inference Layer v1</span>
+              <span class="apc-date">Generated 2026-05-01 · TPU v5e · Python 3.12.13 · JAX 0.7.2</span>
+            </div>
+            <div class="apc-score">
+              <span class="apc-score-num">100%</span>
+              <span class="apc-score-label">SCORE</span>
+            </div>
+          </div>
+          <div class="apc-suites">
+            <div class="apc-suite"><span class="as-tag">S1</span><span class="as-name">SPCMP/PCMP Core Correctness</span><span class="as-count">16P / 0F</span><span class="as-badge pass">PASS</span></div>
+            <div class="apc-suite"><span class="as-tag">S2</span><span class="as-name">Bucket Boundary Isolation</span><span class="as-count">10P / 0F</span><span class="as-badge pass">PASS</span></div>
+            <div class="apc-suite"><span class="as-tag">S3</span><span class="as-name">GPT-2 Small — GPU vs GPU Simulation</span><span class="as-count">5P / 0F</span><span class="as-badge pass">PASS</span></div>
+            <div class="apc-suite"><span class="as-tag">S4</span><span class="as-name">BERT-base Bimodal Distribution</span><span class="as-count">3P / 0F</span><span class="as-badge pass">PASS</span></div>
+            <div class="apc-suite"><span class="as-tag">S5</span><span class="as-name">LLaMA-style Log-Normal Wide Range</span><span class="as-count">7P / 0F</span><span class="as-badge pass">PASS</span></div>
+            <div class="apc-suite"><span class="as-tag">S6</span><span class="as-name">Multi-Layer Depth Stability (12/24/48L)</span><span class="as-count">6P / 0F</span><span class="as-badge pass">PASS</span></div>
+            <div class="apc-suite"><span class="as-tag">S7</span><span class="as-name">Hash Collision Resistance</span><span class="as-count">3P / 0F</span><span class="as-badge pass">PASS</span></div>
+            <div class="apc-suite"><span class="as-tag">S8</span><span class="as-name">IEEE-754 Special Value Completeness</span><span class="as-count">25P / 0F</span><span class="as-badge pass">PASS</span></div>
+            <div class="apc-suite"><span class="as-tag">S9</span><span class="as-name">Cross-Machine Reference Artefact</span><span class="as-count">4P / 0F</span><span class="as-badge pass">PASS</span></div>
+            <div class="apc-suite"><span class="as-tag">S10</span><span class="as-name">Throughput &amp; Production Viability</span><span class="as-count">2P / 0F</span><span class="as-badge pass">PASS</span></div>
+          </div>
+          <div class="apc-footer">
+            <div class="apc-total">
+              <span class="atl-n">81</span><span class="atl-l">total</span>
+              <span class="atl-div">·</span>
+              <span class="atl-n green-txt">81</span><span class="atl-l">passed</span>
+              <span class="atl-div">·</span>
+              <span class="atl-n red-txt">0</span><span class="atl-l">failed</span>
+              <span class="atl-div">·</span>
+              <span class="atl-n">20.64s</span><span class="atl-l">runtime</span>
+            </div>
+            <a class="apc-download-btn"
+               href="https://github.com/SwapnopamMitra/Pr1malFrameWork/blob/main/samayuktam_audit_report_20260501_114147_2f24624240e7.pdf"
+               target="_blank" rel="noopener">
+              <span class="adb-icon">⬇</span>
+              <span class="adb-text">Download Full Audit PDF</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- SUBSTACK CARDS -->
+        <div class="substack-column">
+          <div class="substack-eyebrow">
+            <span class="section-tag">WRITTEN RECORD</span>
+            <span class="substack-label">From the Substack</span>
+          </div>
+          <a class="substack-card" href="https://swapnopammitra.substack.com/p/why-zkml-and-cryptographic-proof" target="_blank" rel="noopener">
+            <div class="ss-num">01</div>
+            <div class="ss-body">
+              <span class="ss-title">Why zkML and Cryptographic Proof Systems Cannot Work Without This</span>
+              <span class="ss-desc">The fundamental impossibility of verifiable AI without canonical floating-point representation — and why no zkML system has solved it.</span>
+            </div>
+            <span class="ss-arrow">↗</span>
+          </a>
+          <a class="substack-card" href="https://swapnopammitra.substack.com/p/samayuktam_inference-canonicalizing" target="_blank" rel="noopener">
+            <div class="ss-num">02</div>
+            <div class="ss-body">
+              <span class="ss-title">Samayuktam Inference: Canonicalizing the Inference Layer</span>
+              <span class="ss-desc">How the Samayuktam Inference Engine wraps every layer boundary and produces a bit-identical fingerprint regardless of hardware.</span>
+            </div>
+            <span class="ss-arrow">↗</span>
+          </a>
+          <a class="substack-card" href="https://swapnopammitra.substack.com/p/spcmp-on-google-tpu-three-hardware" target="_blank" rel="noopener">
+            <div class="ss-num">03</div>
+            <div class="ss-body">
+              <span class="ss-title">SPCMP on Google TPU: Three Hardware Proofs</span>
+              <span class="ss-desc">Running the SPCMP determinism audit across Intel x86, NVIDIA GPU, and Google TPU v5e — 81 assertions, zero failures.</span>
+            </div>
+            <span class="ss-arrow">↗</span>
+          </a>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         PROBLEM SPACE
+    ══════════════════════════════════════════ -->
+    <section class="section-block" id="problem">
+      <div class="section-header">
+        <span class="section-tag">THE UNSOLVED PROBLEM</span>
+        <h2>Floating-Point Inference Is Fundamentally Non-Deterministic</h2>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-text">
+          <p class="problem-lead">
+            Every major AI lab ships models that produce different numerical outputs on different hardware.
+            Not approximately different. <strong>Actually different.</strong> CPU vs GPU. Driver A vs Driver B.
+            Batch of 1 vs batch of 32. The same model, the same weights, different bits.
+          </p>
+          <p class="problem-body">
+            This is not a bug. IEEE-754 floating-point arithmetic is non-associative.
+            Operation reordering, FMA fusion, subnormal flushing, signed-zero behavior, NaN propagation —
+            all of these produce legitimate but divergent results. No existing standard resolves this
+            for inference-scale logit streams.
+          </p>
+          <div class="problem-callout">
+            <span class="pc-label">CONSEQUENCE</span>
+            <span class="pc-text">
+              Model audit, reproducibility, on-chain commitment, and cross-hardware verification
+              are impossible without a canonical layer. PCMP is that layer.
+            </span>
+          </div>
+        </div>
+        <div class="problem-viz">
+          <div class="divergence-display" id="divergence-display">
+            <div class="dd-header">
+              <span class="dd-label">LIVE DIVERGENCE SIMULATION</span>
+              <span class="dd-status" id="dd-status">DETECTING…</span>
+            </div>
+            <div class="dd-rows">
+              <div class="dd-row">
+                <span class="dd-hw">M4 MAX</span>
+                <span class="dd-hash" id="hash-m4">0x3f800000</span>
+                <span class="dd-mark diverge" id="mark-m4">≠</span>
+              </div>
+              <div class="dd-row canonical">
+                <span class="dd-hw">H100 SXM5</span>
+                <span class="dd-hash" id="hash-h100">0x3f800001</span>
+                <span class="dd-mark diverge" id="mark-h100">≠</span>
+              </div>
+              <div class="dd-row">
+                <span class="dd-hw">PCMP CANONICAL</span>
+                <span class="dd-hash" id="hash-pcmp">0x8dc860c7…</span>
+                <span class="dd-mark match" id="mark-pcmp">✓</span>
+              </div>
+            </div>
+            <div class="dd-footer">
+              <span id="dd-footer-text">Applying canonicalization…</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROTOCOL CARDS — FOUR PILLARS -->
+    <section class="section-block" id="protocols">
+      <div class="section-header">
+        <span class="section-tag">PROTOCOL ARCHITECTURE</span>
+        <h2>Four-Layer Verification Stack</h2>
+      </div>
+      <div class="protocol-cards">
+
+        <div class="proto-card core">
+          <div class="pc-eyebrow">CORE PROTOCOL</div>
+          <div class="pc-name">PCMP</div>
+          <div class="pc-full">Predictive Canonical Monotonic Permutation</div>
+          <div class="pc-desc">
+            Defines canonical ordering, permutation, prediction transform, compression, and Merkle hashing
+            for arbitrary float32 sequences. The invariant foundation. Platform-agnostic. Frozen.
+          </div>
+          <div class="pc-props">
+            <span class="pcp">Deterministic</span>
+            <span class="pcp">Invertible</span>
+            <span class="pcp">Merkle-Anchored</span>
+          </div>
+          <div class="pc-spec-ref">Spec v1.0 · FROZEN SEMANTICS</div>
+        </div>
+
+        <div class="proto-card profile">
+          <div class="pc-eyebrow">STRICT PROFILE</div>
+          <div class="pc-name">SPCMP</div>
+          <div class="pc-full">Samayuktam Profile for PCMP v1</div>
+          <div class="pc-desc">
+            Mandatory preprocessing phase transforming raw IEEE-754 inputs into the Canonical Value Domain
+            (CVD) before PCMP processing. NaN canonicalization. Signed-zero elimination. Idempotent. Fail-closed.
+          </div>
+          <div class="pc-props">
+            <span class="pcp">CVD-Enforced</span>
+            <span class="pcp">Idempotent</span>
+            <span class="pcp">Fail-Closed</span>
+          </div>
+          <div class="pc-spec-ref">SPCMP Profile ID: 0x01</div>
+        </div>
+
+        <div class="proto-card layer">
+          <div class="pc-eyebrow">GRAPH LAYER</div>
+          <div class="pc-name">CAGM</div>
+          <div class="pc-full">Cross-Architecture Graph Map</div>
+          <div class="pc-desc">
+            Extends PCMP canonicalization to computational graph structures. Maps model execution graphs
+            across heterogeneous hardware architectures. Enables graph-level commitment and cross-device proof.
+          </div>
+          <div class="pc-props">
+            <span class="pcp">Graph-Native</span>
+            <span class="pcp">Cross-Architecture</span>
+            <span class="pcp">Commitment-Ready</span>
+          </div>
+          <div class="pc-spec-ref">CAGM Spec v1.0</div>
+        </div>
+
+        <div class="proto-card search">
+          <div class="pc-eyebrow">SEARCH LAYER</div>
+          <div class="pc-name">FADS</div>
+          <div class="pc-full">Formal AI Deterministic Search</div>
+          <div class="pc-desc">
+            Deterministic search protocol for AI inference verification. Formal guarantees on search reproducibility
+            across hardware. Anchors query-response cycles to verifiable canonical commitments.
+          </div>
+          <div class="pc-props">
+            <span class="pcp">Formal Guarantees</span>
+            <span class="pcp">Reproducible</span>
+            <span class="pcp">Canonical-Bound</span>
+          </div>
+          <div class="pc-spec-ref">FADS Spec v1.0</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TECHNICAL DEEP DIVE -->
+    <section class="section-block" id="technical">
+      <div class="section-header">
+        <span class="section-tag">HOW IT WORKS</span>
+        <h2>Three-Phase Canonical Pipeline</h2>
+      </div>
+      <div class="three-phase-grid">
+
+        <div class="phase-card">
+          <div class="phase-num">01</div>
+          <div class="phase-title">CANONICALIZE</div>
+          <div class="phase-sub">SPCMP Preprocessing + PCMP Mapping</div>
+          <div class="phase-divider"></div>
+          <div class="phase-desc">
+            Raw IEEE-754 float32 streams are transformed into a hardware-agnostic
+            Canonical Value Domain. Non-deterministic bit patterns — NaN payloads,
+            signed zeros, FMA artifacts — are resolved to a single deterministic
+            representation. The output is identical regardless of CPU, GPU, driver,
+            or batch configuration.
+          </div>
+          <div class="phase-props">
+            <span class="pp">Deterministic</span>
+            <span class="pp">Idempotent</span>
+            <span class="pp">CVD-Enforced</span>
+          </div>
+        </div>
+
+        <div class="phase-card phase-accent">
+          <div class="phase-num">02</div>
+          <div class="phase-title">COMMIT</div>
+          <div class="phase-sub">Predictive Encoding + Merkle Anchoring</div>
+          <div class="phase-divider"></div>
+          <div class="phase-desc">
+            The canonical sequence is compressed via predictive delta encoding
+            and anchored to a Merkle tree over fixed-size chunks of the compressed
+            byte stream. The resulting root hash is the artifact identity —
+            a compact, portable, tamper-evident commitment to the full inference output.
+          </div>
+          <div class="phase-props">
+            <span class="pp">Merkle-Anchored</span>
+            <span class="pp">Compact</span>
+            <span class="pp">Tamper-Evident</span>
+          </div>
+        </div>
+
+        <div class="phase-card">
+          <div class="phase-num">03</div>
+          <div class="phase-title">RECONSTRUCT</div>
+          <div class="phase-sub">10-Step Verified Decode</div>
+          <div class="phase-divider"></div>
+          <div class="phase-desc">
+            Any verifier — on any hardware — can independently reconstruct and
+            validate the canonical artifact against the committed root. The 10-step
+            SPCMP verification protocol is fail-closed: any deviation from the
+            canonical specification causes immediate hard failure. No partial
+            verification. No silent passes.
+          </div>
+          <div class="phase-props">
+            <span class="pp">Fail-Closed</span>
+            <span class="pp">Cross-Hardware</span>
+            <span class="pp">Portable</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tech-properties-row">
+        <div class="tpr-item">
+          <span class="tpr-key">FAIL SEMANTICS</span>
+          <span class="tpr-val">Any step violation causes immediate hard failure. No partial verification passes.</span>
+        </div>
+        <div class="tpr-item">
+          <span class="tpr-key">VERSION POLICY</span>
+          <span class="tpr-val">Version 1 frozen forever. Modifications require a new profile identifier.</span>
+        </div>
+        <div class="tpr-item">
+          <span class="tpr-key">ADVERSARIAL BOUND</span>
+          <span class="tpr-val">No adversary operating on SPCMP artifacts can create equivalent artifacts with different hashes.</span>
+        </div>
+        <div class="tpr-item">
+          <span class="tpr-key">TECHNICAL REVIEW</span>
+          <span class="tpr-val">Full specification and implementation details available under NDA. Contact for partnership inquiry.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- VALIDATION -->
+    <section class="section-block" id="validation">
+      <div class="section-header">
+        <span class="section-tag">PRODUCTION VALIDATION</span>
+        <h2>Evaluated on Real Transformer Workloads</h2>
+      </div>
+      <div class="validation-grid">
+        <div class="val-main">
+          <p class="val-lead">
+            Tested on real transformer inference across heterogeneous hardware execution environments.
+            Not synthetic benchmarks. Not toy models. Production-scale inference.
+          </p>
+          <div class="val-specs">
+            <div class="val-spec">
+              <span class="vs-key">MODEL</span>
+              <span class="vs-val">BLIP (Bootstrapping Language-Image Pretraining)</span>
+            </div>
+            <div class="val-spec">
+              <span class="vs-key">SCALE</span>
+              <span class="vs-val">10.7M float32 logits per inference</span>
+            </div>
+            <div class="val-spec">
+              <span class="vs-key">HARDWARE</span>
+              <span class="vs-val">Apple M4 MAX · NVIDIA H100 SXM5 · x86-64 CPU</span>
+            </div>
+          </div>
+          <div class="val-configs">
+            <div class="val-cfg pass">✓ CPU deterministic execution</div>
+            <div class="val-cfg pass">✓ CUDA GPU deterministic execution</div>
+            <div class="val-cfg pass">✓ Batched inference (32 images)</div>
+            <div class="val-cfg pass">✓ Byte-level reconstruction via <code>cmp</code></div>
+            <div class="val-cfg pass">✓ SPCMP profile header validation</div>
+            <div class="val-cfg pass">✓ Cross-driver version stability</div>
+          </div>
+          <div class="val-result">
+            <span class="vr-label">RESULT</span>
+            <span class="vr-value">Bit-identical canonical artifacts across CPU, GPU, and batch. Zero divergence post-canonicalization.</span>
+          </div>
+          <a class="val-link" href="https://github.com/SwapnopamMitra/Pr1malFrameWork/tree/main/validation/transformer-tests" target="_blank" rel="noopener">
+            ↗ Inspect Validation Scripts
+          </a>
+        </div>
+        <div class="val-visual">
+          <div class="matrix-grid" id="matrix-grid"></div>
+          <div class="matrix-caption">32-image batch · all cells verified · 0 divergences</div>
+          <div class="matrix-legend">
+            <span class="ml-green">■ CANONICAL MATCH</span>
+            <span class="ml-blue">■ PROCESSING</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THREAT STRIP -->
+    <div class="threat-strip">
+      <div class="ts-header">
+        <span class="section-tag">ELIMINATION MATRIX</span>
+        <h3>What PCMP + SPCMP Terminates</h3>
+      </div>
+      <div class="threat-grid">
+        <div class="threat-item"><span class="ti-x">✗</span> Cross-platform float divergence</div>
+        <div class="threat-item"><span class="ti-x">✗</span> Non-reproducible inference outputs</div>
+        <div class="threat-item"><span class="ti-x">✗</span> Unverifiable model commitments</div>
+        <div class="threat-item"><span class="ti-x">✗</span> Silent kernel drift accumulation</div>
+        <div class="threat-item"><span class="ti-x">✗</span> Hardware-locked artifact proofs</div>
+        <div class="threat-item"><span class="ti-x">✗</span> NaN payload side-channels</div>
+        <div class="threat-item"><span class="ti-x">✗</span> Signed-zero behavioral divergence</div>
+        <div class="threat-item"><span class="ti-x">✗</span> Driver-version hash instability</div>
+        <div class="threat-item"><span class="ti-x">✗</span> FMA-fusion ordering artifacts</div>
+        <div class="threat-item"><span class="ti-x">✗</span> Subnormal flushing divergence</div>
+        <div class="threat-item"><span class="ti-x">✗</span> Batch-size dependent outputs</div>
+        <div class="threat-item"><span class="ti-x">✗</span> Unauditable AI inference chains</div>
+      </div>
+    </div>
+
+    <!-- VERIFICATION STEPS -->
+    <section class="section-block" id="protocol">
+      <div class="section-header">
+        <span class="section-tag">SPCMP VERIFICATION PROTOCOL</span>
+        <h2>10-Step Verification Algorithm</h2>
+      </div>
+      <div class="steps-list">
+        <div class="step-item">
+          <span class="step-n">01</span>
+          <div class="step-body">
+            <span class="step-title">Validate PCMP header and version</span>
+            <span class="step-note">Version mismatch causes immediate hard failure.</span>
+          </div>
+          <span class="step-status ok">PASS</span>
+        </div>
+        <div class="step-item">
+          <span class="step-n">02</span>
+          <div class="step-body">
+            <span class="step-title">Validate SPCMP profile indicator</span>
+            <span class="step-note">Profile ID must equal <code>0x01</code>. No other value accepted.</span>
+          </div>
+          <span class="step-status ok">PASS</span>
+        </div>
+        <div class="step-item">
+          <span class="step-n">03</span>
+          <div class="step-body">
+            <span class="step-title">Decompress payload</span>
+            <span class="step-note">LZ decompression of predictive byte stream.</span>
+          </div>
+          <span class="step-status ok">PASS</span>
+        </div>
+        <div class="step-item">
+          <span class="step-n">04</span>
+          <div class="step-body">
+            <span class="step-title">Validate element count</span>
+            <span class="step-note">Count mismatch indicates malformed or truncated payload.</span>
+          </div>
+          <span class="step-status ok">PASS</span>
+        </div>
+        <div class="step-item">
+          <span class="step-n">05</span>
+          <div class="step-body">
+            <span class="step-title">Compute hash over decompressed predictive data</span>
+            <span class="step-note">Merkle tree over fixed-size chunks. Chunk size inherited from PCMP v1.</span>
+          </div>
+          <span class="step-status ok">PASS</span>
+        </div>
+        <div class="step-item">
+          <span class="step-n">06</span>
+          <div class="step-body">
+            <span class="step-title">Validate hash</span>
+            <span class="step-note">Compare computed root against declared root. Single-bit mismatch = failure.</span>
+          </div>
+          <span class="step-status ok">PASS</span>
+        </div>
+        <div class="step-item">
+          <span class="step-n">07</span>
+          <div class="step-body">
+            <span class="step-title">Apply inverse predictor</span>
+            <span class="step-note">Reconstruct mapped uint32 sequence from delta encoding.</span>
+          </div>
+          <span class="step-status ok">PASS</span>
+        </div>
+        <div class="step-item">
+          <span class="step-n">08</span>
+          <div class="step-body">
+            <span class="step-title">Validate canonical ordering</span>
+            <span class="step-note">Ordering validated on inverse-predicted sequence prior to inverse permutation.</span>
+          </div>
+          <span class="step-status ok">PASS</span>
+        </div>
+        <div class="step-item">
+          <span class="step-n">09</span>
+          <div class="step-body">
+            <span class="step-title">Apply inverse permutation</span>
+            <span class="step-note">Restore original positional ordering from permutation encoding.</span>
+          </div>
+          <span class="step-status ok">PASS</span>
+        </div>
+        <div class="step-item">
+          <span class="step-n">10</span>
+          <div class="step-body">
+            <span class="step-title">Validate all values lie within CVD</span>
+            <span class="step-note">Any value outside Canonical Value Domain = hard failure. Detects false SPCMP claims.</span>
+          </div>
+          <span class="step-status ok">PASS</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         LIVE SPACES — FOUR HUGGING FACE DEPLOYMENTS
+    ══════════════════════════════════════════ -->
+    <section class="section-block spaces-section" id="spaces">
+      <div class="section-header">
+        <span class="section-tag">DEPLOYED &amp; LIVE</span>
+        <h2>Samayuktam Protocol Suite — Running Now</h2>
+        <p class="section-sub">Four active Hugging Face Spaces. Open source. Verifiable. No accounts required.</p>
+      </div>
+      <div class="spaces-grid">
+
+        <a class="space-card space-core" href="https://huggingface.co/spaces/Swapnopam/Samayuktam" target="_blank" rel="noopener">
+          <div class="sc-eyebrow">
+            <span class="sc-tag">CORE</span>
+            <span class="sc-live-dot"></span>
+            <span class="sc-live-txt">LIVE</span>
+          </div>
+          <div class="sc-proto-badge">PCMP</div>
+          <div class="sc-name">Samayuktam</div>
+          <div class="sc-full">Predictive Canonical Monotonic Permutation</div>
+          <div class="sc-desc">
+            The primary PCMP verification space. Upload a float32 artifact and receive a canonical Merkle commitment.
+            Demonstrates bit-identical verification across heterogeneous hardware in real time.
+            The working implementation of everything on this page.
+          </div>
+          <div class="sc-features">
+            <span class="sc-feat">▸ Live PCMP encoding</span>
+            <span class="sc-feat">▸ Merkle root computation</span>
+            <span class="sc-feat">▸ SPCMP profile verification</span>
+            <span class="sc-feat">▸ Cross-hardware diff display</span>
+          </div>
+          <div class="sc-footer">
+            <span class="sc-url">huggingface.co/spaces/Swapnopam/Samayuktam</span>
+            <span class="sc-arrow">↗</span>
+          </div>
+        </a>
+
+        <a class="space-card space-search" href="https://huggingface.co/spaces/Swapnopam/Samayuktam_System" target="_blank" rel="noopener">
+          <div class="sc-eyebrow">
+            <span class="sc-tag">SEARCH</span>
+            <span class="sc-live-dot"></span>
+            <span class="sc-live-txt">LIVE</span>
+          </div>
+          <div class="sc-proto-badge fads">FADS</div>
+          <div class="sc-name">Samayuktam System</div>
+          <div class="sc-full">Formal AI Deterministic Semantic Search</div>
+          <div class="sc-desc">
+            Deterministic semantic search engine built on PCMP canonicalization. Uses
+            embed.py and the full Samayuktam stack to make AI model outputs deterministic
+            end-to-end — from embedding through retrieval. Search results are bit-reproducible
+            across any hardware that runs the verifier.
+          </div>
+          <div class="sc-features">
+            <span class="sc-feat">▸ Deterministic embeddings</span>
+            <span class="sc-feat">▸ Canonical semantic search</span>
+            <span class="sc-feat">▸ Hardware-agnostic retrieval</span>
+            <span class="sc-feat">▸ embed.py reference impl</span>
+          </div>
+          <div class="sc-footer">
+            <span class="sc-url">huggingface.co/spaces/Swapnopam/Samayuktam_System</span>
+            <span class="sc-arrow">↗</span>
+          </div>
+        </a>
+
+        <a class="space-card space-cloud" href="https://huggingface.co/spaces/Swapnopam/Samayuktam__Cloud" target="_blank" rel="noopener">
+          <div class="sc-eyebrow">
+            <span class="sc-tag">INFRASTRUCTURE</span>
+            <span class="sc-live-dot"></span>
+            <span class="sc-live-txt">LIVE</span>
+          </div>
+          <div class="sc-proto-badge cloud">CLOUD</div>
+          <div class="sc-name">Samayuktam Cloud</div>
+          <div class="sc-full">Deterministic Inference Cloud Infrastructure</div>
+          <div class="sc-desc">
+            Cloud-native deployment layer for the Samayuktam protocol suite.
+            Exposes PCMP and SPCMP as hosted verification endpoints. Anchors
+            inference runs to Merkle-committed canonical artifacts accessible
+            for audit without downloading the full model stack.
+          </div>
+          <div class="sc-features">
+            <span class="sc-feat">▸ Hosted verification API</span>
+            <span class="sc-feat">▸ Cloud-scale Merkle anchoring</span>
+            <span class="sc-feat">▸ Audit-ready artifact storage</span>
+            <span class="sc-feat">▸ Zero local setup required</span>
+          </div>
+          <div class="sc-footer">
+            <span class="sc-url">huggingface.co/spaces/Swapnopam/Samayuktam__Cloud</span>
+            <span class="sc-arrow">↗</span>
+          </div>
+        </a>
+
+        <a class="space-card space-cagm" href="https://huggingface.co/spaces/Swapnopam/CAGM" target="_blank" rel="noopener">
+          <div class="sc-eyebrow">
+            <span class="sc-tag">TRAINER</span>
+            <span class="sc-live-dot"></span>
+            <span class="sc-live-txt">LIVE</span>
+          </div>
+          <div class="sc-proto-badge cagm">CAGM</div>
+          <div class="sc-name">CAGM</div>
+          <div class="sc-full">Cross-Architecture Graph Map — ML Model Trainer</div>
+          <div class="sc-desc">
+            The CAGM ML model training interface. Maps computational graphs
+            across heterogeneous hardware architectures for deterministic
+            training runs. Enables graph-level canonical commitment so model
+            training artifacts are bit-reproducible and independently auditable.
+          </div>
+          <div class="sc-features">
+            <span class="sc-feat">▸ Graph-level canonicalization</span>
+            <span class="sc-feat">▸ Cross-architecture training</span>
+            <span class="sc-feat">▸ Deterministic weight commits</span>
+            <span class="sc-feat">▸ Hardware-portable proofs</span>
+          </div>
+          <div class="sc-footer">
+            <span class="sc-url">huggingface.co/spaces/Swapnopam/CAGM</span>
+            <span class="sc-arrow">↗</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         VERIFY.PY — DOWNLOAD + LIVE DEMO
+    ══════════════════════════════════════════ -->
+    <section class="section-block verifier-section" id="verifier">
+      <div class="section-header">
+        <span class="section-tag">REFERENCE VERIFIER</span>
+        <h2>verify.py — The Canonical Verifier</h2>
+        <p class="section-sub">Production Python implementation. Runs locally. No dependencies on this page. Pure protocol.</p>
+      </div>
+      <div class="verifier-split">
+
+        <div class="verifier-left">
+          <div class="verifier-info-block">
+            <div class="vib-header">
+              <span class="vib-icon">⬡</span>
+              <div>
+                <span class="vib-title">verify.py</span>
+                <span class="vib-sub">Samayuktam PCMP + SPCMP Reference Verifier · v1.0</span>
+              </div>
+            </div>
+            <div class="vib-stats">
+              <div class="vib-stat">
+                <span class="vib-s-val">Python 3.10+</span>
+                <span class="vib-s-key">Runtime</span>
+              </div>
+              <div class="vib-stat">
+                <span class="vib-s-val">zstandard</span>
+                <span class="vib-s-key">Only dep</span>
+              </div>
+              <div class="vib-stat">
+                <span class="vib-s-val">Fail-closed</span>
+                <span class="vib-s-key">Error mode</span>
+              </div>
+              <div class="vib-stat">
+                <span class="vib-s-val">MIT</span>
+                <span class="vib-s-key">License</span>
+              </div>
+            </div>
+            <p class="vib-desc">
+              Standalone reference implementation of the full SPCMP verification algorithm.
+              Reads a <code>.pcmp</code> artifact, performs all 10 verification steps, validates the
+              Canonical Value Domain, checks the Merkle root, and emits structured output.
+              This is the ground-truth verifier — what all other implementations must match.
+            </p>
+            <div class="vib-usage">
+              <div class="vib-cmd-block">
+                <span class="vcb-label">INSTALL</span>
+                <code class="vcb-code">pip install zstandard</code>
+              </div>
+              <div class="vib-cmd-block">
+                <span class="vcb-label">RUN</span>
+                <code class="vcb-code">python verify.py artifact.pcmp</code>
+              </div>
+              <div class="vib-cmd-block">
+                <span class="vcb-label">DETAILED</span>
+                <code class="vcb-code">python verify.py --info artifact.pcmp</code>
+              </div>
+              <div class="vib-cmd-block">
+                <span class="vcb-label">JSON</span>
+                <code class="vcb-code">python verify.py --json artifact.pcmp</code>
+              </div>
+            </div>
+            <button class="btn-download" id="btn-download-verify" onclick="downloadVerifyPy()">
+              <span class="dl-icon">⬇</span> Download verify.py
+            </button>
+          </div>
+        </div>
+
+        <div class="verifier-right">
+          <div class="verify-demo-panel">
+            <div class="vdp-header">
+              <span class="vdp-title">VERIFICATION OUTPUT DEMO</span>
+              <div class="vdp-tabs">
+                <button class="vdp-tab active" onclick="showVerifyDemo('summary')">Summary</button>
+                <button class="vdp-tab" onclick="showVerifyDemo('info')">--info</button>
+                <button class="vdp-tab" onclick="showVerifyDemo('json')">--json</button>
+              </div>
+            </div>
+            <div class="vdp-output" id="vdp-output">
+              <pre id="vdp-pre" class="vdp-pre"></pre>
+            </div>
+          </div>
+          <div class="verify-steps-mini">
+            <div class="vsm-header">10-STEP VERIFICATION CHECKLIST</div>
+            <div class="vsm-steps" id="vsm-steps">
+              <div class="vsm-step" data-step="1">
+                <span class="vsm-n">01</span>
+                <span class="vsm-label">PCMP header · version</span>
+                <span class="vsm-mark">○</span>
+              </div>
+              <div class="vsm-step" data-step="2">
+                <span class="vsm-n">02</span>
+                <span class="vsm-label">SPCMP profile 0x01</span>
+                <span class="vsm-mark">○</span>
+              </div>
+              <div class="vsm-step" data-step="3">
+                <span class="vsm-n">03</span>
+                <span class="vsm-label">Decompress payload</span>
+                <span class="vsm-mark">○</span>
+              </div>
+              <div class="vsm-step" data-step="4">
+                <span class="vsm-n">04</span>
+                <span class="vsm-label">Element count</span>
+                <span class="vsm-mark">○</span>
+              </div>
+              <div class="vsm-step" data-step="5">
+                <span class="vsm-n">05</span>
+                <span class="vsm-label">Hash over predictive data</span>
+                <span class="vsm-mark">○</span>
+              </div>
+              <div class="vsm-step" data-step="6">
+                <span class="vsm-n">06</span>
+                <span class="vsm-label">Hash validation</span>
+                <span class="vsm-mark">○</span>
+              </div>
+              <div class="vsm-step" data-step="7">
+                <span class="vsm-n">07</span>
+                <span class="vsm-label">Inverse predictor</span>
+                <span class="vsm-mark">○</span>
+              </div>
+              <div class="vsm-step" data-step="8">
+                <span class="vsm-n">08</span>
+                <span class="vsm-label">Canonical ordering</span>
+                <span class="vsm-mark">○</span>
+              </div>
+              <div class="vsm-step" data-step="9">
+                <span class="vsm-n">09</span>
+                <span class="vsm-label">Inverse permutation</span>
+                <span class="vsm-mark">○</span>
+              </div>
+              <div class="vsm-step" data-step="10">
+                <span class="vsm-n">10</span>
+                <span class="vsm-label">CVD validation</span>
+                <span class="vsm-mark">○</span>
+              </div>
+            </div>
+            <button class="btn-run-demo" id="btn-run-verify-demo" onclick="runVerifyDemo()">
+              ▶ Run Demo Verification
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         SAMAYUKTAM INFERENCE — FINAL LAYER
+    ══════════════════════════════════════════ -->
+    <section class="section-block inference-overview-block" id="inference">
+      <div class="section-header">
+        <span class="section-tag">FINAL LAYER</span>
+        <h2>Samayuktam Inference</h2>
+      </div>
+      <div class="inference-overview-grid">
+        <div class="inf-text-col">
+          <p class="inf-lead">
+            The inference runtime is the terminal enforcement boundary of the Samayuktam protocol stack.
+            It applies SPCMP canonicalization directly inside the forward pass — between every layer, at every activation boundary.
+          </p>
+          <p class="inf-body">
+            Every activation tensor is canonicalized before it enters a layer and corrected after it exits.
+            The logit stream produced at the final layer is guaranteed to hash identically across any compliant hardware,
+            regardless of FMA fusion, NaN payload, signed-zero behavior, or driver-level float rounding.
+          </p>
+          <div class="inf-props-row">
+            <div class="inf-prop">
+              <span class="inf-prop-label">CANONICALIZE</span>
+              <span class="inf-prop-desc">Pre-layer SPCMP pass on every activation</span>
+            </div>
+            <div class="inf-prop">
+              <span class="inf-prop-label">CORRECT</span>
+              <span class="inf-prop-desc">Post-layer correction pass enforces CVD</span>
+            </div>
+            <div class="inf-prop">
+              <span class="inf-prop-label">HASH</span>
+              <span class="inf-prop-desc">FNV-1a logit hash — bit-identical cross-hardware</span>
+            </div>
+          </div>
+          <a class="btn-primary inf-hf-btn" href="https://huggingface.co/spaces/Swapnopam/Samayuktam_Inference" target="_blank" rel="noopener">
+            <span class="btn-icon">↗</span> Samayuktam Inference Space
+          </a>
+        </div>
+        <div class="inf-diagram-col">
+          <div class="inf-layer-diagram">
+            <div class="ild-label-top">ACTIVATION TENSOR</div>
+            <div class="ild-arrow">↓</div>
+            <div class="ild-step ild-canon">CANONICALIZE<span class="ild-spec">SPCMP · CVD enforcement</span></div>
+            <div class="ild-arrow">↓</div>
+            <div class="ild-step ild-layer">LAYER N<span class="ild-spec">Model forward pass</span></div>
+            <div class="ild-arrow">↓</div>
+            <div class="ild-step ild-correct">CORRECTION PASS<span class="ild-spec">Bucket-snap · idempotent</span></div>
+            <div class="ild-arrow">↓</div>
+            <div class="ild-label-mid">REPEAT × NUM_LAYERS</div>
+            <div class="ild-arrow">↓</div>
+            <div class="ild-step ild-logits">LOGIT HASH<span class="ild-spec" id="inf-live-hash">0x8dc860c7…</span></div>
+            <div class="ild-badge">BIT-IDENTICAL · CROSS-HARDWARE</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         INFERENCE SIMULATOR
+    ══════════════════════════════════════════ -->
+    <section class="section-block inference-sim-block" id="inference-sim">
+      <div class="section-header">
+        <span class="section-tag">LIVE SIMULATION</span>
+        <h2>Inference Canonicalization Simulator</h2>
+      </div>
+
+      <div class="sim-controls-row">
+        <div class="sim-control-group">
+          <label class="sim-label">Model Profile</label>
+          <select id="sim-profile" class="sim-select">
+            <option value="gpt2">GPT-2 / GPT-style</option>
+            <option value="llama" selected>LLaMA-style</option>
+            <option value="bert">BERT / Encoder</option>
+            <option value="t5">T5 / Seq2Seq</option>
+            <option value="mixtral">Mixtral / Sparse MoE</option>
+            <option value="uniform">Uniform</option>
+            <option value="sparse">Sparse</option>
+          </select>
+        </div>
+        <div class="sim-control-group">
+          <label class="sim-label">Divergence Type</label>
+          <select id="sim-divergence" class="sim-select">
+            <option value="intra_bucket">Intra-bucket (FMA jitter)</option>
+            <option value="signed_zero">Signed-zero (−0 padding)</option>
+            <option value="nan_payload">NaN payload variants</option>
+            <option value="inter_bucket">Inter-bucket (real divergence)</option>
+            <option value="mixed">Mixed</option>
+            <option value="none">None (identical inputs)</option>
+          </select>
+        </div>
+        <div class="sim-control-group">
+          <label class="sim-label">Vocab Size</label>
+          <select id="sim-vocab" class="sim-select">
+            <option value="256">256</option>
+            <option value="512" selected>512</option>
+            <option value="1000">1000</option>
+            <option value="2000">2000</option>
+          </select>
+        </div>
+        <div class="sim-control-group">
+          <label class="sim-label">Layers</label>
+          <select id="sim-layers" class="sim-select">
+            <option value="4">4</option>
+            <option value="12" selected>12</option>
+            <option value="32">32</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="sim-presets-row">
+        <span class="sim-presets-label">PRESETS:</span>
+        <button class="sim-preset-btn" onclick="loadPreset('distributed_llm')">Distributed LLM</button>
+        <button class="sim-preset-btn" onclick="loadPreset('nan_resilience')">NaN Resilience</button>
+        <button class="sim-preset-btn" onclick="loadPreset('padding_tokens')">Padding Tokens</button>
+        <button class="sim-preset-btn sim-preset-fail" onclick="loadPreset('inter_bucket_fail')">Should FAIL ⚠</button>
+        <button class="sim-preset-btn" onclick="loadPreset('sparse_moe')">Sparse MoE</button>
+      </div>
+
+      <button id="btn-run-sim" class="btn-primary sim-run-btn" onclick="runInferenceSim()">
+        <span class="btn-icon">▶</span> Run Simulation
+      </button>
+
+      <div id="sim-results" class="sim-results hidden">
+
+        <div class="sim-result-header" id="sim-verdict-bar">
+          <span id="sim-verdict-icon">✓</span>
+          <span id="sim-verdict-text">CONVERGED — Hashes identical after canonicalization</span>
+        </div>
+
+        <div class="sim-result-grid">
+          <div class="sim-result-col">
+            <div class="src-label">PRE-INFERENCE</div>
+            <div class="src-row">
+              <span class="src-k">Machine A hash</span>
+              <span class="src-v mono" id="sim-pre-hash-a">—</span>
+            </div>
+            <div class="src-row">
+              <span class="src-k">Machine B hash</span>
+              <span class="src-v mono" id="sim-pre-hash-b">—</span>
+            </div>
+            <div class="src-row">
+              <span class="src-k">Diverged floats</span>
+              <span class="src-v" id="sim-pre-diffs">—</span>
+            </div>
+            <div class="src-row">
+              <span class="src-k">Intra-bucket</span>
+              <span class="src-v" id="sim-intra">—</span>
+            </div>
+            <div class="src-row">
+              <span class="src-k">Inter-bucket</span>
+              <span class="src-v" id="sim-inter">—</span>
+            </div>
+          </div>
+          <div class="sim-result-col">
+            <div class="src-label">POST-INFERENCE</div>
+            <div class="src-row">
+              <span class="src-k">Machine A hash</span>
+              <span class="src-v mono" id="sim-post-hash-a">—</span>
+            </div>
+            <div class="src-row">
+              <span class="src-k">Machine B hash</span>
+              <span class="src-v mono" id="sim-post-hash-b">—</span>
+            </div>
+            <div class="src-row">
+              <span class="src-k">Differing floats</span>
+              <span class="src-v" id="sim-post-diffs">—</span>
+            </div>
+            <div class="src-row">
+              <span class="src-k">Unique buckets</span>
+              <span class="src-v" id="sim-buckets">—</span>
+            </div>
+            <div class="src-row">
+              <span class="src-k">Elapsed</span>
+              <span class="src-v" id="sim-elapsed">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sim-sample-label">SAMPLE — first 16 tokens</div>
+        <div class="sim-sample-table-wrap">
+          <table class="sim-sample-table" id="sim-sample-table">
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>A input</th>
+                <th>B input</th>
+                <th>Same bucket?</th>
+                <th>A out</th>
+                <th>B out</th>
+                <th>Converged?</th>
+              </tr>
+            </thead>
+            <tbody id="sim-sample-tbody"></tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- DOCS DIRECTIVES -->
+    <section class="directives-block" id="docs">
+      <div class="section-header">
+        <span class="section-tag">SPECIFICATION ARCHIVE</span>
+        <h2>Protocol Directives</h2>
+      </div>
+      <div class="directives-grid">
+        <a class="dir-card" href="docs/pcmp_spec.md">
+          <span class="dir-icon">◈</span>
+          <div class="dir-text">
+            <span class="dir-title">PCMP v1 Specification</span>
+            <span class="dir-sub">Core protocol · Frozen semantics</span>
+          </div>
+          <span class="dir-arrow">↗</span>
+        </a>
+        <a class="dir-card" href="docs/spcmp_spec.md">
+          <span class="dir-icon">◈</span>
+          <div class="dir-text">
+            <span class="dir-title">SPCMP v1 Specification</span>
+            <span class="dir-sub">CVD preprocessing · Profile 0x01</span>
+          </div>
+          <span class="dir-arrow">↗</span>
+        </a>
+        <a class="dir-card" href="docs/cagm_spec.md">
+          <span class="dir-icon">◈</span>
+          <div class="dir-text">
+            <span class="dir-title">CAGM Specification</span>
+            <span class="dir-sub">Cross-architecture graph mapping</span>
+          </div>
+          <span class="dir-arrow">↗</span>
+        </a>
+        <a class="dir-card" href="docs/fads_spec.md">
+          <span class="dir-icon">◈</span>
+          <div class="dir-text">
+            <span class="dir-title">FADS Specification</span>
+            <span class="dir-sub">Formal deterministic search</span>
+          </div>
+          <span class="dir-arrow">↗</span>
+        </a>
+        <a class="dir-card" href="docs/threat_model.md">
+          <span class="dir-icon">◈</span>
+          <div class="dir-text">
+            <span class="dir-title">Threat Model</span>
+            <span class="dir-sub">Adversarial surface · Mitigations</span>
+          </div>
+          <span class="dir-arrow">↗</span>
+        </a>
+        <a class="dir-card" href="https://github.com/SwapnopamMitra/Pr1malFrameWork" target="_blank" rel="noopener">
+          <span class="dir-icon">◈</span>
+          <div class="dir-text">
+            <span class="dir-title">Reference Implementation</span>
+            <span class="dir-sub">Canonical code · GitHub</span>
+          </div>
+          <span class="dir-arrow">↗</span>
+        </a>
+        <a class="dir-card dir-card-hf" href="https://huggingface.co/spaces/Swapnopam/Samayuktam" target="_blank" rel="noopener">
+          <span class="dir-icon hf">⬡</span>
+          <div class="dir-text">
+            <span class="dir-title">PCMP Live Space</span>
+            <span class="dir-sub">Primary verifier · Merkle root demo</span>
+          </div>
+          <span class="dir-arrow">↗</span>
+        </a>
+        <a class="dir-card dir-card-hf" href="https://huggingface.co/spaces/Swapnopam/Samayuktam_System" target="_blank" rel="noopener">
+          <span class="dir-icon hf">⬡</span>
+          <div class="dir-text">
+            <span class="dir-title">FADS Search System</span>
+            <span class="dir-sub">Deterministic semantic search engine</span>
+          </div>
+          <span class="dir-arrow">↗</span>
+        </a>
+        <a class="dir-card dir-card-hf" href="https://huggingface.co/spaces/Swapnopam/Samayuktam__Cloud" target="_blank" rel="noopener">
+          <span class="dir-icon hf">⬡</span>
+          <div class="dir-text">
+            <span class="dir-title">Samayuktam Cloud</span>
+            <span class="dir-sub">Hosted verification infrastructure</span>
+          </div>
+          <span class="dir-arrow">↗</span>
+        </a>
+        <a class="dir-card dir-card-hf" href="https://huggingface.co/spaces/Swapnopam/CAGM" target="_blank" rel="noopener">
+          <span class="dir-icon hf">⬡</span>
+          <div class="dir-text">
+            <span class="dir-title">CAGM Trainer</span>
+            <span class="dir-sub">Cross-architecture ML model training</span>
+          </div>
+          <span class="dir-arrow">↗</span>
+        </a>
+        <a class="dir-card dir-card-hf" href="https://huggingface.co/spaces/Swapnopam/Samayuktam_Inference" target="_blank" rel="noopener">
+          <span class="dir-icon hf">⬡</span>
+          <div class="dir-text">
+            <span class="dir-title">Samayuktam Inference</span>
+            <span class="dir-sub">Runtime canonicalization · Final layer</span>
+          </div>
+          <span class="dir-arrow">↗</span>
+        </a>
+        <a class="dir-card dir-card-download" href="#verifier" onclick="downloadVerifyPy()">
+          <span class="dir-icon dl">⬇</span>
+          <div class="dir-text">
+            <span class="dir-title">verify.py</span>
+            <span class="dir-sub">Reference verifier · Python 3.10+</span>
+          </div>
+          <span class="dir-arrow">↓</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-left">
+        <span class="footer-brand">SAMAYUKTAM</span>
+        <span class="footer-proto">PCMP · SPCMP · CAGM · FADS · Samayuktam Cloud · Inference</span>
+        <span class="footer-copy">© Swapnopam Mitra · All rights reserved</span>
+        <span class="footer-patent">Protocol IP pending · Samayuktam v1.0 · Frozen Semantics</span>
+      </div>
+      <div class="footer-center">
+        <div class="footer-hash-display">
+          <span class="fhd-label">CANONICAL ROOT</span>
+          <span class="fhd-val">0x8dc860c7a3f21e90b54da1c2</span>
+        </div>
+        <div class="footer-spaces">
+          <span class="fsp-label">LIVE SPACES</span>
+          <div class="fsp-links">
+            <a href="https://huggingface.co/spaces/Swapnopam/Samayuktam" target="_blank" rel="noopener" class="fsp-link">PCMP</a>
+            <span class="fsp-sep">·</span>
+            <a href="https://huggingface.co/spaces/Swapnopam/Samayuktam_System" target="_blank" rel="noopener" class="fsp-link">FADS</a>
+            <span class="fsp-sep">·</span>
+            <a href="https://huggingface.co/spaces/Swapnopam/Samayuktam__Cloud" target="_blank" rel="noopener" class="fsp-link">CLOUD</a>
+            <span class="fsp-sep">·</span>
+            <a href="https://huggingface.co/spaces/Swapnopam/CAGM" target="_blank" rel="noopener" class="fsp-link">CAGM</a>
+            <span class="fsp-sep">·</span>
+            <a href="https://huggingface.co/spaces/Swapnopam/Samayuktam_Inference" target="_blank" rel="noopener" class="fsp-link">INFERENCE</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-right">
+        <a class="footer-link" href="https://huggingface.co/spaces/Swapnopam/Samayuktam" target="_blank" rel="noopener">HF Space</a>
+        <a class="footer-link" href="https://github.com/SwapnopamMitra/Pr1malFrameWork" target="_blank" rel="noopener">GitHub</a>
+        <a class="footer-link" href="docs/pcmp_spec.md">Specs</a>
+        <a class="footer-link" href="docs/threat_model.md">Security</a>
+        <a class="footer-link" href="#verifier" onclick="downloadVerifyPy()">verify.py ⬇</a>
+        <div class="footer-substack-links">
+          <span class="fsl-label">SUBSTACK</span>
+          <a class="footer-link fsl-link" href="https://swapnopammitra.substack.com/p/why-zkml-and-cryptographic-proof" target="_blank" rel="noopener">zkML &amp; Proof ↗</a>
+          <a class="footer-link fsl-link" href="https://swapnopammitra.substack.com/p/samayuktam_inference-canonicalizing" target="_blank" rel="noopener">Inference Layer ↗</a>
+          <a class="footer-link fsl-link" href="https://swapnopammitra.substack.com/p/spcmp-on-google-tpu-three-hardware" target="_blank" rel="noopener">TPU Proof ↗</a>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <script src="canvas.js"></script>
+  <script src="logic.js"></script>
+  <script src="counters.js"></script>
+</body>
+</html>
