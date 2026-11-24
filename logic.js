@@ -1,9 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   SAMAYUKTAM · logic.js
-   Terminal Simulation · SPCMP Verification · Ledger
-═══════════════════════════════════════════════════════════ */
 
-/* ─── DOM REFS ──────────────────────────────────────────── */
 const terminalOutput = document.getElementById("terminal-output");
 const btnSimulate    = document.getElementById("simulate");
 const btnSpcmp       = document.getElementById("btn-spcmp");
@@ -12,7 +7,6 @@ const ledgerList     = document.getElementById("ledger-list");
 const emptyState     = document.querySelector(".ledger-empty");
 const blockCounter   = document.getElementById("block-counter");
 
-/* ─── AUDIT SEQUENCES ───────────────────────────────────── */
 const PCMP_AUDIT_LINES = [
   { text: "[INIT] pcmp-audit v1.0 — Samayuktam Protocol Suite", color: "muted" },
   { text: "[INFO] Loading stream: GQA_Attention_Node_Output.bin", color: "muted", delay: 500 },
@@ -52,7 +46,6 @@ const SPCMP_LINES = [
   { text: "[SPCMP] VERIFICATION COMPLETE — ARTIFACT CONFORMANT", color: "success", delay: 700 },
 ];
 
-/* ─── LINE COLORS ───────────────────────────────────────── */
 const LINE_COLORS = {
   muted:   "rgba(160,170,187,0.55)",
   info:    "#33bbff",
@@ -62,7 +55,6 @@ const LINE_COLORS = {
   error:   "#ff3246",
 };
 
-/* ─── TERMINAL PRINT ────────────────────────────────────── */
 let isRunning = false;
 
 async function printLines(lines) {
@@ -78,7 +70,6 @@ async function printLines(lines) {
     span.style.color   = LINE_COLORS[line.color] || LINE_COLORS.muted;
     span.style.display = "block";
 
-    // Typewriter for success lines
     if (line.color === "success") {
       span.style.fontWeight = "600";
       await typewrite(span, line.text, 18);
@@ -93,7 +84,6 @@ async function printLines(lines) {
   tbStatus.textContent = "DONE";
   tbStatus.classList.remove("running");
 
-  // Add to ledger if successful
   addLedgerEntry();
   isRunning = false;
 }
@@ -109,7 +99,6 @@ function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
 
-/* ─── BUTTONS ───────────────────────────────────────────── */
 if (btnSimulate) {
   btnSimulate.addEventListener("click", () => printLines(PCMP_AUDIT_LINES));
 }
@@ -118,7 +107,6 @@ if (btnSpcmp) {
   btnSpcmp.addEventListener("click", () => printLines(SPCMP_LINES));
 }
 
-/* ─── VERIFICATION LEDGER ───────────────────────────────── */
 const LEDGER = [];
 let blockNum  = 1;
 
@@ -181,7 +169,6 @@ function renderLedger() {
 
 renderLedger();
 
-/* ─── DIVERGENCE SIMULATION (problem section) ───────────── */
 function runDivergenceSim() {
   const hashM4   = document.getElementById("hash-m4");
   const hashH100 = document.getElementById("hash-h100");
@@ -230,7 +217,6 @@ function runDivergenceSim() {
 
 runDivergenceSim();
 
-/* ─── MATRIX GRID BUILD ─────────────────────────────────── */
 function buildMatrix() {
   const grid = document.getElementById("matrix-grid");
   if (!grid) return;
@@ -246,7 +232,6 @@ function buildMatrix() {
 
 buildMatrix();
 
-/* ─── LIVE TICKER ───────────────────────────────────────── */
 function runTicker() {
   const ticker = document.getElementById("live-ticker");
   if (!ticker) return;
@@ -268,8 +253,6 @@ function runTicker() {
 
 runTicker();
 
-/* ─── VERIFY.PY DOWNLOAD ────────────────────────────────── */
-// Embed verify.py content for download
 const VERIFY_PY_CONTENT = `#!/usr/bin/env python3
 """
 verify.py — Samayuktam PCMP + SPCMP Reference Verifier v1.0
@@ -292,7 +275,6 @@ MAX_ELEMENTS = 1 << 28
 CANONICAL_NAN = 0x7FC00000
 NEGATIVE_ZERO = 0x80000000
 
-
 def uleb128_decode(buf, off):
     val = 0
     shift = 0
@@ -310,10 +292,8 @@ def uleb128_decode(buf, off):
             raise ValueError("uleb128 overflow")
     return val, i - off
 
-
 def zigzag_decode(v):
     return (v >> 1) ^ -(v & 1)
-
 
 def inv_order1(res):
     out = res[:]
@@ -322,7 +302,6 @@ def inv_order1(res):
         out[i] = (prev + out[i]) & 0xffffffff
         prev = out[i]
     return out
-
 
 def inv_order2(res):
     out = res[:]
@@ -333,12 +312,10 @@ def inv_order2(res):
         out[i] = (pred + out[i]) & 0xffffffff
     return out
 
-
 def inverse_pcmp_map(m):
     if m & 0x80000000:
         return m & 0x7fffffff
     return (~m) & 0xffffffff
-
 
 def merkle_root(data):
     leaves = []
@@ -354,10 +331,8 @@ def merkle_root(data):
         leaves = nxt
     return leaves[0] if leaves else b"\\x00" * 32
 
-
 def is_nan(u):
     return (u & 0x7f800000) == 0x7f800000 and (u & 0x007fffff) != 0
-
 
 def validate_cvd(values):
     for i, u in enumerate(values):
@@ -366,7 +341,6 @@ def validate_cvd(values):
         if is_nan(u) and u != CANONICAL_NAN:
             return False, i, "non-canonical NaN"
     return True, None, None
-
 
 def verify_pcmp(path: Path):
     info = {"file": str(path), "valid": False, "error": None}
@@ -463,7 +437,6 @@ def verify_pcmp(path: Path):
         info["error"] = str(e)
     return info
 
-
 def main():
     args = sys.argv[1:]
     mode = "summary"
@@ -491,7 +464,6 @@ def main():
                 f"n={info.get('n')} order={info.get('order')}"
             )
 
-
 if __name__ == "__main__":
     main()
 `;
@@ -508,7 +480,6 @@ function downloadVerifyPy() {
   URL.revokeObjectURL(url);
 }
 
-/* ─── VERIFY DEMO PANEL ─────────────────────────────────── */
 const VERIFY_DEMO_OUTPUTS = {
   summary: `$ python verify.py blip_gqa_attention_canonical.pcmp
 
@@ -583,7 +554,6 @@ function showVerifyDemo(mode) {
     pre.textContent = '';
     pre.style.color = mode === 'summary' ? '#00ff6e' : mode === 'json' ? '#33bbff' : '#dde4f0';
   }
-  // Reset steps
   document.querySelectorAll('.vsm-step').forEach(s => {
     s.classList.remove('done', 'active');
     s.querySelector('.vsm-mark').textContent = '○';
@@ -598,11 +568,9 @@ async function runVerifyDemo() {
   const btn = document.getElementById('btn-run-verify-demo');
   if (btn) { btn.disabled = true; btn.textContent = '⏳ Verifying…'; }
 
-  // Reset output
   const pre = document.getElementById('vdp-pre');
   if (pre) pre.textContent = '';
 
-  // Animate steps
   const steps = document.querySelectorAll('.vsm-step');
   for (let i = 0; i < steps.length; i++) {
     steps[i].classList.add('active');
@@ -613,7 +581,6 @@ async function runVerifyDemo() {
     steps[i].querySelector('.vsm-mark').textContent = '✓';
   }
 
-  // Typewrite output
   if (pre) {
     const output = VERIFY_DEMO_OUTPUTS[currentVerifyMode];
     pre.style.color = currentVerifyMode === 'summary' ? '#00ff6e'
@@ -628,7 +595,6 @@ async function runVerifyDemo() {
   demoRunning = false;
 }
 
-// Init demo panel
 (function() {
   const pre = document.getElementById('vdp-pre');
   if (pre) {
@@ -636,11 +602,6 @@ async function runVerifyDemo() {
     pre.style.color = 'rgba(160,170,187,0.6)';
   }
 })();
-
-/* ═══════════════════════════════════════════════════════════
-   SAMAYUKTAM INFERENCE — Client-side Simulator
-   Mirrors app.py logic exactly (no server required)
-═══════════════════════════════════════════════════════════ */
 
 const SPCMP_CANONICAL_NAN   = 0x7FC00000;
 const SPCMP_CANONICAL_NZERO = 0x00000000;
@@ -710,7 +671,6 @@ function bucketOf(u) {
   return Math.floor(pcmpMap(spcmpPreprocess(u >>> 0)) / STEP);
 }
 
-// Simple seeded RNG (mulberry32)
 function makeRng(seed) {
   let s = seed >>> 0;
   return {
@@ -857,7 +817,6 @@ async function runInferenceSim() {
   const numLayers  = parseInt(document.getElementById('sim-layers').value);
   const vocabSize  = parseInt(document.getElementById('sim-vocab').value);
 
-  // Yield to browser
   await new Promise(r => setTimeout(r, 10));
 
   const t0 = performance.now();
@@ -893,7 +852,6 @@ async function runInferenceSim() {
   const uniqueBuckets = new Set(bktsA).size;
   const elapsed = (performance.now()-t0).toFixed(1);
 
-  // Render
   const results = document.getElementById('sim-results');
   results.classList.remove('hidden');
 
@@ -922,13 +880,11 @@ async function runInferenceSim() {
   document.getElementById('sim-buckets').textContent      = uniqueBuckets;
   document.getElementById('sim-elapsed').textContent      = elapsed + ' ms';
 
-  // Color hashes
   const postHashA = document.getElementById('sim-post-hash-a');
   const postHashB = document.getElementById('sim-post-hash-b');
   postHashA.style.color = converged ? 'var(--green)' : 'var(--red)';
   postHashB.style.color = converged ? 'var(--green)' : 'var(--red)';
 
-  // Sample table
   const tbody = document.getElementById('sim-sample-tbody');
   tbody.innerHTML = '';
   const sample = Math.min(16, vocabSize);
@@ -955,7 +911,6 @@ async function runInferenceSim() {
   btn.disabled = false; btn.innerHTML = '<span class="btn-icon">▶</span> Run Simulation';
 }
 
-// Animate the live hash in the inference diagram
 (function() {
   const el = document.getElementById('inf-live-hash');
   if (!el) return;

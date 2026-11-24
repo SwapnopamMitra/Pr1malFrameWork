@@ -1,12 +1,7 @@
-/* ═══════════════════════════════════════════════════════════
-   SAMAYUKTAM · counters.js
-   Live Animated Status Counters + Hash Rotation
-═══════════════════════════════════════════════════════════ */
 
 (function () {
 
-  /* ─── LOGITS/SEC COUNTER ──────────────────────────────── */
-  const counterLogits = document.getElementById("counter-logits");
+    const counterLogits = document.getElementById("counter-logits");
   const counterHashes = document.getElementById("counter-hashes");
 
   let logitsBase  = 10_712_448;
@@ -28,15 +23,13 @@
   }
 
   if (counterHashes) {
-    // Counts up slowly over time
     setInterval(() => {
       hashCount += Math.floor(Math.random() * 3) + 1;
       counterHashes.textContent = hashCount;
     }, 4000);
   }
 
-  /* ─── LIVE HASH ROTATION ──────────────────────────────── */
-  const liveHash = document.getElementById("live-hash");
+    const liveHash = document.getElementById("live-hash");
 
   const hashPool = [
     "0x8dc860c7a3f21e90",
@@ -44,7 +37,7 @@
     "0xbf20ac71d9e130c4",
     "0xd9e130c45f7ab2d8",
     "0x5f7ab2d81c4e89a3",
-    "0x8dc860c7a3f21e90", // repeat canonical to reinforce
+    "0x8dc860c7a3f21e90",
   ];
 
   if (liveHash) {
@@ -55,8 +48,7 @@
     }, 5500);
   }
 
-  /* ─── SCROLL ENTRANCE ANIMATIONS ─────────────────────── */
-  const observerOptions = {
+    const observerOptions = {
     threshold: 0.12,
     rootMargin: "0px 0px -40px 0px",
   };
@@ -80,7 +72,6 @@
 
       observer.observe(el);
 
-      // Trigger via IntersectionObserver
       const io2 = new IntersectionObserver((ents) => {
         ents.forEach((e) => {
           if (e.isIntersecting) {
@@ -93,8 +84,7 @@
       io2.observe(el);
     });
 
-  /* ─── STEP ITEM STAGGER ON SCROLL ────────────────────── */
-  const stepObs = new IntersectionObserver((entries) => {
+    const stepObs = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         const steps = entry.target.querySelectorAll(".step-item");
@@ -114,8 +104,7 @@
 
   document.querySelectorAll(".steps-list").forEach((el) => stepObs.observe(el));
 
-  /* ─── PROTOCOL CARDS STAGGER ──────────────────────────── */
-  const cardObs = new IntersectionObserver((entries) => {
+    const cardObs = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         const cards = entry.target.querySelectorAll(".proto-card");
@@ -135,8 +124,7 @@
 
   document.querySelectorAll(".protocol-cards").forEach((el) => cardObs.observe(el));
 
-  /* ─── MATRIX CELL ANIMATION STAGGER ──────────────────── */
-  const matrixObs = new IntersectionObserver((entries) => {
+    const matrixObs = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         const cells = entry.target.querySelectorAll(".matrix-cell");

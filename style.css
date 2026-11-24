@@ -1,8 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   SAMAYUKTAM · PCMP Protocol Suite
-   style.css — Dark Ops / Signal Intelligence Aesthetic
-   Version 2.0
-═══════════════════════════════════════════════════════════ */
+
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -48,8 +44,6 @@
   --radius-xs:     4px;
 }
 
-/* ─── BASE ─────────────────────────────────────────────── */
-
 html { scroll-behavior: smooth; }
 
 body {
@@ -61,7 +55,6 @@ body {
   position: relative;
 }
 
-/* ─── SCANLINES ─────────────────────────────────────────── */
 .scanlines {
   position: fixed;
   inset: 0;
@@ -82,7 +75,6 @@ body {
   100% { background-position: 0 40px; }
 }
 
-/* ─── NOISE OVERLAY ─────────────────────────────────────── */
 .noise-overlay {
   position: fixed;
   inset: 0;
@@ -93,7 +85,6 @@ body {
   background-size: 200px 200px;
 }
 
-/* ─── BACKGROUND CANVAS ─────────────────────────────────── */
 #bg-canvas {
   position: fixed;
   inset: 0;
@@ -102,7 +93,6 @@ body {
   pointer-events: none;
 }
 
-/* ─── CONTAINER ─────────────────────────────────────────── */
 .container {
   position: relative;
   z-index: 1;
@@ -111,9 +101,6 @@ body {
   padding: 0 1.75rem 5rem;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   CLASSIFICATION BAR
-═══════════════════════════════════════════════════════════ */
 .classification-bar {
   position: sticky;
   top: 0;
@@ -169,9 +156,6 @@ body {
   50%       { opacity: 0.45; }
 }
 
-/* ═══════════════════════════════════════════════════════════
-   IP / PATENT ALERT BANNER
-═══════════════════════════════════════════════════════════ */
 .ip-alert-banner {
   position: relative;
   z-index: 999;
@@ -189,7 +173,6 @@ body {
   overflow: hidden;
 }
 
-/* animated amber pulse line behind the banner */
 .ip-alert-banner::before {
   content: '';
   position: absolute;
@@ -326,7 +309,6 @@ body {
   transform: translateY(-50%) translateX(3px);
 }
 
-/* ── TICKER STRIP (scrolling marquee) ─────────────────────── */
 .ip-alert-ticker-strip {
   padding: 0.3rem 0;
   border-top: 1px solid rgba(255, 160, 0, 0.18);
@@ -364,9 +346,6 @@ body {
   flex-shrink: 0;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   SAMAYUKTAM MASTHEAD
-═══════════════════════════════════════════════════════════ */
 .samayuktam-masthead {
   padding: 4rem 0 2rem;
   position: relative;
@@ -492,9 +471,6 @@ body {
   animation: pulse-text 2s ease infinite;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   PROTOCOL EYEBROW
-═══════════════════════════════════════════════════════════ */
 .protocol-eyebrow {
   display: flex;
   align-items: stretch;
@@ -550,9 +526,6 @@ body {
   flex-shrink: 0;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   HERO
-═══════════════════════════════════════════════════════════ */
 .hero {
   display: flex;
   gap: 2rem;
@@ -564,7 +537,6 @@ body {
 .hero-left  { flex: 1 1 0; min-width: 0; }
 .hero-right { width: 340px; flex-shrink: 0; display: flex; flex-direction: column; gap: 1.2rem; }
 
-/* HERO TITLE */
 .hero-title-block {
   display: flex;
   align-items: flex-end;
@@ -660,7 +632,6 @@ body {
 
 .hero-thesis strong { color: var(--fg); }
 
-/* ─── TERMINAL ─────────────────────────────────────────── */
 .terminal {
   background: #020408;
   border: 1px solid rgba(0,153,255,0.2);
@@ -747,7 +718,6 @@ body {
   50%       { opacity: 0; }
 }
 
-/* ─── CTA ROW ───────────────────────────────────────────── */
 .cta-row {
   display: flex;
   gap: 0.75rem;
@@ -823,7 +793,6 @@ body {
   transform: translateY(-2px);
 }
 
-/* ─── PIPELINE ──────────────────────────────────────────── */
 .pipeline {
   display: flex;
   align-items: center;
@@ -878,9 +847,6 @@ body {
   flex-shrink: 0;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   STATUS PANEL (right column)
-═══════════════════════════════════════════════════════════ */
 .status-panel {
   background: rgba(0,153,255,0.04);
   border: 1px solid rgba(0,153,255,0.18);
@@ -966,7 +932,6 @@ body {
   word-break: break-all;
 }
 
-/* ─── VERIFICATION LEDGER ──────────────────────────────── */
 .ledger-panel {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -1057,9 +1022,6 @@ body {
   letter-spacing: 0.08em;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   STAT STRIP
-═══════════════════════════════════════════════════════════ */
 .stat-strip {
   display: flex;
   align-items: center;
@@ -1104,9 +1066,6 @@ body {
   flex-shrink: 0;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   SECTION BLOCKS
-═══════════════════════════════════════════════════════════ */
 .section-block {
   margin-top: 5rem;
 }
@@ -1136,9 +1095,6 @@ body {
   line-height: 1.25;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   PROBLEM SECTION
-═══════════════════════════════════════════════════════════ */
 .problem-grid {
   display: flex;
   gap: 2.5rem;
@@ -1186,7 +1142,6 @@ body {
   line-height: 1.55;
 }
 
-/* DIVERGENCE DISPLAY */
 .problem-viz { flex-shrink: 0; width: 340px; }
 
 .divergence-display {
@@ -1264,9 +1219,6 @@ body {
   font-style: italic;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   PROTOCOL CARDS
-═══════════════════════════════════════════════════════════ */
 .protocol-cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1359,9 +1311,6 @@ body {
   letter-spacing: 0.08em;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   TECHNICAL DEEP DIVE
-═══════════════════════════════════════════════════════════ */
 .tech-split {
   display: flex;
   gap: 2rem;
@@ -1451,9 +1400,6 @@ body {
   line-height: 1.5;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   VALIDATION
-═══════════════════════════════════════════════════════════ */
 .validation-grid {
   display: flex;
   gap: 3rem;
@@ -1569,7 +1515,6 @@ body {
   color: var(--green);
 }
 
-/* MATRIX */
 .val-visual { flex-shrink: 0; }
 
 .matrix-grid {
@@ -1610,9 +1555,6 @@ body {
 .ml-green { color: var(--green-dim); }
 .ml-blue  { color: var(--blue-bright); }
 
-/* ═══════════════════════════════════════════════════════════
-   THREAT STRIP
-═══════════════════════════════════════════════════════════ */
 .threat-strip {
   margin-top: 4rem;
   padding: 2rem 2rem 1.5rem;
@@ -1652,9 +1594,6 @@ body {
   flex-shrink: 0;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   VERIFICATION STEPS
-═══════════════════════════════════════════════════════════ */
 .steps-list {
   display: flex;
   flex-direction: column;
@@ -1722,9 +1661,6 @@ body {
   background: rgba(0,255,110,0.06);
 }
 
-/* ═══════════════════════════════════════════════════════════
-   DIRECTIVES
-═══════════════════════════════════════════════════════════ */
 .directives-block { margin-top: 5rem; }
 
 .directives-grid {
@@ -1785,9 +1721,6 @@ body {
 }
 .dir-card:hover .dir-arrow { transform: translate(2px, -2px); }
 
-/* ═══════════════════════════════════════════════════════════
-   FOOTER
-═══════════════════════════════════════════════════════════ */
 .site-footer {
   display: flex;
   justify-content: space-between;
@@ -1871,15 +1804,11 @@ body {
   border-color: rgba(0,255,110,0.35);
 }
 
-/* ─── SCROLLBAR ─────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: rgba(0,153,255,0.25); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(0,153,255,0.45); }
 
-/* ═══════════════════════════════════════════════════════════
-   ANIMATIONS
-═══════════════════════════════════════════════════════════ */
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -1895,9 +1824,6 @@ body {
 .hero                { animation: fade-up 0.7s ease 0.18s both; }
 .stat-strip          { animation: fade-up 0.7s ease 0.28s both; }
 
-/* ═══════════════════════════════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════════════════════════════ */
 @media (max-width: 1000px) {
   .hero               { flex-direction: column; }
   .hero-right         { width: 100%; flex-direction: row; }
@@ -1932,12 +1858,6 @@ body {
   .sp-metrics         { grid-template-columns: 1fr 1fr; }
 }
 
-/* ═══════════════════════════════════════════════════════════
-   SAMAYUKTAM · UPGRADE STYLES v2.1
-   Live Spaces Section + Verifier Section
-═══════════════════════════════════════════════════════════ */
-
-/* ─── SECTION SUB TEXT ──────────────────────────────────── */
 .section-sub {
   color: var(--fg-2);
   font-size: 0.78rem;
@@ -1946,7 +1866,6 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* ─── LIVE SPACES SECTION ───────────────────────────────── */
 .spaces-section {
   margin-top: 3rem;
 }
@@ -2107,7 +2026,6 @@ body {
 
 .space-card:hover .sc-arrow { transform: translate(2px,-2px); color: var(--fg); }
 
-/* ─── VERIFIER SECTION ──────────────────────────────────── */
 .verifier-section {
   margin-top: 3rem;
 }
@@ -2124,7 +2042,6 @@ body {
   .verifier-split { grid-template-columns: 1fr; }
 }
 
-/* Verifier Info Block */
 .verifier-info-block {
   background: var(--surface);
   border: 1px solid var(--border-blue);
@@ -2265,7 +2182,6 @@ body {
 
 .dl-icon { font-size: 1rem; }
 
-/* Verify Demo Panel */
 .verifier-right {
   display: flex;
   flex-direction: column;
@@ -2336,7 +2252,6 @@ body {
   margin: 0;
 }
 
-/* Steps Mini */
 .verify-steps-mini {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -2423,7 +2338,6 @@ body {
 
 .btn-run-demo:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* ─── DOCS GRID EXTRA CARDS ─────────────────────────────── */
 .dir-card-hf {
   border-color: rgba(255,204,0,0.15);
 }
@@ -2446,7 +2360,6 @@ body {
 
 .dir-icon.dl { color: var(--green); }
 
-/* ─── FOOTER SPACES ─────────────────────────────────────── */
 .footer-spaces {
   margin-top: 0.6rem;
   display: flex;
@@ -2484,13 +2397,11 @@ body {
   font-size: 0.6rem;
 }
 
-/* ─── KEYFRAME: pulse dot ───────────────────────────────── */
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; transform: scale(1); }
   50%       { opacity: 0.5; transform: scale(0.7); }
 }
 
-/* ─── THREE-PHASE PIPELINE (replaces tech-split) ─────────── */
 .three-phase-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -2503,7 +2414,6 @@ body {
   .three-phase-grid { grid-template-columns: 1fr; }
 }
 
-/* ── Cards ── */
 .phase-card {
   background: rgba(12,18,30,0.85);
   border: 1px solid rgba(0,153,255,0.18);
@@ -2517,7 +2427,6 @@ body {
   transition: border-color 0.28s, box-shadow 0.28s, transform 0.22s;
 }
 
-/* Subtle animated top-edge glow line */
 .phase-card::before {
   content: '';
   position: absolute;
@@ -2534,7 +2443,6 @@ body {
   transition: opacity 0.35s;
 }
 
-/* Corner accent */
 .phase-card::after {
   content: '';
   position: absolute;
@@ -2554,7 +2462,6 @@ body {
 .phase-card:hover::before,
 .phase-card:hover::after { opacity: 1; }
 
-/* Middle card — always-on subtle highlight */
 .phase-card.phase-accent {
   border-color: rgba(0,153,255,0.32);
   background: rgba(0,20,45,0.9);
@@ -2569,14 +2476,13 @@ body {
   box-shadow: 0 0 40px rgba(0,153,255,0.13), inset 0 0 50px rgba(0,153,255,0.05);
 }
 
-/* ── Phase number ── */
 .phase-num {
   font-family: var(--font-display);
   font-size: 2.4rem;
   font-weight: 900;
   line-height: 1;
   letter-spacing: 0.05em;
-  /* bright, not ghosted */
+
   color: rgba(0,153,255,0.55);
   text-shadow: 0 0 20px rgba(0,153,255,0.3);
   transition: color 0.25s, text-shadow 0.25s;
@@ -2588,7 +2494,6 @@ body {
   text-shadow: 0 0 30px rgba(0,153,255,0.5);
 }
 
-/* ── Title ── */
 .phase-title {
   font-family: var(--font-display);
   font-size: 1.05rem;
@@ -2598,7 +2503,6 @@ body {
   text-shadow: 0 0 12px rgba(0,153,255,0.2);
 }
 
-/* ── Sub ── */
 .phase-sub {
   font-size: 0.63rem;
   color: rgba(100,180,255,0.75);
@@ -2606,7 +2510,6 @@ body {
   font-family: var(--font-mono);
 }
 
-/* ── Divider ── */
 .phase-card .phase-divider {
   width: 28px;
   height: 1px;
@@ -2614,7 +2517,6 @@ body {
   margin: 0.1rem 0;
 }
 
-/* ── Desc ── */
 .phase-desc {
   font-size: 0.74rem;
   color: rgba(200,215,240,0.82);
@@ -2622,7 +2524,6 @@ body {
   flex: 1;
 }
 
-/* ── Tag pills ── */
 .phase-props {
   display: flex;
   flex-wrap: wrap;
@@ -2650,14 +2551,12 @@ body {
   color: #a8d8ff;
 }
 
-/* ── Connector arrows between cards (desktop) ── */
 @media (min-width: 901px) {
   .three-phase-grid {
     position: relative;
   }
 }
 
-/* ─── TECH PROPERTIES ROW ───────────────────────────────── */
 .tech-properties-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -2703,11 +2602,7 @@ body {
   color: rgba(200,215,240,0.8);
   line-height: 1.6;
 }
-/* ═══════════════════════════════════════════════════════════
-   SAMAYUKTAM INFERENCE — New Section Styles
-═══════════════════════════════════════════════════════════ */
 
-/* Protocol eyebrow — final layer highlight */
 .pe-item-final .pe-name {
   color: var(--green);
 }
@@ -2717,7 +2612,6 @@ body {
   border: 1px solid rgba(0,255,110,0.35);
 }
 
-/* ── INFERENCE OVERVIEW ─────────────────────────────────── */
 .inference-overview-block {
   border-top: 1px solid rgba(0,255,110,0.15);
 }
@@ -2787,7 +2681,6 @@ body {
   padding: 0.65rem 1.4rem;
 }
 
-/* Inference layer diagram */
 .inf-diagram-col {
   display: flex;
   justify-content: center;
@@ -2886,7 +2779,6 @@ body {
   padding: 0.2rem 0.7rem;
 }
 
-/* ── INFERENCE SIMULATOR ────────────────────────────────── */
 .inference-sim-block {
   border-top: 1px solid rgba(0,255,110,0.1);
 }
@@ -2982,7 +2874,6 @@ body {
   margin-bottom: 2rem;
 }
 
-/* Results */
 .sim-results { margin-top: 0.5rem; }
 .sim-results.hidden { display: none; }
 
@@ -3098,12 +2989,6 @@ body {
 .cell-fail { color: var(--red)   !important; font-weight: 600; }
 .cell-warn { color: var(--yellow)!important; }
 
-/* ═══════════════════════════════════════════════════════════
-   SAMAYUKTAM · NEW SECTIONS
-   Etymology · About · Audit · Substack
-═══════════════════════════════════════════════════════════ */
-
-/* ─── ETYMOLOGY BANNER ──────────────────────────────────── */
 .etymology-banner {
   display: flex;
   align-items: center;
@@ -3190,12 +3075,10 @@ body {
   font-family: var(--font-mono);
 }
 
-/* ─── AUDIT + ABOUT SECTION ─────────────────────────────── */
 .audit-about-section {
   padding-top: 0;
 }
 
-/* ─── DUAL GRID ──────────────────────────────────────────── */
 .about-dual-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -3364,7 +3247,6 @@ body {
   color: rgba(255,50,70,0.4);
 }
 
-/* ─── AUDIT + SUBSTACK ROW ──────────────────────────────── */
 .audit-substack-row {
   display: grid;
   grid-template-columns: 1fr 420px;
@@ -3376,7 +3258,6 @@ body {
   .audit-substack-row { grid-template-columns: 1fr; }
 }
 
-/* ─── AUDIT PDF CARD ─────────────────────────────────────── */
 .audit-pdf-card {
   background: linear-gradient(
     135deg,
@@ -3610,7 +3491,6 @@ body {
   line-height: 1;
 }
 
-/* ─── SUBSTACK COLUMN ────────────────────────────────────── */
 .substack-column {
   display: flex;
   flex-direction: column;
@@ -3724,7 +3604,6 @@ body {
   transform: translate(2px, -2px);
 }
 
-/* ─── FOOTER SUBSTACK LINKS ─────────────────────────────── */
 .footer-substack-links {
   display: flex;
   align-items: center;

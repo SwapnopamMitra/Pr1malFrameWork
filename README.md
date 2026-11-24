@@ -41,9 +41,6 @@ PCMP (Predictive Canonical Monotonic Permutation) solves exactly one problem: it
 For a deep dive into the architecture of Samayuktam, see the following:
 
 - **The Manifesto:** The moral and philosophical necessity of verifiable computation.
-- **SPECIFICATION.md:** The normative rules for V1 bit-exact representation.
-- **THREAT_MODEL.md:** How Samayuktam survives in a hostile, non-cooperative environment.
-- **WHY_PCMP_EXISTS.md:** Why deviation from this standard is not an option.
 
 ---
 

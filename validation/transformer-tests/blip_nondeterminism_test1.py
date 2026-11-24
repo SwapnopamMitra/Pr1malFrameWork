@@ -6,10 +6,6 @@ import hashlib
 from transformers import BlipProcessor, BlipForConditionalGeneration
 from PIL import Image
 
-# ============================
-# HARD CUDA DETERMINISM
-# ============================
-
 os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"
 
 torch.manual_seed(0)
@@ -27,17 +23,9 @@ if DEVICE == "cuda":
 
 print("Running on:", DEVICE)
 
-# ============================
-# CONFIG
-# ============================
-
 MODEL_NAME = "Salesforce/blip-image-captioning-base"
 IMAGE_PATH = "test.jpg"
 RUNS = 3
-
-# ============================
-# LOAD MODEL
-# ============================
 
 processor = BlipProcessor.from_pretrained(MODEL_NAME, use_fast=True)
 model = BlipForConditionalGeneration.from_pretrained(
@@ -48,10 +36,6 @@ model.eval()
 
 image = Image.open(IMAGE_PATH).convert("RGB")
 inputs = processor(images=image, return_tensors="pt").to(DEVICE)
-
-# ============================
-# TEST LOOP
-# ============================
 
 hashes = []
 
@@ -67,7 +51,6 @@ for run in range(RUNS):
             output_scores=True
         )
 
-        # Collect raw generation scores (true generation path)
         scores = torch.stack(outputs.scores, dim=0)
         logits = scores.detach().cpu().numpy().astype(np.float32)
 

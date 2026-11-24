@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   SAMAYUKTAM · canvas.js
-   Background: Hex Grid + Floating Data Streams
-═══════════════════════════════════════════════════════════ */
 
 (function () {
   const canvas = document.getElementById("bg-canvas");
@@ -10,8 +6,7 @@
 
   let W, H, animFrame;
 
-  /* ── DATA STREAMS (falling bytes) ──────────────────────── */
-  const STREAM_COUNT = 28;
+    const STREAM_COUNT = 28;
   const streams = [];
 
   const CHARS = "01アイウエオカキクケコサシスセソタチツテト∂∇Σ∏∆0x38ffa1c7de02bf9481e6cd";
@@ -52,8 +47,7 @@
     }
   }
 
-  /* ── HEX GRID ───────────────────────────────────────────── */
-  const HEX_R   = 36;
+    const HEX_R   = 36;
   const HEX_PAD = 4;
   let hexes     = [];
 
@@ -99,8 +93,7 @@
     }
   }
 
-  /* ── NODES ──────────────────────────────────────────────── */
-  const NODES = [];
+    const NODES = [];
   const NODE_COUNT = 24;
 
   class Node {
@@ -153,8 +146,7 @@
     }
   }
 
-  /* ── INIT ───────────────────────────────────────────────── */
-  function init() {
+    function init() {
     W = canvas.width  = window.innerWidth;
     H = canvas.height = window.innerHeight;
 
@@ -167,8 +159,7 @@
     for (let i = 0; i < NODE_COUNT; i++) NODES.push(new Node());
   }
 
-  /* ── ANIMATE ────────────────────────────────────────────── */
-  function animate() {
+    function animate() {
     ctx.clearRect(0, 0, W, H);
 
     drawHexGrid();

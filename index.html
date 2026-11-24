@@ -10,14 +10,10 @@
 </head>
 <body>
 
-  <!-- SCAN LINE OVERLAY -->
   <div class="scanlines"></div>
-  <!-- BACKGROUND CANVAS -->
   <canvas id="bg-canvas"></canvas>
-  <!-- NOISE TEXTURE -->
   <div class="noise-overlay"></div>
 
-  <!-- TOP CLASSIFICATION BAR -->
   <div class="classification-bar">
     <div class="cls-inner">
       <span class="cls-pulse-dot"></span>
@@ -35,9 +31,6 @@
     </div>
   </div>
 
-  <!-- ╔══════════════════════════════════════════════════════════╗
-       ║           PATENT / IP NOTICE BANNER                     ║
-       ╚══════════════════════════════════════════════════════════╝ -->
   <div class="ip-alert-banner" id="ip-alert-banner">
     <div class="ip-alert-inner">
       <div class="ip-alert-left">
@@ -86,9 +79,6 @@
 
   <main class="container">
 
-    <!-- ══════════════════════════════════════════
-         SAMAYUKTAM MASTHEAD
-    ══════════════════════════════════════════ -->
     <section class="samayuktam-masthead">
       <div class="masthead-scan-line"></div>
       <pre class="smy-ascii" aria-label="SAMAYUKTAM">
@@ -111,7 +101,6 @@
       </div>
     </section>
 
-    <!-- PROTOCOL FAMILY EYEBROW -->
     <div class="protocol-eyebrow">
       <div class="pe-item active">
         <span class="pe-tag">CORE</span>
@@ -128,7 +117,7 @@
       <div class="pe-item">
         <span class="pe-tag">LAYER</span>
         <span class="pe-name">CAGM</span>
-        <span class="pe-desc">Cross-Architecture Graph Map</span>
+        <span class="pe-desc">Fixed-Point Training Engine</span>
       </div>
       <div class="pe-divider">→</div>
       <div class="pe-item">
@@ -150,9 +139,6 @@
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════════
-         HERO — COMMAND SPLIT
-    ══════════════════════════════════════════ -->
     <section class="hero">
 
       <div class="hero-left">
@@ -172,7 +158,6 @@
           byte-identical across CPU, GPU, and batch. No approximations. No overrides. No excuses.
         </p>
 
-        <!-- COMMAND TERMINAL -->
         <div class="terminal" id="main-terminal">
           <div class="terminal-titlebar">
             <div class="tb-dots">
@@ -192,7 +177,6 @@
           </div>
         </div>
 
-        <!-- ACTION ROW -->
         <div class="cta-row">
           <button id="simulate" class="btn-primary">
             <span class="btn-icon">▶</span> Run Audit Simulation
@@ -208,7 +192,6 @@
           </a>
         </div>
 
-        <!-- PIPELINE -->
         <div class="pipeline">
           <div class="pipeline-step">
             <span class="ps-num">01</span>
@@ -237,10 +220,8 @@
 
       </div>
 
-      <!-- RIGHT PANEL: STATUS + LEDGER -->
       <div class="hero-right">
 
-        <!-- LIVE STATUS PANEL -->
         <div class="status-panel">
           <div class="sp-header">
             <span class="sp-title">NETWORK STATUS</span>
@@ -266,7 +247,6 @@
           </div>
         </div>
 
-        <!-- VERIFICATION LEDGER -->
         <aside class="ledger-panel">
           <div class="ledger-header">
             <h2>VERIFICATION LEDGER</h2>
@@ -288,7 +268,6 @@
 
     </section>
 
-    <!-- STAT STRIP -->
     <div class="stat-strip">
       <div class="stat">
         <span class="stat-num">10.7M</span>
@@ -316,9 +295,6 @@
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════════
-         ETYMOLOGY BANNER
-    ══════════════════════════════════════════ -->
     <div class="etymology-banner">
       <div class="etym-glyph">ॐ</div>
       <div class="etym-body">
@@ -329,12 +305,8 @@
       <div class="etym-glyph etym-glyph-right">⟁</div>
     </div>
 
-    <!-- ══════════════════════════════════════════
-         ABOUT — DUAL DESCRIPTION + AUDIT
-    ══════════════════════════════════════════ -->
     <section class="section-block audit-about-section" id="about">
 
-      <!-- TOP ROW: two descriptions side by side -->
       <div class="about-dual-grid">
 
         <div class="about-panel about-panel-left">
@@ -406,10 +378,8 @@
 
       </div>
 
-      <!-- AUDIT PDF + SUBSTACK ROW -->
       <div class="audit-substack-row">
 
-        <!-- AUDIT PDF CARD -->
         <div class="audit-pdf-card">
           <div class="apc-header">
             <div class="apc-icon-wrap">
@@ -447,16 +417,9 @@
               <span class="atl-div">·</span>
               <span class="atl-n">20.64s</span><span class="atl-l">runtime</span>
             </div>
-            <a class="apc-download-btn"
-               href="https://github.com/SwapnopamMitra/Pr1malFrameWork/blob/main/samayuktam_audit_report_20260501_114147_2f24624240e7.pdf"
-               target="_blank" rel="noopener">
-              <span class="adb-icon">⬇</span>
-              <span class="adb-text">Download Full Audit PDF</span>
-            </a>
           </div>
         </div>
 
-        <!-- SUBSTACK CARDS -->
         <div class="substack-column">
           <div class="substack-eyebrow">
             <span class="section-tag">WRITTEN RECORD</span>
@@ -492,9 +455,6 @@
 
     </section>
 
-    <!-- ══════════════════════════════════════════
-         PROBLEM SPACE
-    ══════════════════════════════════════════ -->
     <section class="section-block" id="problem">
       <div class="section-header">
         <span class="section-tag">THE UNSOLVED PROBLEM</span>
@@ -552,7 +512,6 @@
       </div>
     </section>
 
-    <!-- PROTOCOL CARDS — FOUR PILLARS -->
     <section class="section-block" id="protocols">
       <div class="section-header">
         <span class="section-tag">PROTOCOL ARCHITECTURE</span>
@@ -595,14 +554,13 @@
         <div class="proto-card layer">
           <div class="pc-eyebrow">GRAPH LAYER</div>
           <div class="pc-name">CAGM</div>
-          <div class="pc-full">Cross-Architecture Graph Map</div>
+          <div class="pc-full">Fixed-Point Training Engine</div>
           <div class="pc-desc">
-            Extends PCMP canonicalization to computational graph structures. Maps model execution graphs
-            across heterogeneous hardware architectures. Enables graph-level commitment and cross-device proof.
+            Samayuktam's fixed-point training engine. Runs the training computation in Q16.16 integer arithmetic instead of float32, so the same inputs produce the same output bits regardless of GPU, CPU, or compiler flags. Each run emits a SHA-256 proof of its full trajectory, so the execution path is verified rather than trusted. Successor to FADS.
           </div>
           <div class="pc-props">
             <span class="pcp">Graph-Native</span>
-            <span class="pcp">Cross-Architecture</span>
+            <span class="pcp">Bit-Exact</span>
             <span class="pcp">Commitment-Ready</span>
           </div>
           <div class="pc-spec-ref">CAGM Spec v1.0</div>
@@ -627,7 +585,6 @@
       </div>
     </section>
 
-    <!-- TECHNICAL DEEP DIVE -->
     <section class="section-block" id="technical">
       <div class="section-header">
         <span class="section-tag">HOW IT WORKS</span>
@@ -713,7 +670,6 @@
       </div>
     </section>
 
-    <!-- VALIDATION -->
     <section class="section-block" id="validation">
       <div class="section-header">
         <span class="section-tag">PRODUCTION VALIDATION</span>
@@ -751,9 +707,6 @@
             <span class="vr-label">RESULT</span>
             <span class="vr-value">Bit-identical canonical artifacts across CPU, GPU, and batch. Zero divergence post-canonicalization.</span>
           </div>
-          <a class="val-link" href="https://github.com/SwapnopamMitra/Pr1malFrameWork/tree/main/validation/transformer-tests" target="_blank" rel="noopener">
-            ↗ Inspect Validation Scripts
-          </a>
         </div>
         <div class="val-visual">
           <div class="matrix-grid" id="matrix-grid"></div>
@@ -766,7 +719,6 @@
       </div>
     </section>
 
-    <!-- THREAT STRIP -->
     <div class="threat-strip">
       <div class="ts-header">
         <span class="section-tag">ELIMINATION MATRIX</span>
@@ -788,7 +740,6 @@
       </div>
     </div>
 
-    <!-- VERIFICATION STEPS -->
     <section class="section-block" id="protocol">
       <div class="section-header">
         <span class="section-tag">SPCMP VERIFICATION PROTOCOL</span>
@@ -878,9 +829,6 @@
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════
-         LIVE SPACES — FOUR HUGGING FACE DEPLOYMENTS
-    ══════════════════════════════════════════ -->
     <section class="section-block spaces-section" id="spaces">
       <div class="section-header">
         <span class="section-tag">DEPLOYED &amp; LIVE</span>
@@ -977,18 +925,19 @@
           </div>
           <div class="sc-proto-badge cagm">CAGM</div>
           <div class="sc-name">CAGM</div>
-          <div class="sc-full">Cross-Architecture Graph Map — ML Model Trainer</div>
+          <div class="sc-full">Fixed-Point Training Engine</div>
           <div class="sc-desc">
-            The CAGM ML model training interface. Maps computational graphs
-            across heterogeneous hardware architectures for deterministic
-            training runs. Enables graph-level canonical commitment so model
-            training artifacts are bit-reproducible and independently auditable.
+            The CAGM ML model training interface. Training runs in Q16.16
+            integer arithmetic, so the same inputs produce the same output bits
+            on any GPU or CPU. Each run emits a SHA-256 proof of its full
+            trajectory, making training independently auditable. Built for cases
+            where bit-exact reproducibility is a requirement, not a tolerance.
           </div>
           <div class="sc-features">
-            <span class="sc-feat">▸ Graph-level canonicalization</span>
-            <span class="sc-feat">▸ Cross-architecture training</span>
+            <span class="sc-feat">▸ Q16.16 fixed-point arithmetic</span>
+            <span class="sc-feat">▸ Bit-exact on any hardware</span>
             <span class="sc-feat">▸ Deterministic weight commits</span>
-            <span class="sc-feat">▸ Hardware-portable proofs</span>
+            <span class="sc-feat">▸ SHA-256 trajectory proofs</span>
           </div>
           <div class="sc-footer">
             <span class="sc-url">huggingface.co/spaces/Swapnopam/CAGM</span>
@@ -999,9 +948,6 @@
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════
-         VERIFY.PY — DOWNLOAD + LIVE DEMO
-    ══════════════════════════════════════════ -->
     <section class="section-block verifier-section" id="verifier">
       <div class="section-header">
         <span class="section-tag">REFERENCE VERIFIER</span>
@@ -1144,9 +1090,6 @@
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════
-         SAMAYUKTAM INFERENCE — FINAL LAYER
-    ══════════════════════════════════════════ -->
     <section class="section-block inference-overview-block" id="inference">
       <div class="section-header">
         <span class="section-tag">FINAL LAYER</span>
@@ -1200,9 +1143,6 @@
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════
-         INFERENCE SIMULATOR
-    ══════════════════════════════════════════ -->
     <section class="section-block inference-sim-block" id="inference-sim">
       <div class="section-header">
         <span class="section-tag">LIVE SIMULATION</span>
@@ -1342,53 +1282,12 @@
       </div>
     </section>
 
-    <!-- DOCS DIRECTIVES -->
     <section class="directives-block" id="docs">
       <div class="section-header">
-        <span class="section-tag">SPECIFICATION ARCHIVE</span>
+        <span class="section-tag">RESOURCES</span>
         <h2>Protocol Directives</h2>
       </div>
       <div class="directives-grid">
-        <a class="dir-card" href="docs/pcmp_spec.md">
-          <span class="dir-icon">◈</span>
-          <div class="dir-text">
-            <span class="dir-title">PCMP v1 Specification</span>
-            <span class="dir-sub">Core protocol · Frozen semantics</span>
-          </div>
-          <span class="dir-arrow">↗</span>
-        </a>
-        <a class="dir-card" href="docs/spcmp_spec.md">
-          <span class="dir-icon">◈</span>
-          <div class="dir-text">
-            <span class="dir-title">SPCMP v1 Specification</span>
-            <span class="dir-sub">CVD preprocessing · Profile 0x01</span>
-          </div>
-          <span class="dir-arrow">↗</span>
-        </a>
-        <a class="dir-card" href="docs/cagm_spec.md">
-          <span class="dir-icon">◈</span>
-          <div class="dir-text">
-            <span class="dir-title">CAGM Specification</span>
-            <span class="dir-sub">Cross-architecture graph mapping</span>
-          </div>
-          <span class="dir-arrow">↗</span>
-        </a>
-        <a class="dir-card" href="docs/fads_spec.md">
-          <span class="dir-icon">◈</span>
-          <div class="dir-text">
-            <span class="dir-title">FADS Specification</span>
-            <span class="dir-sub">Formal deterministic search</span>
-          </div>
-          <span class="dir-arrow">↗</span>
-        </a>
-        <a class="dir-card" href="docs/threat_model.md">
-          <span class="dir-icon">◈</span>
-          <div class="dir-text">
-            <span class="dir-title">Threat Model</span>
-            <span class="dir-sub">Adversarial surface · Mitigations</span>
-          </div>
-          <span class="dir-arrow">↗</span>
-        </a>
         <a class="dir-card" href="https://github.com/SwapnopamMitra/Pr1malFrameWork" target="_blank" rel="noopener">
           <span class="dir-icon">◈</span>
           <div class="dir-text">
@@ -1425,7 +1324,7 @@
           <span class="dir-icon hf">⬡</span>
           <div class="dir-text">
             <span class="dir-title">CAGM Trainer</span>
-            <span class="dir-sub">Cross-architecture ML model training</span>
+            <span class="dir-sub">Fixed-point ML model training</span>
           </div>
           <span class="dir-arrow">↗</span>
         </a>
@@ -1448,7 +1347,6 @@
       </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="site-footer">
       <div class="footer-left">
         <span class="footer-brand">SAMAYUKTAM</span>
@@ -1479,14 +1377,10 @@
       <div class="footer-right">
         <a class="footer-link" href="https://huggingface.co/spaces/Swapnopam/Samayuktam" target="_blank" rel="noopener">HF Space</a>
         <a class="footer-link" href="https://github.com/SwapnopamMitra/Pr1malFrameWork" target="_blank" rel="noopener">GitHub</a>
-        <a class="footer-link" href="docs/pcmp_spec.md">Specs</a>
-        <a class="footer-link" href="docs/threat_model.md">Security</a>
         <a class="footer-link" href="#verifier" onclick="downloadVerifyPy()">verify.py ⬇</a>
         <div class="footer-substack-links">
           <span class="fsl-label">SUBSTACK</span>
-          <a class="footer-link fsl-link" href="https://swapnopammitra.substack.com/p/why-zkml-and-cryptographic-proof" target="_blank" rel="noopener">zkML &amp; Proof ↗</a>
           <a class="footer-link fsl-link" href="https://swapnopammitra.substack.com/p/samayuktam_inference-canonicalizing" target="_blank" rel="noopener">Inference Layer ↗</a>
-          <a class="footer-link fsl-link" href="https://swapnopammitra.substack.com/p/spcmp-on-google-tpu-three-hardware" target="_blank" rel="noopener">TPU Proof ↗</a>
         </div>
       </div>
     </footer>

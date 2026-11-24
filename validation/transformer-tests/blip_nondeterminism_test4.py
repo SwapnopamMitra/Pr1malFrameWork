@@ -6,21 +6,13 @@ import hashlib
 from transformers import BlipProcessor, BlipForConditionalGeneration
 from PIL import Image
 
-# ============================================================
-# CONFIGURATION SWITCHES (EDIT THESE FOR EXPERIMENTS)
-# ============================================================
-
 MODEL_NAME = "Salesforce/blip-image-captioning-base"
 IMAGE_PATH = "test.jpg"
 
-RUNS = 5              # number of repeated executions
-BATCH_SIZE = 32       # 1 = minimal, 32 = stress
-USE_FP16 = True      # True to enable half precision
-DETERMINISTIC = False  # Toggle deterministic controls
-
-# ============================================================
-# ENVIRONMENT + SEEDS
-# ============================================================
+RUNS = 5
+BATCH_SIZE = 32
+USE_FP16 = True
+DETERMINISTIC = False
 
 os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"
 
@@ -45,10 +37,6 @@ print("Deterministic mode:", DETERMINISTIC)
 print("Batch size:", BATCH_SIZE)
 print("FP16 enabled:", USE_FP16)
 
-# ============================================================
-# LOAD MODEL
-# ============================================================
-
 processor = BlipProcessor.from_pretrained(MODEL_NAME, use_fast=True)
 
 model = BlipForConditionalGeneration.from_pretrained(
@@ -61,13 +49,8 @@ if USE_FP16:
 
 model.eval()
 
-# ============================================================
-# PREPARE INPUTS
-# ============================================================
-
 image = Image.open(IMAGE_PATH).convert("RGB")
 
-# Duplicate image for batch stress
 images = [image] * BATCH_SIZE
 
 inputs = processor(images=images, return_tensors="pt").to(DEVICE)
@@ -76,14 +59,6 @@ if USE_FP16:
     for k in inputs:
         if inputs[k].dtype == torch.float32:
             inputs[k] = inputs[k].half()
-
-# ============================================================
-# TEST LOOP
-# ============================================================
-
-# ============================================================
-# TEST LOOP
-# ============================================================
 
 hashes = []
 
@@ -102,18 +77,13 @@ for run in range(RUNS):
         scores = torch.stack(outputs.scores, dim=0)
         logits = scores.detach().cpu().numpy().astype(np.float32)
 
-    # Save binary file
     bin_path = f"gpu_output_run_{run}.bin"
     logits.tofile(bin_path)
     print("Saved:", bin_path)
 
-    # Hash for visibility
     sha = hashlib.sha256(logits.tobytes()).hexdigest()
     print("SHA256:", sha)
     hashes.append(sha)
-# ============================================================
-# COMPARISON
-# ============================================================
 
 print("\n=== HASH COMPARISON ===")
 for i, h in enumerate(hashes):
